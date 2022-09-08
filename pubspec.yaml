@@ -42,6 +42,34 @@ dependencies:
   image_picker: ^0.8.5+3
   path_provider: ^2.0.11
   firebase_storage:
+  google_maps_flutter:
+  firebase_analytics:
+  firebase_messaging:
+  carousel_slider: 
+  # geolocator: 
+  whatsapp_unilink:
+  geocoding: 
+  # geocoder:
+  latlng:
+  flutter_map: ^3.0.0
+  tuple: 
+  latlong: 
+  latlong2: ^0.8.0
+
+
+  positioned_tap_detector_2:
+  transparent_image: 
+  async:
+  flutter_image: 
+  vector_math: 
+  proj4dart: 
+  meta: 
+  collection: 
+  url_launcher: ^6.1.5
+  flutter_open_whatsapp: ^0.1.2
+  fl_chart: ^0.55.1
+  pie_chart: ^5.3.2
+  
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +93,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/
+    - assets/
 
 
   # To add assets to your application, add an assets section, like this:

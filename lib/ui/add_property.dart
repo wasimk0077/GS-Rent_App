@@ -1,4 +1,5 @@
 // import 'dart:html';
+
 import 'dart:io';
 import 'package:authh_app/ui/home_view.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,7 +23,7 @@ class Addproperty extends StatefulWidget {
 }
 
 class _AddpropertyState extends State<Addproperty> {
-
+  var imageName;
 
   TextEditingController _CarpetArea = TextEditingController();
   TextEditingController _PropertyName = TextEditingController();
@@ -31,10 +32,12 @@ class _AddpropertyState extends State<Addproperty> {
   TextEditingController _Tenant = TextEditingController();
   TextEditingController _Rent = TextEditingController();
   TextEditingController _AssetValue = TextEditingController();
+  TextEditingController _ImageValue = TextEditingController();
   TextEditingController _Yeild = TextEditingController();
   CollectionReference property_main=FirebaseFirestore.instance.collection("property_main");
   File? selectedImage;
   String _fullName = '';
+  String _imageurl = '';
   // int count = 0;
   // void _addImages() {
   //   var storage = FirebaseStorage.instance;
@@ -82,14 +85,55 @@ class _AddpropertyState extends State<Addproperty> {
 
 
   Future getImage() async{
+  final _firebaseStorage = FirebaseStorage.instance;
   final  pickedImage=await ImagePicker().getImage(source: ImageSource.gallery);
   selectedImage=File(pickedImage!.path);
-  final ref = FirebaseStorage.instance
-              .ref()
-              .child('usersImages')
-              .child(_fullName + '.jpg');
-          await ref.putFile(selectedImage!);
-          final url = await ref.getDownloadURL();
+  
+   if (pickedImage != null){
+        //Upload to Firebase
+        print('$imageName.png');
+        var snapshot = await _firebaseStorage.ref()
+        .child('$imageName.png')
+        
+        .putFile(selectedImage!);
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+        setState(() {
+          _imageurl = downloadUrl;
+        });
+      } else {
+        print('No Image Path Received');
+      }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // final ref = FirebaseStorage.instance
+  //             .ref().child("");
+              
+              
+              
+  //         await ref.putFile(selectedImage!);
+          
+  //         final url = (await ref.getDownloadURL());
+          
+  //         _imageurl=url.toString();
+  //         print(_imageurl);
+          
+          
   // setState(() {
   
   // });
@@ -230,7 +274,38 @@ class _AddpropertyState extends State<Addproperty> {
                   labelStyle: TextStyle(color: Colors.black)),
             ),),
             
-            
+Column(
+              
+              // mainAxisAlignment: MainAxisAlignment.start,
+               children: [
+                 Container(
+                  //  margin: EdgeInsets.only(right: 30),
+                  // padding: EdgeInsets.all(10.0),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height/ 20,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular((15.0)),
+                      
+                      ),
+                  child: TextFormField(
+                      controller: _ImageValue,
+                      decoration: InputDecoration(
+                  hintText: "image name",
+                  hintStyle: TextStyle(color: Colors.white),
+                  labelText: "Image",
+                  labelStyle: TextStyle(color: Colors.black)),
+                      onChanged:(value){
+                        imageName=value;
+                        print(imageName);
+                      },
+                      
+                      
+                      
+                      
+                      )
+            ),
+               ],
+             ),
            SizedBox(height:20),
               Row(
               
@@ -257,8 +332,8 @@ class _AddpropertyState extends State<Addproperty> {
             ),
                ],
              ),
-              SizedBox(height:20),
-
+             
+           SizedBox(height:20),
              Row(
               
               mainAxisAlignment: MainAxisAlignment.end,
@@ -274,7 +349,8 @@ class _AddpropertyState extends State<Addproperty> {
                       color: Colors.blueAccent),
                   child: MaterialButton(
                     onPressed: (() {
-                      property_main.add({'Carpet_Area':_CarpetArea.text,'Firm':_Firm.text,'Floor':_Floor.text,'Property_name':_PropertyName.text,'Tenant':_Tenant.text,'Yield':_Yeild.text,'Image_url':url}).then((value)=>print("User Added")).catchError((error)=>print("failed to add"));
+                      property_main.add({'Property_Details':{'Carpet_Area':_CarpetArea.text,'Firm':_Firm.text,'Floor':_Floor.text,'Property_name':_PropertyName.text,'Tenant':_Tenant.text,'Yield':_Yeild.text,'imageurl': {'image1':_imageurl.toString(),'image2':_imageurl.toString(),'image3':_imageurl.toString(),'image4':_imageurl.toString()}}}).then((value)=>print("User Added")).catchError((error)=>print("failed to add"));
+                      
                       Navigator.pop(
                       context,
                       MaterialPageRoute(
