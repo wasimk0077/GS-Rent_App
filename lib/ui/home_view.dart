@@ -1,13 +1,23 @@
 import 'dart:async';
 
+import 'package:authh_app/net/flutterfire.dart';
+import 'package:authh_app/ui/ChangePassword.dart';
+import 'package:authh_app/ui/Chat.dart';
+import 'package:authh_app/ui/Pre_add.dart';
+import 'package:authh_app/ui/Property_type_Res.dart';
+import 'package:authh_app/ui/Views.dart';
 import 'package:authh_app/ui/add_property.dart';
+import 'package:authh_app/ui/auth_as_Admin.dart';
+import 'package:authh_app/ui/barchart.dart';
 import 'package:authh_app/ui/details_view.dart';
+import 'package:authh_app/ui/discover_vacant.dart';
 import 'package:authh_app/ui/property_types.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,28 +41,32 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
 
+int TotalRent=0;
+int TotalVacant=0;
+getData() async {
+
+  await FirebaseFirestore.instance.collection("property_main").get().then((value) {
+    for(var i in value.docs) {
+        //  print("nah didnt enter the loop");
+        
+        TotalRent=TotalRent+int.parse(i["Property_Details"]["Rent"]);
+        
+       if(i["Property_Details"]["Property_Status"]["Vacant"]==true)
+       {
+        TotalVacant=TotalVacant+1;
+       }
+
+
+        //  print("nah didnt enter the loop2");
+      // print("getdata called");
+    }
+    // suggestionslist=Properties;
+  });
+}
 
 
 
-
-  final dataMap = <String, double>{
-    "Residential": 4,
-    "Warehouse":4,
-    "Banks":4,
-    "MNC's":4,
-    "Commercial":4
-    ,
-    
-  };
-
-  final colorList = <Color>[
-    Colors.greenAccent,
-    Colors.black,
-    Colors.blueAccent,
-    Colors.redAccent,
-    Colors.yellowAccent
-  ];
-  
+  String docId="";
   String downloadURL="";
   
   final Stream<QuerySnapshot> property_main=FirebaseFirestore.instance.collection('property_main').snapshots();
@@ -68,12 +82,49 @@ class _HomeViewState extends State<HomeView> {
   //       .getDownloadURL();
         
   // }
+  
   @override
 
+  int n = 0;
+  Future check() async {
+    final user = FirebaseAuth.instance.currentUser;
+    var name;
+    int temp = 0;
+    var collection = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collection.doc(user!.uid).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      name = data['User_type'];
+      print(name);
+    }
+    if (name == 'Admin') {
+      temp = 1;
+      n = 1;
+    } else
+      temp = 0;
+    return temp;
+  }
+
+  void initState() {
+    // TODO: implement initState
+    () async {
+      await check();
+      setState(() {
+        check();
+      });
+    }();
+    () async {
+      await getData();
+      setState(() {
+        check();
+      });
+    }();
+
+    super.initState();
+  }
   
   
-  
-  
+
   Widget build(BuildContext context) {
     return Scaffold(
       
@@ -83,55 +134,110 @@ class _HomeViewState extends State<HomeView> {
         children: [
           SizedBox(height: 60,),
           
-          Column(
+          InkWell(
+            onTap: () {
+              Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PropertyTypes(),
+            ),
+          );
+            },
+            child: Column(
             children: [
               PieChart(
               data: const [
-                PieChartData(Colors.purple, 80),
+                PieChartData(Colors.purple, 50),
                 PieChartData(Colors.blue, 5),
                 PieChartData(Colors.orange, 15),
+                PieChartData(Colors.green, 15),
+                PieChartData(Colors.red ,15),
               ],
               radius: 60,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children:  [
                   Text(
                     'Rental Shares',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text('Rs 50 Cr'),
+                  Text("Rs " +TotalRent.toString())
                 ],
               ),
             ),
             SizedBox(height: 20,),
-             Table(  
-        
-                        defaultColumnWidth: FixedColumnWidth(190.0),  
-                        border: TableBorder.all(  
-                            color: Colors.white,  
-                            style: BorderStyle.solid,  
-                            width: 2),  
-                        children: [  
-                          TableRow( children: [  
-                            Column(children:[Text('Monthly CF', style: TextStyle(fontSize: 20.0),)]),  
-                            Column(children:[Text('Vacant Properties', style: TextStyle(fontSize: 20.0))]),  
-                          
-                          ]),  
-                          TableRow( 
+              Container(
+                    width:350,
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                              children: [
+                                SizedBox(height: 15,),
+                                Text(
+                            ('Monthly CF'),
+                            style: TextStyle(
+                              fontWeight:FontWeight.bold,
+                              
+                              fontSize: 17,
+                              color: Colors.black,
+                              
+                            ),
                             
-                            children: [  
-                            Column(children:[Text('2.5%')]),  
-                            Column(children:[Text('250')]),  
+                          ),
+                          SizedBox(height: 5,),
                           
-                          ]),  
+                          Text(
+                            ("100"),
+                            style: TextStyle(
+                              // fontWeight:FontWeight.bold,
+                              
+                              fontSize: 17,
+                              color: Colors.black,
+                              
+                            ),
+                            
+                          ),
+                              ],
+                            ),Column(
+                              children: [
+                                SizedBox(height: 15,),
+                                Text(
+                            ('Vacant Properties'),
+                            style: TextStyle(
+                              fontWeight:FontWeight.bold,
+                              
+                              fontSize: 17,
+                              color: Colors.black,
+                              
+                            ),
+                            
+                          ),
+                          SizedBox(height: 5,),
                           
-                        ],  
-                      ),
+                          Text(
+                            (TotalVacant.toString()),
+                            style: TextStyle(
+                              // fontWeight:FontWeight.bold,
+                              
+                              fontSize: 17,
+                              color: Colors.black,
+                              
+                            ),
+                            
+                          ),
+                              ],
+                            ),
+                      ],
+                    ),
+                  ),
                  
 
             ],
+          ),
           ),
           
           Container(
@@ -151,6 +257,7 @@ class _HomeViewState extends State<HomeView> {
 
              print(data);
              
+             
              return ListView.builder(
               itemCount: data.size,
               itemBuilder: ((context, index) {
@@ -158,6 +265,10 @@ class _HomeViewState extends State<HomeView> {
               // print(url);
               // print("ggs");
               // print(data.docs[index]['imageurl']);
+               if (data.docs[index]['Property_Details']['Property_Status']
+                                      ['Occupied'] ==
+                                  true) {
+
               return Card(
                 
 
@@ -171,11 +282,11 @@ class _HomeViewState extends State<HomeView> {
              // ignore: unnecessary_new
              new InkWell(
                onTap: () {
-                 
+                
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailsView(),
+                  builder: (context) => Views((data.docs[index].reference.id.toString()),),
                 ),
               );
             
@@ -269,24 +380,7 @@ class _HomeViewState extends State<HomeView> {
                               
                   
                              
-                            //  Image.network(downloadURL.toString())
-
-
-
-
-
-                                  // StorageReference imageLink = storage.ref().child(documentSnapshot['imageurl']);
-                                  // final imageUrl = await imageLink.getDownloadUrl();
-                                  // Image.network(imageUrl.toString());
-                                  
-                        //                 Image.network(firebase_storage.FirebaseStorage.instance
-                        // .ref('gs://authentiicate.appspot.com/usersImages')
-                        // .child(".png")
-                        // .getDownloadURL();
-                        // ),
-                          
-                          
-                          
+                       
                           
                       
                             
@@ -296,15 +390,16 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(
                       
                       child: 
-                      
-                      Column(
+                    
+                     Column(
                         children: [
-                          Image.network(data.docs[index]['Property_Details']['imageurl']['image1'],
+                          if(data.docs[index]['Property_Details']['imageurl']['image1']=="")  Text("    No Image available") 
+            else Image.network(data.docs[index]['Property_Details']['imageurl']['image1'],
                           width: 150,
                           height: 150,
-                          )
-                          
-                        ],
+                          ),
+                        ]
+                ,
                       )
                              
                       
@@ -323,7 +418,10 @@ class _HomeViewState extends State<HomeView> {
 
 
 
-
+              }
+              else {
+                                return const SizedBox(height: 4);
+                              }
 
 
 
@@ -352,74 +450,111 @@ class _HomeViewState extends State<HomeView> {
 
               
           ),
+          Container(
+              width: MediaQuery.of(context).size.width / 1.4,
+              height: 45,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular((15.0)),
+                  color: Colors.green),
+              child: MaterialButton(
+                onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChangePass(),
+                      ),
+                    );
+                    
+                  }
+                ,
+                child: Text(
+                  "Change Password",
+                  style: new TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+           SizedBox(height: 15,),
+           Column(
+            children: [
+              if(n==1)
+              Container(
+              width: MediaQuery.of(context).size.width / 1.4,
+              height: 45,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular((15.0)),
+                  color: Colors.green),
+              child: MaterialButton(
+                onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddAdminauth(),
+                      ),
+                    );
+                    
+                  }
+                ,
+                child: Text(
+                  "Add Admin",
+                  style: new TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
+            else Container(),
+            ],
+           )
+            
         ],
       ),
-      bottomNavigationBar:BottomNavigationBar(  
-        backgroundColor: Colors.white,
-        unselectedItemColor: Colors.black,
-        
-        
-        items: const <BottomNavigationBarItem>[  
-          
-          BottomNavigationBarItem(  
-            
-            icon: Icon(Icons.incomplete_circle_outlined),
-            label: '',
-              
-            backgroundColor: Colors.white  
-          ),  
-          BottomNavigationBarItem(  
-            icon: Icon(Icons.chat),  
-            // title :  Text('Search'),
-            label: 'Chat'  ,
-            
-            // backgroundColor: Colors.black 
-          ),  
-          BottomNavigationBarItem(  
-            icon: Icon(Icons.lightbulb_outlined),  
-            // title: Text('Profile'),
-            label: 'helloo',  
-            // backgroundColor: Colors.black,
-          ),  
-           BottomNavigationBarItem(  
-            icon: Icon(Icons.analytics_outlined),  
-            // title: Text('Profile'),
-            label: 'helloo',  
-            // backgroundColor: Colors.black,
-          ),
-           BottomNavigationBarItem(  
-            icon: Icon(Icons.settings),  
-            // title: Text('Profile'),
-            label: 'helloo',  
-            // backgroundColor: Colors.black,
-          ),
-        ],  
-        type: BottomNavigationBarType.shifting,  
-        currentIndex: 0,  
-        selectedItemColor: Colors.black,  
-        iconSize: 40,  
-        onTap: null,  
-        elevation: 5  
-      ), 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Addproperty(),
-            ),
-          );
-        },
-        backgroundColor: Colors.black,
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
+      
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => Addproperty(),
+      //       ),
+      //     );
+      //   },
+      //   backgroundColor: Colors.black,
+      //   child: Icon(
+      //     Icons.add,
+      //     color: Colors.white,
+      //   ),
+      // ),
+      floatingActionButton: _getFAB(),
+      
       
       
     );
     
+    
+  }
+  Widget _getFAB() {
+    if (n==0) {
+      return Container();
+    } else {
+      return FloatingActionButton(
+          backgroundColor: Colors.black,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+          onPressed:  () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PreAdd(),
+            ),
+          );
+        });
+    }
   }
 }
 class PieChartData {

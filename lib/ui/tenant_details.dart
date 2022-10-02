@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'agreement_details.dart';
 
 class TenantDetails extends StatefulWidget {
-  const TenantDetails({Key? key}) : super(key: key);
+  // const TenantDetails({Key? key}) : super(key: key);
+  final String docID;//if you have multiple values add here
+TenantDetails(this.docID, {Key? key}): super(key: key);
 
   @override
   State<TenantDetails> createState() => _TenantDetailsState();
@@ -16,70 +18,88 @@ class TenantDetails extends StatefulWidget {
 class _TenantDetailsState extends State<TenantDetails> {
   var collection = FirebaseFirestore.instance.collection('property_main');
 
+  int _currentIndex = 0;
+
+  final _bottomNavigationBarItems = [
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.blue),
+        label:"1"
+        ),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.green),
+        label:"2"
+        ),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.pink),
+        label:"3"),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.red),
+        label:"4"),
+  ];
   @override
   Widget build(BuildContext context) {
      final ButtonStyle style = TextButton.styleFrom(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
     );
      return DefaultTabController(length: 5, child: Scaffold(
-      appBar:AppBar(
-        leading:null,
-        automaticallyImplyLeading: false,
+      // appBar:AppBar(
+      //   leading:null,
+      //   automaticallyImplyLeading: false,
         
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        actions: <Widget>[
-          TextButton(
-            style: style,
-            onPressed:(){
-              Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailsView(),
-            ),
-          );
-            },
-            child: const Text('Basic'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: (){
+      //   backgroundColor: Colors.white,
+      //   foregroundColor: Colors.black,
+      //   actions: <Widget>[
+      //     TextButton(
+      //       style: style,
+      //       onPressed:(){
+      //         Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => DetailsView(),
+      //       ),
+      //     );
+      //       },
+      //       child: const Text('Basic'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: (){
          
-        },
-            child: const Text('Tenant'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: () {
-               Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Rent_Details(),
-            ),
-          );
-            },
-            child: const Text('Rent'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: () {
-              Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AgreementDetails(),
-            ),
-          );
-            },
-            child: const Text('Agr'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('Others'),
-          ),
-        ],
-      // title:Text("navbar"),
-      ),
+      //   },
+      //       child: const Text('Tenant'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: () {
+      //          Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => Rent_Details(),
+      //       ),
+      //     );
+      //       },
+      //       child: const Text('Rent'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: () {
+      //         Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => AgreementDetails(),
+      //       ),
+      //     );
+      //       },
+      //       child: const Text('Agr'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: () {},
+      //       child: const Text('Others'),
+      //     ),
+      //   ],
+      // // title:Text("navbar"),
+      // ),
       body: Column(
         children: [
           Container(
@@ -114,7 +134,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -140,7 +160,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -164,7 +184,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -188,7 +208,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -250,7 +270,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -277,7 +297,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -314,7 +334,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -349,7 +369,7 @@ class _TenantDetailsState extends State<TenantDetails> {
                           SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection
-                                .doc('5hmJ6rNaRf92Lt8KyB6v')
+                                .doc(widget.docID)
                                 .snapshots(),
                             builder: (_, snapshot) {
                               if (snapshot.hasError)
@@ -392,7 +412,16 @@ class _TenantDetailsState extends State<TenantDetails> {
           )
         ],
       ),
-  )
+  bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: _bottomNavigationBarItems,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        //type: BottomNavigationBarType.fixed,
+      ), )
      );  
   
   

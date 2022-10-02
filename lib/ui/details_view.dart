@@ -8,6 +8,7 @@ import 'package:authh_app/ui/location.dart';
 import 'package:authh_app/ui/rent_details.dart';
 // import 'package:authh_app/ui/tenant.dart';
 import 'package:authh_app/ui/tenant_details.dart';
+import 'package:authh_app/ui/update_details_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,13 +28,35 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
  
 class DetailsView extends StatefulWidget {
   
-  const DetailsView({ Key? key }) : super(key: key);
+  // const DetailsView({ Key? key }) : super(key: key);
+  final String docID;//if you have multiple values add here
+DetailsView(this.docID, {Key? key}): super(key: key);
 
   @override
   State<DetailsView> createState() => _DetailsViewState();
 }
 
 class _DetailsViewState extends State<DetailsView> {
+    int n = 0;
+  Future check() async {
+    final user = FirebaseAuth.instance.currentUser;
+    var name;
+    int temp = 0;
+    var collection = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collection.doc(user!.uid).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      name = data['User_type'];
+      print(name);
+    }
+    if (name == 'Admin') {
+      temp = 1;
+      n = 1;
+    } else
+      temp = 0;
+    return temp;
+  }
+
   var collection = FirebaseFirestore.instance.collection('property_main');
   // @override
 
@@ -43,79 +66,108 @@ class _DetailsViewState extends State<DetailsView> {
   'https://firebasestorage.googleapis.com/v0/b/authentiicate.appspot.com/o/images?alt=media&token=567d3634-0325-413b-a67e-714ffabeaf73',
 ];
 
+  int _currentIndex = 0;
 
+  final _bottomNavigationBarItems = [
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.blue),
+        label:"1"
+        ),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.green),
+        label:"2"
+        ),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.pink),
+        label:"3"),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.red),
+        label:"4"),
+  ];
+  
+  void initState() {
+    // TODO: implement initState
+    () async {
+      await check();
+      setState(() {
+        check();
+      });
+    }();
+
+    super.initState();
+  }
+  
 
   Widget build(BuildContext context) {
     final ButtonStyle style = TextButton.styleFrom(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
     );
-    return WillPopScope(
-      onWillPop: null,
-      child: DefaultTabController(length: 5, child: Scaffold(
-        appBar:AppBar(
-          automaticallyImplyLeading: false,
-          
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          actions: <Widget>[
-            TextButton(
-              style: style,
-              onPressed:(){
-                Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailsView(),
-              ),
-            );
-              },
-              child: const Text('Basic'),
-            ),
-            TextButton(
-              style: style,
-              onPressed: (){
-                Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TenantDetails(),
-              ),
-            );
-            
-          },
-              child: const Text('Tenant'),
-            ),
-            TextButton(
-              style: style,
-              onPressed: () {
     
-                Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Rent_Details(),
-              ),
-            );
-              },
-              child: const Text('Rent'),
-            ),
-            TextButton(
-              style: style,
-              onPressed: () {
-                Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AgreementDetails(),
-              ),
-            );
-              },
-              child: const Text('Agr'),
-            ),
-            TextButton(
-              style: style,
-              onPressed: () {},
-              child: const Text('Others'),
-            ),
-          ],
-        // title:Text("navbar"),
-        ),
+      return DefaultTabController(length: 5, child: Scaffold(
+        // appBar:AppBar(
+        //   automaticallyImplyLeading: false,
+          
+        //   backgroundColor: Colors.white,
+        //   foregroundColor: Colors.black,
+        //   actions: <Widget>[
+        //     TextButton(
+        //       style: style,
+        //       onPressed:(){
+        //         Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => DetailsView(),
+        //       ),
+        //     );
+        //       },
+        //       child: const Text('Basic'),
+        //     ),
+        //     TextButton(
+        //       style: style,
+        //       onPressed: (){
+        //         Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => TenantDetails(),
+        //       ),
+        //     );
+            
+        //   },
+        //       child: const Text('Tenant'),
+        //     ),
+        //     TextButton(
+        //       style: style,
+        //       onPressed: () {
+    
+        //         Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => Rent_Details(),
+        //       ),
+        //     );
+        //       },
+        //       child: const Text('Rent'),
+        //     ),
+        //     TextButton(
+        //       style: style,
+        //       onPressed: () {
+        //         Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => AgreementDetails(),
+        //       ),
+        //     );
+        //       },
+        //       child: const Text('Agr'),
+        //     ),
+        //     TextButton(
+        //       style: style,
+        //       onPressed: () {},
+        //       child: const Text('Others'),
+        //     ),
+        //   ],
+        // // title:Text("navbar"),
+        // ),
         body:Column(
           children: [
             Container(
@@ -179,17 +231,15 @@ class _DetailsViewState extends State<DetailsView> {
               ),
               padding: EdgeInsets.all(16),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-    
-                    width: 200,
-                    child: Column(
+                   Column(
                       
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                          
         StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+        stream: collection.doc(widget.docID).snapshots(),
         builder: (_, snapshot) {
               if (snapshot.hasError) return Text('Error = ${snapshot.error}');
     
@@ -210,7 +260,7 @@ class _DetailsViewState extends State<DetailsView> {
     ),
                         SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+        stream: collection.doc(widget.docID).snapshots(),
         builder: (_, snapshot) {
               if (snapshot.hasError) return Text('Error = ${snapshot.error}');
     
@@ -232,7 +282,7 @@ class _DetailsViewState extends State<DetailsView> {
                     
                         SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+        stream: collection.doc(widget.docID).snapshots(),
         builder: (_, snapshot) {
               if (snapshot.hasError) return Text('Error = ${snapshot.error}');
     
@@ -254,7 +304,7 @@ class _DetailsViewState extends State<DetailsView> {
      
                         SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+        stream: collection.doc(widget.docID).snapshots(),
         builder: (_, snapshot) {
               if (snapshot.hasError) return Text('Error = ${snapshot.error}');
     
@@ -276,7 +326,7 @@ class _DetailsViewState extends State<DetailsView> {
     
                         SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+        stream: collection.doc(widget.docID).snapshots(),
         builder: (_, snapshot) {
               if (snapshot.hasError) return Text('Error = ${snapshot.error}');
     
@@ -303,8 +353,8 @@ class _DetailsViewState extends State<DetailsView> {
                         
              
                 
-                          
-                           
+                         
+                  
     
                             
                 
@@ -314,14 +364,48 @@ class _DetailsViewState extends State<DetailsView> {
                         
                         
                         
-                    
+                  
                           
-                      ],
+                 ],
                     ),
-                  ),
+                  
+                   Column(
+                    children: [
+                      if(n==1) Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                         Container(
+     
+              child:
+                     FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UpdateDetailsViews(widget.docID),
+            ),
+          );
+        },
+        backgroundColor: Colors.black,
+        child: Icon(
+          Icons.keyboard_control_sharp,
+          color: Colors.white,
+        ),
+      ), 
+              
+            
+           ),         
+                      ],
+                    )
+                    else Container()
+                    ],
+                   )
+                  
                  
-                ],
+        
+       ],
               ),
+              
           ),
           
           
@@ -340,20 +424,34 @@ class _DetailsViewState extends State<DetailsView> {
          Row(
           mainAxisAlignment:MainAxisAlignment.center,
           children: [
-            IconButton(
-              iconSize: 60,onPressed: (){  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MapApp(),
-                      ),
-                    );}, icon: Icon(Icons.location_on_outlined,color:Colors.black),)
+            // IconButton(
+            //   iconSize: 60,onPressed: (){  Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) => MapApp(),
+            //           ),
+            //         );}, icon: Icon(Icons.location_on_outlined,color:Colors.black),)
       
           ],
          )
           ],
         ),
-      ),),
-    );
+      
+       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: _bottomNavigationBarItems,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        //type: BottomNavigationBarType.fixed,
+      ),
+      
+     
+      ),
+      );
+    
    
         
    

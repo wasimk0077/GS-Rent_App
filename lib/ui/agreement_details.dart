@@ -3,27 +3,84 @@
 
 
 import 'package:authh_app/ui/location.dart';
+import 'package:authh_app/ui/pdf_invoice_api.dart';
 import 'package:authh_app/ui/rent_details.dart';
+import 'package:authh_app/ui/update_agr_views.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'details_view.dart';
 
 class AgreementDetails extends StatefulWidget {
-  const AgreementDetails({ Key? key }) : super(key: key);
+  // const AgreementDetails({ Key? key }) : super(key: key);
+  final String docID;//if you have multiple values add here
+AgreementDetails(this.docID, {Key? key}): super(key: key);
 
   @override
   State<AgreementDetails> createState() => _AgreementDetailsState();
 }
 
 class _AgreementDetailsState extends State<AgreementDetails> {
+
+  int n = 0;
+  Future check() async {
+    final user = FirebaseAuth.instance.currentUser;
+    var name;
+    int temp = 0;
+    var collection = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collection.doc(user!.uid).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      name = data['User_type'];
+      print(name);
+    }
+    if (name == 'Admin') {
+      temp = 1;
+      n = 1;
+    } else
+      temp = 0;
+    return temp;
+  }
+
+
+
   var collection = FirebaseFirestore.instance.collection('property_main');
   final List<String> imageList = ["https://firebasestorage.googleapis.com/v0/b/authentiicate.appspot.com/o/null.png?alt=media&token=60e5fb2c-fb17-4fa9-b0c4-791ce5daba8d",
   'https://firebasestorage.googleapis.com/v0/b/authentiicate.appspot.com/o/images?alt=media&token=567d3634-0325-413b-a67e-714ffabeaf73',
 ];
- 
+   int _currentIndex = 0;
+
+  final _bottomNavigationBarItems = [
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.blue),
+        label:"1"
+        ),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.green),
+        label:"2"
+        ),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.pink),
+        label:"3"),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.star, color: Colors.red),
+        label:"4"),
+  ];
+  
+  void initState() {
+    // TODO: implement initState
+    () async {
+      await check();
+      setState(() {
+        check();
+      });
+    }();
+
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -31,66 +88,66 @@ class _AgreementDetailsState extends State<AgreementDetails> {
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
     );
      return DefaultTabController(length: 5, child: Scaffold(
-      appBar:AppBar(
-        leading:null,
-        automaticallyImplyLeading: false,
+      // appBar:AppBar(
+      //   leading:null,
+      //   automaticallyImplyLeading: false,
         
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        actions: <Widget>[
-          TextButton(
-            style: style,
-            onPressed:(){
-              Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailsView(),
-            ),
-          );
-            },
-            child: const Text('Basic'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: (){
+      //   backgroundColor: Colors.white,
+      //   foregroundColor: Colors.black,
+      //   actions: <Widget>[
+      //     TextButton(
+      //       style: style,
+      //       onPressed:(){
+      //         Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => DetailsView(),
+      //       ),
+      //     );
+      //       },
+      //       child: const Text('Basic'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: (){
          
-        },
-            child: const Text('Tenant'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: () {
-               Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Rent_Details(),
-            ),
-          );
-            },
-            child: const Text('Rent'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: () {
-              Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AgreementDetails(),
-            ),
-          );
-            },
-            child: const Text('Agr'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: () {
+      //   },
+      //       child: const Text('Tenant'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: () {
+      //          Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => Rent_Details(),
+      //       ),
+      //     );
+      //       },
+      //       child: const Text('Rent'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: () {
+      //         Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => AgreementDetails(),
+      //       ),
+      //     );
+      //       },
+      //       child: const Text('Agr'),
+      //     ),
+      //     TextButton(
+      //       style: style,
+      //       onPressed: () {
               
-            },
-            child: const Text('Others'),
-          ),
-        ],
-      // title:Text("navbar"),
-      ),
+      //       },
+      //       child: const Text('Others'),
+      //     ),
+      //   ],
+      // // title:Text("navbar"),
+      // ),
       body: Column(
         children: [
           Container(
@@ -112,6 +169,7 @@ class _AgreementDetailsState extends State<AgreementDetails> {
             
                
                 Container(
+                  
                 
                 decoration: BoxDecoration(
                  color: Color.fromARGB(18, 113, 125, 137)
@@ -119,12 +177,14 @@ class _AgreementDetailsState extends State<AgreementDetails> {
                 padding: EdgeInsets.all(10),
                 child: Row(
 
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     
                     SizedBox(
-
+                      height: 500,
                       width: 200,
                       child: Column(
+
                         
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -141,7 +201,7 @@ class _AgreementDetailsState extends State<AgreementDetails> {
                             ),),
                           SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+          stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
@@ -163,7 +223,7 @@ class _AgreementDetailsState extends State<AgreementDetails> {
                       
                           SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+          stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
@@ -185,7 +245,7 @@ class _AgreementDetailsState extends State<AgreementDetails> {
  
                           SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+          stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
@@ -207,7 +267,7 @@ class _AgreementDetailsState extends State<AgreementDetails> {
 
                           SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc('5hmJ6rNaRf92Lt8KyB6v').snapshots(),
+          stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
@@ -226,6 +286,7 @@ class _AgreementDetailsState extends State<AgreementDetails> {
                 return Center(child: CircularProgressIndicator());
           },
 ),
+
                  
                           
                           
@@ -235,7 +296,35 @@ class _AgreementDetailsState extends State<AgreementDetails> {
                       ),
                     ),
                    
+//                   IconButton(onPressed: (() async {
+//    final pdfFile = await PdfInvoiceApi.generate();
+
+//                 // opening the pdf file
+//                 FileHandleApi.openFile(pdfFile);
+// }), icon: Icon(Icons.download_rounded)),
+                 Column(
+                  children: [
+                    if(n==1)FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UpdateAgreementViews(widget.docID),
+            ),
+          );
+        },
+        backgroundColor: Colors.black,
+        child: Icon(
+          Icons.keyboard_control_sharp,
+          color: Colors.white,
+        ),
+      )
+      else Container()
+      
                   ],
+                 ),
+
+],
                 ),
             ),
             
@@ -386,7 +475,16 @@ class _AgreementDetailsState extends State<AgreementDetails> {
         ],
         
       ),
-     )
+     bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: _bottomNavigationBarItems,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        //type: BottomNavigationBarType.fixed,
+      ), )
      );
     
 

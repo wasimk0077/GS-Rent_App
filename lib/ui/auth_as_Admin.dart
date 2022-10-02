@@ -25,14 +25,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase/auth/getAuth';
 
-class Authentication extends StatefulWidget {
-  const Authentication({Key? key}) : super(key: key);
+class AddAdminauth extends StatefulWidget {
+  const AddAdminauth({Key? key}) : super(key: key);
 
   @override
-  State<Authentication> createState() => _AuthenticationState();
+  State<AddAdminauth> createState() => _AddAdminauthState();
 }
 
-class _AuthenticationState extends State<Authentication> {
+class _AddAdminauthState extends State<AddAdminauth> {
   TextEditingController _emailField = TextEditingController();
   TextEditingController _passwordField = TextEditingController();
   List<String> items = ["Employee", "Admin"];
@@ -118,7 +118,7 @@ class _AuthenticationState extends State<Authentication> {
                         .set({
                       'User_email': _emailField.text,
                       'User_password': _passwordField.text,
-                      'User_type': 'Employee'
+                      'User_type': 'Admin'
                     });}
                   }
                 },
@@ -133,36 +133,7 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height / 35),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.4,
-              height: 45,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular((15.0)),
-                  color: Colors.green),
-              child: MaterialButton(
-                onPressed: () async {
-                  bool shouldnavigate =
-                      await signIn(_emailField.text, _passwordField.text);
-                  if (shouldnavigate) {
-                    final user = FirebaseAuth.instance.currentUser;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyNavigationBar(),
-                      ),
-                    );
-                    print(user!.email);
-                  }
-                },
-                child: Text(
-                  "Login",
-                  style: new TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+          
             SizedBox(
               height: 40,
             ),

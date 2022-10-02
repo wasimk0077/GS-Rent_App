@@ -1,43 +1,56 @@
-// import 'dart:html';
-// import 'package:flutter_pdfview/flutter_pdfview.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
+
 
 import 'dart:io';
-import 'dart:math';
-import 'package:authh_app/ui/home_view.dart';
-import 'package:authh_app/ui/pdf_viewer.dart';
+
+import 'package:authh_app/ui/details_view.dart';
+import 'package:authh_app/ui/discover_vacant.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-// import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_document_picker/flutter_document_picker.dart';
-import 'package:flutter_file_manager/flutter_file_manager.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-
-import 'dart:convert';
-import 'package:image_picker/image_picker.dart';
-import 'dart:async';
-
-import 'package:authh_app/net/flutterfire.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:path_provider_ex/path_provider_ex.dart';
-// import 'package:file_picker/file_picker.dart';
+import 'package:flutter_document_picker/flutter_document_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
-
-class Addproperty extends StatefulWidget {
-  final String? dropdownvalue;//if you have multiple values add here
-Addproperty(this.dropdownvalue, {Key? key}): super(key: key);
+class UpdateDiscoverVacant extends StatefulWidget {
+  // const UpdateDetailsViews({Key? key}) : super(key: key);
+  final String docID;//if you have multiple values add here
+  UpdateDiscoverVacant(this.docID, {Key? key}): super(key: key);
 
   @override
-  State<Addproperty> createState() => _AddpropertyState();
+  State<UpdateDiscoverVacant> createState() => _UpdateDiscoverVacantState();
 }
 
-class _AddpropertyState extends State<Addproperty> {
+class _UpdateDiscoverVacantState extends State<UpdateDiscoverVacant> {
 
+  List<PropertyTile> Properties=[];
+  String Propertyname="";
+  String Carpet_Area="";
+  String Floor="";
+  String Rent="";
+  String Asset="";
+  bool Residentialcheck=false;
+
+  Future check() async {
+    
+   
+    var collection = FirebaseFirestore.instance.collection('property_main');
+    var docSnapshot = await collection.doc(widget.docID).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      Propertyname= data["Property_Details"]['Property_name'];
+      Carpet_Area=data["Property_Details"]['Carpet_Area'];
+      Floor=data["Property_Details"]['Floor'];
+      Rent=data["Property_Details"]["Rent"];
+      Asset=data["Property_Details"]["Asset"];
+      Residentialcheck=data["Property_Details"]["Property_Types"]["Residential"];
+      print(Residentialcheck);
+
+      
+    }
+   
+  }
     Future<firebase_storage.UploadTask?> uploadFile(File file) async {
     // if (file == null) {
     //   Scaffold.of(context);
@@ -99,7 +112,7 @@ class _AddpropertyState extends State<Addproperty> {
   TextEditingController _Firm_GST = TextEditingController();
   TextEditingController _Check = TextEditingController();
    var files;
- 
+  
   // void getFiles() async { //asyn function to get list of files
   //     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
   //     var root = storageInfo[0].rootDir; //storageInfo[1] for SD card, geting the root directory
@@ -110,7 +123,7 @@ class _AddpropertyState extends State<Addproperty> {
   //     );
   //     setState(() {}); //update the UI
   // }
-
+  
 
  Future<String?> uploadPdfToStorage(File pdfFile) async {
     try {
@@ -180,7 +193,7 @@ class _AddpropertyState extends State<Addproperty> {
   String _imageurl = '';
   String _imageurl2 = '';
 
-  // String? dropdownvalue;
+  String? dropdownvalue = null;
   String? dropdownvalue2 = null;
 
   bool Vacant=false;
@@ -308,33 +321,26 @@ class _AddpropertyState extends State<Addproperty> {
       print('No Image Path Received');
     }
   }
+  void initState()  {
+    // TODO: implement initState
+    ()async{
+      await check();
+      setState(() {
+      
+      check();
+    });
+    }();
+   
+    super.initState();
+   
+  }
 
   @override
   TextEditingController _nameController = TextEditingController();
   Widget build(BuildContext context) {
     CollectionReference property_main =
         FirebaseFirestore.instance.collection("property_main");
-    if (widget.dropdownvalue == "Residential") {
-      Residential = true;
-    } else if (widget.dropdownvalue == "MNC") {
-      MNC = true;
-    } else if (widget.dropdownvalue == "Commercial") {
-      Commercial = true;
-    } else if (widget.dropdownvalue == "Warehouse") {
-      Warehouse = true;
-    } else if (widget.dropdownvalue == "Bank") {
-      Bank = true;
-    }
-
     
-    if (dropdownvalue2 == "Vacant") {
-      Vacant = true;
-    } else if (dropdownvalue2 == "Occupied") {
-      Occupied = true;
-    } else if (dropdownvalue2 == "Upcoming") {
-      Upcoming = true;
-    
-    }
     return Scaffold(
         body: Container(
       child: Padding(
@@ -347,7 +353,14 @@ class _AddpropertyState extends State<Addproperty> {
               // SizedBox(height: 60),
 
               SizedBox(height: 85),
-              Text(
+              
+             
+
+
+              
+              Column(
+                children: [
+                    Text(
                 ('Property Details'),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -355,155 +368,118 @@ class _AddpropertyState extends State<Addproperty> {
                   color: Colors.black,
                 ),
               ),
-
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Row(
+                
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  
                   Container(
-                    width: MediaQuery.of(context).size.width / 1.3,
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.black),
-                      controller: _PropertyName,
-                      decoration: InputDecoration(
-                          hintText: "Property Name",
-                          hintStyle: TextStyle(color: Colors.white),
-                          labelText: "Property Name",
-                          labelStyle: TextStyle(color: Colors.black)),
-                    ),
-                  ),
+                
+                child: Text("Property Name:",style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+              Container(
+                
+                child: Text(Propertyname,style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
                 ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _CarpetArea,
-                  decoration: InputDecoration(
-                      hintText: "in sq.ft",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Carpet Area",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Floor,
-                  decoration: InputDecoration(
-                      hintText: "Floor",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Floor",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width / 1.3,
-              //   child: TextFormField(
-              //     style: TextStyle(color: Colors.black),
-              //     controller: _Firm,
-              //     decoration: InputDecoration(
-              //         hintText: "Name of Company",
-              //         hintStyle: TextStyle(color: Colors.white),
-              //         labelText: "Firm Name",
-              //         labelStyle: TextStyle(color: Colors.black)),
-              //   ),
-              // ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width / 1.3,
-              //   child: TextFormField(
-              //     style: TextStyle(color: Colors.black),
-              //     controller: _Tenant,
-              //     decoration: InputDecoration(
-              //         hintText: "Name of Tenant",
-              //         hintStyle: TextStyle(color: Colors.white),
-              //         labelText: "Tenant Name",
-              //         labelStyle: TextStyle(color: Colors.black)),
-              //   ),
-              // ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Rent,
-                  decoration: InputDecoration(
-                      hintText: "in Rs",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Rent Value",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _AssetValue,
-                  decoration: InputDecoration(
-                      hintText: "in Rs",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Asset Value",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
+              SizedBox(height: 5,),
+               Row(
+                
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                      //  margin: EdgeInsets.only(right: 30),
-                      // padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular((15.0)),
-                      ),
-                      child: TextFormField(
-                        controller: _ImageValue,
-                        decoration: InputDecoration(
-                            hintText: "image name",
-                            hintStyle: TextStyle(color: Colors.white),
-                            labelText: "Image",
-                            labelStyle: TextStyle(color: Colors.black)),
-                        onChanged: (value) {
-                          imageName = value;
-                          print(imageName);
-                        },
-                      )),
                 
-                Container(
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      filled: true,
-                      fillColor: Colors.blueAccent,
-                    ),
-                    value: dropdownvalue2,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: type.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownvalue2 = newValue!;
-                      });
-                    },
-                  ),
-                )],
+                child: Text("Carpet Area:",style: TextStyle(
+                  fontSize: 18
+                ),),
+              
               ),
-              Column(
+              Container(
+                
+                child: Text(Carpet_Area,style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+                ],
+              )
+
+                 ,
+                 SizedBox(height: 5,),
+               Row(
+                
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if (dropdownvalue2 == 'Occupied' || dropdownvalue2 == null)...
-                 [Text(
+                  Container(
+                
+                child: Text("Floor:",style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+              Container(
+                
+                child: Text(Floor,style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+                ],
+              )
+
+                 ,
+                 SizedBox(height: 5,),
+               Row(
+                
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                
+                child: Text("Rent:",style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+              Container(
+                
+                child: Text(Rent,style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+                ],
+              )
+
+                 ,
+                 SizedBox(height: 5,),
+               Row(
+                
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                
+                child: Text("Asset:",style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+              Container(
+                
+                child: Text(Asset,style: TextStyle(
+                  fontSize: 18
+                ),),
+              
+              ),
+                ],
+              )
+
+                 ,Text(
                 ('Agreement Details'),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -698,8 +674,10 @@ class _AddpropertyState extends State<Addproperty> {
                       labelStyle: TextStyle(color: Colors.black)),
                 ),
               ),
-
-              Text(
+               
+              if(Residentialcheck==false)...[
+                
+                Text(
                 ('Firm Details'),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -742,7 +720,9 @@ class _AddpropertyState extends State<Addproperty> {
                       labelText: "GST",
                       labelStyle: TextStyle(color: Colors.black)),
                 ),
-              ),],
+              ),
+              ]
+              
                 ],
               ),
 
@@ -779,40 +759,14 @@ class _AddpropertyState extends State<Addproperty> {
                         color: Colors.blueAccent),
                     child: MaterialButton(
                       onPressed: (() {
-                        print(Commercial);
-                        property_main
-                            .add({
-                              'Property_Details': {
-                                'Carpet_Area': _CarpetArea.text,
-                                'Rent':_Rent.text,
-                                'Asset':_AssetValue.text,
-                                // 'Firm': _Firm.text,
-                                'Floor': _Floor.text,
-                                'Property_name': _PropertyName.text,
-                                // 'Tenant': _Tenant.text,
-                                'Yield': _Yeild.text,
-                                'Property_Status':
-                                {
-                                     'Vacant':Vacant,
-                                     'Occupied':Occupied,
-                                     'Upcoming':Upcoming
-                                },
-                                'Property_Types':{
-                                
-                                
-                                'Residential': Residential,
-                                'Commercial': Commercial,
-                                'MNC': MNC,
-                                'Bank': Bank,
-                                'Warehouse': Warehouse,
-                                },
-                                'imageurl': {
-                                  'image1': _imageurl.toString(),
-                                  'image2': _imageurl.toString(),
-                                  'image3': _imageurl.toString(),
-                                  'image4': _imageurl.toString(),
-                                }
-                              },
+                        
+                        final DocUser=property_main.doc(widget.docID);
+                      // print(_Tenant_name.text);
+                      if(Residentialcheck==false)
+                      {
+                        DocUser.update
+                            ({
+                              
                               'Agreement_Details': {
                                 'Start_Date':
                                     "${selectedDate.toLocal()}".split(' ')[0],
@@ -828,24 +782,49 @@ class _AddpropertyState extends State<Addproperty> {
                                 'email': _Tenant_Email.text,
                                 'mobile': _Tenant_Number.text
                               },
-                              'Firm_Details': {
+                             'Firm_Details': {
                                 'Firm_name': _Firm_Name.text,
                                 'GST': _Firm_GST.text,
                                 'Docs': _Firm_Docs.text
                               }
                               ,
+                            
+                              
+                            })
+                            .then((value) => print("User Added"))
+                            .catchError((error) => print("failed to add"));}
+                            else{
+                              DocUser.update
+                            ({
+                              
+                              'Agreement_Details': {
+                                'Start_Date':
+                                    "${selectedDate.toLocal()}".split(' ')[0],
+                                'End_date':
+                                    "${selectedDate2.toLocal()}".split(' ')[0],
+                                'Rent_Escalation': _Rent_Escalation.text,
+                                'Security_Deposit': _Security__Deposit.text,
+                                'Aadhar Card': _imageurl2.toString(),
+                              },
+                              'Tenant_Details': {
+                                'Tenant_name': _Tenant_Name.text,
+                                'address': _Tenant_Address.text,
+                                'email': _Tenant_Email.text,
+                                'mobile': _Tenant_Number.text
+                              },
+                              
                               
                             })
                             .then((value) => print("User Added"))
                             .catchError((error) => print("failed to add"));
+                            }
 
                         Navigator.pop(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomeView(),
+                            builder: (context) => DiscoverVacant(),
                           ),
                         );
-                        print(Commercial);
                       }),
                       child: Text("ADD"),
                       textColor: Colors.white,
@@ -866,20 +845,16 @@ class _AddpropertyState extends State<Addproperty> {
 }
 
 
+class PropertyTile {
+  final String  Propertyname;
+  final String  Carpet_Area;
+  final String  Floor;
+  final String  Rent;
+  final String  Asset;
+  final bool Residential;
 
- // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     IconButton(
-            //       iconSize: 80,
-            //       icon: Icon(Icons.search,color:Colors.black),
-            //       onPressed: (){
-            //         print("name"+ _nameController.text);
-            //       }
-            //     ),
-             
-               
+  PropertyTile(@required this.Propertyname,@required this.Carpet_Area ,@required this.Floor,@required this.Rent,@required this.Asset,@required this.Residential);
 
-            //   ],
-              
-            // ),
+
+
+}

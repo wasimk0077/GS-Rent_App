@@ -1,19 +1,10 @@
-// import 'dart:html';
-// import 'package:flutter_pdfview/flutter_pdfview.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
-
 import 'dart:io';
-import 'dart:math';
 import 'package:authh_app/ui/home_view.dart';
-import 'package:authh_app/ui/pdf_viewer.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
-import 'package:flutter_file_manager/flutter_file_manager.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,21 +15,16 @@ import 'dart:async';
 import 'package:authh_app/net/flutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:path_provider_ex/path_provider_ex.dart';
-// import 'package:file_picker/file_picker.dart';
 
-
-class Addproperty extends StatefulWidget {
-  final String? dropdownvalue;//if you have multiple values add here
-Addproperty(this.dropdownvalue, {Key? key}): super(key: key);
-
+class ResidentialView extends StatefulWidget {
+  final String? dropdownvalue; //if you have multiple values add here
+  ResidentialView(this.dropdownvalue, {Key? key}) : super(key: key);
   @override
-  State<Addproperty> createState() => _AddpropertyState();
+  State<ResidentialView> createState() => _ResidentialViewState();
 }
 
-class _AddpropertyState extends State<Addproperty> {
-
-    Future<firebase_storage.UploadTask?> uploadFile(File file) async {
+class _ResidentialViewState extends State<ResidentialView> {
+      Future<firebase_storage.UploadTask?> uploadFile(File file) async {
     // if (file == null) {
     //   Scaffold.of(context);
     //       // .showSnackBar(SnackBar(content: Text("Unable to Upload")));
@@ -71,13 +57,13 @@ class _AddpropertyState extends State<Addproperty> {
     "Bank",
     "Warehouse"
   ];
-   List<String> type= [
+  List<String> type= [
     "Vacant",
     "Occupied",
     "Upcoming"
   ];
-  TextEditingController _CarpetArea = TextEditingController();
 
+  TextEditingController _CarpetArea = TextEditingController();
   TextEditingController _PropertyName = TextEditingController();
   TextEditingController _Floor = TextEditingController();
   TextEditingController _Firm = TextEditingController();
@@ -98,80 +84,6 @@ class _AddpropertyState extends State<Addproperty> {
   TextEditingController _Firm_Docs = TextEditingController();
   TextEditingController _Firm_GST = TextEditingController();
   TextEditingController _Check = TextEditingController();
-   var files;
- 
-  // void getFiles() async { //asyn function to get list of files
-  //     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-  //     var root = storageInfo[0].rootDir; //storageInfo[1] for SD card, geting the root directory
-  //     var fm = FileManager(root: Directory(root)); //
-  //     files = await fm.filesTree( 
-  //       excludedPaths: ["/storage/emulated/0/Android"],
-  //       extensions: ["pdf"] //optional, to filter files, list only pdf files
-  //     );
-  //     setState(() {}); //update the UI
-  // }
-
-
- Future<String?> uploadPdfToStorage(File pdfFile) async {
-    try {
-      Reference ref = FirebaseStorage.instance.ref().child('pdfs/${DateTime.now().millisecondsSinceEpoch}');
-    UploadTask uploadTask = ref.putFile(pdfFile, SettableMetadata(contentType: 'pdf')); 
-    String downloadUrl = await (await uploadTask).ref.getDownloadURL();
-  
-
-
-   final String url = await downloadUrl;
-
-
-  print("url:$url");
-  return  url;
-    } catch (e) {
-      return null;
-    }
-  }
-  Future<File?> pickFile() async {
-  final result = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['pdf'],
-  );
-  if (result == null) return null;
-  return File(result.paths.first ?? '');
-}
-  
-//   final mainReference = FirebaseStorage.instance.child('Database');
-// Future getPdfAndUpload()async{
-//   var rng = new Random();
-//   String randomName="";
-//   for (var i = 0; i < 20; i++) {
-//     print(rng.nextInt(100));
-//     randomName += rng.nextInt(100).toString();
-//   }
-//   File file = await FilePicker.getFile(type: FileType.CUSTOM, fileExtension: 'pdf');
-//   String fileName = '${randomName}.pdf';
-//   print(fileName);
-//   print('${file.readAsBytesSync()}');
-//   savePdf(file.readAsBytesSync(), fileName);
-// }
-
-// Future savePdf(List<int> asset, String name) async {
-
-//   StorageReference reference = FirebaseStorage.instance.ref().child(name);
-//   StorageUploadTask uploadTask = reference.putData(asset);
-//   String url = await (await uploadTask.onComplete).ref.getDownloadURL();
-//   print(url);
-//   documentFileUpload(url);
-//   return  url;
-// }
-// void documentFileUpload(String str) {
-
-//   var data = {
-//     "PDF": str,
-//   };
-//   mainReference.child("Documents").child('pdf').set(data).then((v) {
-//   });
-// }
-
-
   CollectionReference property_main =
       FirebaseFirestore.instance.collection("property_main");
   File? selectedImage;
@@ -179,17 +91,7 @@ class _AddpropertyState extends State<Addproperty> {
   String _fullName = '';
   String _imageurl = '';
   String _imageurl2 = '';
-
-  // String? dropdownvalue;
-  String? dropdownvalue2 = null;
-
-  bool Vacant=false;
-  bool Occupied=false;
-  bool Upcoming=false;
-
-
-
-
+   String? dropdownvalue2 = null;
   var imageName;
   var imagename2;
   bool Residential = false;
@@ -197,6 +99,9 @@ class _AddpropertyState extends State<Addproperty> {
   bool MNC = false;
   bool Bank = false;
   bool Warehouse = false;
+  bool Vacant=false;
+  bool Occupied=false;
+  bool Upcoming=false;
 
   DateTime selectedDate = DateTime.now();
   DateTime selectedDate2 = DateTime.now();
@@ -210,18 +115,6 @@ class _AddpropertyState extends State<Addproperty> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-      });
-  }
-
-  Future<void> _selectDate2(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate2,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate2)
-      setState(() {
-        selectedDate2 = picked;
       });
       if (check_date() == false) {
       showDialog(
@@ -263,6 +156,27 @@ class _AddpropertyState extends State<Addproperty> {
           return false;
       }
     }
+  }
+  Future<File?> pickFile() async {
+  final result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['pdf'],
+  );
+  if (result == null) return null;
+  return File(result.paths.first ?? '');
+}
+
+  Future<void> _selectDate2(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate2,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate2)
+      setState(() {
+        selectedDate2 = picked;
+      });
+      
   }
 
   Future getImage() async {
@@ -325,9 +239,7 @@ class _AddpropertyState extends State<Addproperty> {
     } else if (widget.dropdownvalue == "Bank") {
       Bank = true;
     }
-
-    
-    if (dropdownvalue2 == "Vacant") {
+     if (dropdownvalue2 == "Vacant") {
       Vacant = true;
     } else if (dropdownvalue2 == "Occupied") {
       Occupied = true;
@@ -339,7 +251,6 @@ class _AddpropertyState extends State<Addproperty> {
         body: Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        // ignore: unnecessary_new
         child: new SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,7 +270,33 @@ class _AddpropertyState extends State<Addproperty> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  
+                  // DropdownButtonFormField(
+                  //   decoration: InputDecoration(
+                  //     enabledBorder: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: Colors.blue, width: 2),
+                  //       borderRadius: BorderRadius.circular(20),
+                  //     ),
+                  //     border: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: Colors.blue, width: 2),
+                  //       borderRadius: BorderRadius.circular(20),
+                  //     ),
+                  //     filled: true,
+                  //     fillColor: Colors.blueAccent,
+                  //   ),
+                  //   value: dropdownvalue,
+                  //   icon: const Icon(Icons.keyboard_arrow_down),
+                  //   items: items.map((String items) {
+                  //     return DropdownMenuItem(
+                  //       value: items,
+                  //       child: Text(items),
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: (String? newValue) {
+                  //     setState(() {
+                  //       dropdownvalue = newValue!;
+                  //     });
+                  //   },
+                  // ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.3,
                     child: TextFormField(
@@ -398,30 +335,18 @@ class _AddpropertyState extends State<Addproperty> {
                       labelStyle: TextStyle(color: Colors.black)),
                 ),
               ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width / 1.3,
-              //   child: TextFormField(
-              //     style: TextStyle(color: Colors.black),
-              //     controller: _Firm,
-              //     decoration: InputDecoration(
-              //         hintText: "Name of Company",
-              //         hintStyle: TextStyle(color: Colors.white),
-              //         labelText: "Firm Name",
-              //         labelStyle: TextStyle(color: Colors.black)),
-              //   ),
-              // ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width / 1.3,
-              //   child: TextFormField(
-              //     style: TextStyle(color: Colors.black),
-              //     controller: _Tenant,
-              //     decoration: InputDecoration(
-              //         hintText: "Name of Tenant",
-              //         hintStyle: TextStyle(color: Colors.white),
-              //         labelText: "Tenant Name",
-              //         labelStyle: TextStyle(color: Colors.black)),
-              //   ),
-              // ),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.3,
+                child: TextFormField(
+                  style: TextStyle(color: Colors.black),
+                  controller: _Tenant,
+                  decoration: InputDecoration(
+                      hintText: "Name of Tenant",
+                      hintStyle: TextStyle(color: Colors.white),
+                      labelText: "Tenant Name",
+                      labelStyle: TextStyle(color: Colors.black)),
+                ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
@@ -469,7 +394,6 @@ class _AddpropertyState extends State<Addproperty> {
                           print(imageName);
                         },
                       )),
-                
                 Container(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
@@ -500,7 +424,9 @@ class _AddpropertyState extends State<Addproperty> {
                   ),
                 )],
               ),
-              Column(
+              
+            
+             Column(
                 children: [
                   if (dropdownvalue2 == 'Occupied' || dropdownvalue2 == null)...
                  [Text(
@@ -745,28 +671,14 @@ class _AddpropertyState extends State<Addproperty> {
               ),],
                 ],
               ),
+              
+          
+            
 
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 30),
-                    width: MediaQuery.of(context).size.width / 5,
-                    height: MediaQuery.of(context).size.height / 20,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular((15.0)),
-                        color: Colors.blueAccent),
-                    child: MaterialButton(
-                      onPressed: (() => getImage()),
-                      child: Text("ADD A PHOTO"),
-                      textColor: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
+           
+              
+              
 
-              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -779,25 +691,17 @@ class _AddpropertyState extends State<Addproperty> {
                         color: Colors.blueAccent),
                     child: MaterialButton(
                       onPressed: (() {
-                        print(Commercial);
                         property_main
                             .add({
                               'Property_Details': {
                                 'Carpet_Area': _CarpetArea.text,
                                 'Rent':_Rent.text,
                                 'Asset':_AssetValue.text,
-                                // 'Firm': _Firm.text,
                                 'Floor': _Floor.text,
                                 'Property_name': _PropertyName.text,
                                 // 'Tenant': _Tenant.text,
                                 'Yield': _Yeild.text,
-                                'Property_Status':
-                                {
-                                     'Vacant':Vacant,
-                                     'Occupied':Occupied,
-                                     'Upcoming':Upcoming
-                                },
-                                'Property_Types':{
+                               'Property_Types':{
                                 
                                 
                                 'Residential': Residential,
@@ -828,13 +732,6 @@ class _AddpropertyState extends State<Addproperty> {
                                 'email': _Tenant_Email.text,
                                 'mobile': _Tenant_Number.text
                               },
-                              'Firm_Details': {
-                                'Firm_name': _Firm_Name.text,
-                                'GST': _Firm_GST.text,
-                                'Docs': _Firm_Docs.text
-                              }
-                              ,
-                              
                             })
                             .then((value) => print("User Added"))
                             .catchError((error) => print("failed to add"));
@@ -845,7 +742,6 @@ class _AddpropertyState extends State<Addproperty> {
                             builder: (context) => HomeView(),
                           ),
                         );
-                        print(Commercial);
                       }),
                       child: Text("ADD"),
                       textColor: Colors.white,

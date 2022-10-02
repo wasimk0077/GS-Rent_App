@@ -1,7 +1,15 @@
+import 'package:authh_app/ui/Analytics_page.dart';
+import 'package:authh_app/ui/Chat.dart';
+import 'package:authh_app/ui/DiscoverSlider.dart';
+import 'package:authh_app/ui/Pre_add.dart';
+import 'package:authh_app/ui/add_property.dart';
 import 'package:authh_app/ui/authentication.dart';
+import 'package:authh_app/ui/chat_wrtFirm.dart';
+import 'package:authh_app/ui/chatwrtTenant.dart';
 import 'package:authh_app/ui/dummy.dart';
 import 'package:authh_app/ui/home_view.dart';
 import 'package:authh_app/ui/location.dart';
+import 'package:authh_app/ui/property_types.dart';
 import 'package:authh_app/ui/starting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Rent App',
-      home: HomeView()
+      home: Starting_page()
 
     );
   }
