@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:authh_app/ui/details_view.dart';
+import 'package:authh_app/ui/discover_upcoming.dart';
 import 'package:authh_app/ui/discover_vacant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -764,8 +765,17 @@ class _UpdateDiscoverUpcomingState extends State<UpdateDiscoverUpcoming> {
                       // print(_Tenant_name.text);
                       if(Residentialcheck==false)
                       {
-                        DocUser.update
+                        DocUser.set
                             ({
+                              'Property_Details':{
+                                'Property_Status':{
+                                  "Occupied":true,
+                                  "Vacant":false,
+                                  "Upcoming":false,
+
+                                  
+                                }
+                              },
                               
                               'Agreement_Details': {
                                 'Start_Date':
@@ -790,7 +800,7 @@ class _UpdateDiscoverUpcomingState extends State<UpdateDiscoverUpcoming> {
                               ,
                             
                               
-                            })
+                            }, SetOptions(merge: true))
                             .then((value) => print("User Added"))
                             .catchError((error) => print("failed to add"));}
                             else{
@@ -822,7 +832,7 @@ class _UpdateDiscoverUpcomingState extends State<UpdateDiscoverUpcoming> {
                         Navigator.pop(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DiscoverVacant(),
+                            builder: (context) => DiscoverUpcoming(),
                           ),
                         );
                       }),

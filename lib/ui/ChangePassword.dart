@@ -48,6 +48,7 @@ class ChangePass extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Color(0xFF1E1E1E),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -57,20 +58,21 @@ class ChangePass extends StatelessWidget {
           Text(
             'Enter the new password',
             style: TextStyle(
-                color: Colors.grey[800],
-                fontWeight: FontWeight.bold,
-                fontSize: 30),
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
           ),
           Container(
             width: MediaQuery.of(context).size.width / 1.3,
             child: TextFormField(
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.white),
               controller: newpass,
               decoration: InputDecoration(
-                  hintText: "New password",
-                  hintStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white), //<-- SEE HERE
+                  ),
+                  // hintText: "New password",
+                  // hintStyle: TextStyle(color: Colors.white),
                   labelText: "New password",
-                  labelStyle: TextStyle(color: Colors.black)),
+                  labelStyle: TextStyle(color: Colors.white)),
             ),
           ),
           SizedBox(

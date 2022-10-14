@@ -107,6 +107,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         return true;
       },
     child: Scaffold(
+      backgroundColor: Colors.black,
         
         body: 
         Column(
@@ -135,7 +136,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         style: TextStyle(fontSize: 15),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black, // background
+                        primary: Color(0xFF1E1E1E), // background
                         // onPrimary: Colors.green, // foreground
                       ),
                     ),
@@ -146,7 +147,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                     width: 120,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black, // background
+                        primary: Color(0xFF1E1E1E), // background
                         // onPrimary: Colors.red, // foreground
                       ),
                       onPressed: () async {
@@ -170,7 +171,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                     width: 120,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black, // background
+                        primary: Color(0xFF1E1E1E), // background
                         // onPrimary: Colors.red, // foreground
                       ),
                       onPressed: () async {
@@ -195,9 +196,10 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
               child: TextField(
                 controller: _controller,
                 decoration: InputDecoration(
+                  labelText: "Search",
                   prefixIcon: const Icon(Icons.search),
                   hintText: "Search for properties",
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(22),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(22),
                   borderSide: const BorderSide(color: Colors.blueAccent)),
                 ),
                 onChanged: search,
@@ -207,7 +209,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
               final sea=suggestionslist[index];
               return Card(
                 
-
+               color:Color(0xFF1E1E1E),
               // shadowColor: Color.fromARGB(255, 180, 38, 236),
             elevation: 8,
             clipBehavior: Clip.antiAlias,
@@ -248,7 +250,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                               fontWeight:FontWeight.bold,
                               
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Colors.white,
                               
                             ),),
                          Text(sea.Tenantname,
@@ -256,7 +258,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                               fontWeight:FontWeight.bold,
                               
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Colors.white,
                               
                             ),),
                          Text(sea.Firmname,
@@ -264,7 +266,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                               fontWeight:FontWeight.bold,
                               
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Colors.white,
                               
                             ),),
                              IconButton(

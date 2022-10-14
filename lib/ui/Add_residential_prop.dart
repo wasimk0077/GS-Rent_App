@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:authh_app/ui/AddImageRes.dart';
+import 'package:authh_app/ui/Addimage.dart';
 import 'package:authh_app/ui/home_view.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -24,32 +26,37 @@ class ResidentialView extends StatefulWidget {
 }
 
 class _ResidentialViewState extends State<ResidentialView> {
-      Future<firebase_storage.UploadTask?> uploadFile(File file) async {
-    // if (file == null) {
-    //   Scaffold.of(context);
-    //       // .showSnackBar(SnackBar(content: Text("Unable to Upload")));
-    //       print("Not uploaded to firebase");
-    //   return null;
-    // }
-    
-    firebase_storage.UploadTask uploadTask;
+    late String id;
+  List<File> _pdf = [];
 
-    // Create a Reference to the file
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('Files')
-        .child('/some-file.pdf');
+  // Future<firebase_storage.UploadTask?> uploadFile(File file) async {
+  //   // if (file == null) {
+  //   //   Scaffold.of(context);
+  //   //       // .showSnackBar(SnackBar(content: Text("Unable to Upload")));
+  //   //       print("Not uploaded to firebase");
+  //   //   return null;
+  //   // }
 
-    final metadata = firebase_storage.SettableMetadata(
-        contentType: 'file/pdf',
-        customMetadata: {'picked-file-path': file.path});
-    print("Uploading..!");
+  //   firebase_storage.UploadTask uploadTask;
 
-    uploadTask = ref.putData(await file.readAsBytes(), metadata);
+  //   // Create a Reference to the file
+  //   firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+  //       .ref()
+  //       .child('Files${Path.basename(file.path)}');
+        
 
-    print("done..!");
-    return Future.value(uploadTask);
-  }
+  //   final metadata = firebase_storage.SettableMetadata(
+  //       contentType: 'file/pdf',
+  //       customMetadata: {'picked-file-path': file.path});
+  //   print("Uploading..!");
+
+  //   uploadTask = ref.putData(await file.readAsBytes(), metadata);
+
+  //   print("done..!");
+  //   return Future.value(uploadTask);
+  // }
+  
+
   List<String> items = [
     "Residential",
     "Commercial",
@@ -57,14 +64,11 @@ class _ResidentialViewState extends State<ResidentialView> {
     "Bank",
     "Warehouse"
   ];
-  List<String> type= [
-    "Vacant",
-    "Occupied",
-    "Upcoming"
-  ];
-
+  List<String> type = ["Vacant", "Occupied", "Upcoming"];
   TextEditingController _CarpetArea = TextEditingController();
+
   TextEditingController _PropertyName = TextEditingController();
+  TextEditingController _Address = TextEditingController();
   TextEditingController _Floor = TextEditingController();
   TextEditingController _Firm = TextEditingController();
   TextEditingController _Tenant = TextEditingController();
@@ -75,7 +79,7 @@ class _ResidentialViewState extends State<ResidentialView> {
   TextEditingController _Start_Date = TextEditingController();
   TextEditingController _End_Date = TextEditingController();
   TextEditingController _Rent_Escalation = TextEditingController();
-  TextEditingController _Security__Deposit = TextEditingController();
+  TextEditingController Security_Deposit = TextEditingController();
   TextEditingController _Tenant_Name = TextEditingController();
   TextEditingController _Tenant_Email = TextEditingController();
   TextEditingController _Tenant_Address = TextEditingController();
@@ -84,6 +88,79 @@ class _ResidentialViewState extends State<ResidentialView> {
   TextEditingController _Firm_Docs = TextEditingController();
   TextEditingController _Firm_GST = TextEditingController();
   TextEditingController _Check = TextEditingController();
+  var files;
+
+  // void getFiles() async { //asyn function to get list of files
+  //     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+  //     var root = storageInfo[0].rootDir; //storageInfo[1] for SD card, geting the root directory
+  //     var fm = FileManager(root: Directory(root)); //
+  //     files = await fm.filesTree(
+  //       excludedPaths: ["/storage/emulated/0/Android"],
+  //       extensions: ["pdf"] //optional, to filter files, list only pdf files
+  //     );
+  //     setState(() {}); //update the UI
+  // }
+
+  Future<String?> uploadPdfToStorage(File pdfFile) async {
+    try {
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('pdfs/${DateTime.now().millisecondsSinceEpoch}');
+      UploadTask uploadTask =
+          ref.putFile(pdfFile, SettableMetadata(contentType: 'pdf'));
+      String downloadUrl = await (await uploadTask).ref.getDownloadURL();
+
+      final String url = await downloadUrl;
+
+      print("url:$url");
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<File?> pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (result == null) return null;
+    return File(result.paths.first ?? '');
+  }
+
+//   final mainReference = FirebaseStorage.instance.child('Database');
+// Future getPdfAndUpload()async{
+//   var rng = new Random();
+//   String randomName="";
+//   for (var i = 0; i < 20; i++) {
+//     print(rng.nextInt(100));
+//     randomName += rng.nextInt(100).toString();
+//   }
+//   File file = await FilePicker.getFile(type: FileType.CUSTOM, fileExtension: 'pdf');
+//   String fileName = '${randomName}.pdf';
+//   print(fileName);
+//   print('${file.readAsBytesSync()}');
+//   savePdf(file.readAsBytesSync(), fileName);
+// }
+
+// Future savePdf(List<int> asset, String name) async {
+
+//   StorageReference reference = FirebaseStorage.instance.ref().child(name);
+//   StorageUploadTask uploadTask = reference.putData(asset);
+//   String url = await (await uploadTask.onComplete).ref.getDownloadURL();
+//   print(url);
+//   documentFileUpload(url);
+//   return  url;
+// }
+// void documentFileUpload(String str) {
+
+//   var data = {
+//     "PDF": str,
+//   };
+//   mainReference.child("Documents").child('pdf').set(data).then((v) {
+//   });
+// }
+
   CollectionReference property_main =
       FirebaseFirestore.instance.collection("property_main");
   File? selectedImage;
@@ -91,7 +168,14 @@ class _ResidentialViewState extends State<ResidentialView> {
   String _fullName = '';
   String _imageurl = '';
   String _imageurl2 = '';
-   String? dropdownvalue2 = null;
+
+  // String? dropdownvalue;
+  String? dropdownvalue2 = null;
+
+  bool Vacant = false;
+  bool Occupied = false;
+  bool Upcoming = false;
+
   var imageName;
   var imagename2;
   bool Residential = false;
@@ -99,9 +183,6 @@ class _ResidentialViewState extends State<ResidentialView> {
   bool MNC = false;
   bool Bank = false;
   bool Warehouse = false;
-  bool Vacant=false;
-  bool Occupied=false;
-  bool Upcoming=false;
 
   DateTime selectedDate = DateTime.now();
   DateTime selectedDate2 = DateTime.now();
@@ -116,7 +197,19 @@ class _ResidentialViewState extends State<ResidentialView> {
       setState(() {
         selectedDate = picked;
       });
-      if (check_date() == false) {
+  }
+
+  Future<void> _selectDate2(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate2,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate2)
+      setState(() {
+        selectedDate2 = picked;
+      });
+    if (check_date() == false) {
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -133,6 +226,7 @@ class _ResidentialViewState extends State<ResidentialView> {
               ));
     }
   }
+
   bool check_date() {
     int year1 = selectedDate.year;
     int year2 = selectedDate2.year;
@@ -156,27 +250,6 @@ class _ResidentialViewState extends State<ResidentialView> {
           return false;
       }
     }
-  }
-  Future<File?> pickFile() async {
-  final result = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['pdf'],
-  );
-  if (result == null) return null;
-  return File(result.paths.first ?? '');
-}
-
-  Future<void> _selectDate2(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate2,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate2)
-      setState(() {
-        selectedDate2 = picked;
-      });
-      
   }
 
   Future getImage() async {
@@ -222,6 +295,49 @@ class _ResidentialViewState extends State<ResidentialView> {
       print('No Image Path Received');
     }
   }
+  // List<File> _image = [];
+  // chooseImage() async {
+  //   final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+  //   setState(() {
+  //     _image.add(File(pickedFile!.path));
+  //   });
+  //   if (pickedFile!.path == null) retrieveLostData();
+  // }
+  // Future<void> retrieveLostData() async {
+  //   final LostData response = await ImagePicker().getLostData();
+  //   if (response.isEmpty) {
+  //     return;
+  //   }
+  //   if (response.file != null) {
+  //     setState(() {
+  //       _image.add(File(response.file!.path));
+  //     });
+  //   } else {
+  //     print(response.file);
+  //   }
+  // }
+  //   late firebase_storage.Reference ref;
+  // Future uploadImageFile() async {
+  //   // int i = 1;
+
+  //   for (var img in _image) {
+  //     // setState(() {
+  //     //   val = i / _image.length;
+  //     // });
+  //     ref = firebase_storage.FirebaseStorage.instance
+  //         .ref()
+  //         .child('images/${Path.basename(img.path)}');
+  //     await ref.putFile(img).whenComplete(() async {
+  //       await ref.getDownloadURL().then((value) {
+  //         imgRef.add({'url': value});
+          
+  //       });
+  //     });
+  //   }
+  // }
+
+  
+
 
   @override
   TextEditingController _nameController = TextEditingController();
@@ -239,18 +355,21 @@ class _ResidentialViewState extends State<ResidentialView> {
     } else if (widget.dropdownvalue == "Bank") {
       Bank = true;
     }
-     if (dropdownvalue2 == "Vacant") {
-      Vacant = true;
-    } else if (dropdownvalue2 == "Occupied") {
-      Occupied = true;
-    } else if (dropdownvalue2 == "Upcoming") {
-      Upcoming = true;
-    
-    }
+
+    // if (dropdownvalue2 == "Vacant") {
+    //   Vacant = true;
+    // } else if (dropdownvalue2 == "Occupied") {
+    //   Occupied = true;
+    // } else if (dropdownvalue2 == "Upcoming") {
+    //   Upcoming = true;
+    // }
+
     return Scaffold(
+      backgroundColor: Colors.black,
         body: Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        // ignore: unnecessary_new
         child: new SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,43 +389,34 @@ class _ResidentialViewState extends State<ResidentialView> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // DropdownButtonFormField(
-                  //   decoration: InputDecoration(
-                  //     enabledBorder: OutlineInputBorder(
-                  //       borderSide: BorderSide(color: Colors.blue, width: 2),
-                  //       borderRadius: BorderRadius.circular(20),
-                  //     ),
-                  //     border: OutlineInputBorder(
-                  //       borderSide: BorderSide(color: Colors.blue, width: 2),
-                  //       borderRadius: BorderRadius.circular(20),
-                  //     ),
-                  //     filled: true,
-                  //     fillColor: Colors.blueAccent,
-                  //   ),
-                  //   value: dropdownvalue,
-                  //   icon: const Icon(Icons.keyboard_arrow_down),
-                  //   items: items.map((String items) {
-                  //     return DropdownMenuItem(
-                  //       value: items,
-                  //       child: Text(items),
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (String? newValue) {
-                  //     setState(() {
-                  //       dropdownvalue = newValue!;
-                  //     });
-                  //   },
-                  // ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.3,
                     child: TextFormField(
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                       controller: _PropertyName,
                       decoration: InputDecoration(
+                         enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
                           hintText: "Property Name",
                           hintStyle: TextStyle(color: Colors.white),
                           labelText: "Property Name",
-                          labelStyle: TextStyle(color: Colors.black)),
+                          labelStyle: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.3,
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      controller: _Address,
+                      decoration: InputDecoration(
+                         enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                          hintText: "Address",
+                          hintStyle: TextStyle(color: Colors.white),
+                          labelText: "Address",
+                          labelStyle: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ],
@@ -314,371 +424,448 @@ class _ResidentialViewState extends State<ResidentialView> {
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                   controller: _CarpetArea,
                   decoration: InputDecoration(
+                     enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
                       hintText: "in sq.ft",
                       hintStyle: TextStyle(color: Colors.white),
                       labelText: "Carpet Area",
-                      labelStyle: TextStyle(color: Colors.black)),
+                      labelStyle: TextStyle(color: Colors.white)),
                 ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                   controller: _Floor,
                   decoration: InputDecoration(
+                     enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
                       hintText: "Floor",
                       hintStyle: TextStyle(color: Colors.white),
                       labelText: "Floor",
-                      labelStyle: TextStyle(color: Colors.black)),
+                      labelStyle: TextStyle(color: Colors.white)),
                 ),
               ),
+              // Container(
+              //   width: MediaQuery.of(context).size.width / 1.3,
+              //   child: TextFormField(
+              //     style: TextStyle(color: Colors.black),
+              //     controller: _Firm,
+              //     decoration: InputDecoration(
+              //         hintText: "Name of Company",
+              //         hintStyle: TextStyle(color: Colors.white),
+              //         labelText: "Firm Name",
+              //         labelStyle: TextStyle(color: Colors.black)),
+              //   ),
+              // ),
+              // Container(
+              //   width: MediaQuery.of(context).size.width / 1.3,
+              //   child: TextFormField(
+              //     style: TextStyle(color: Colors.black),
+              //     controller: _Tenant,
+              //     decoration: InputDecoration(
+              //         hintText: "Name of Tenant",
+              //         hintStyle: TextStyle(color: Colors.white),
+              //         labelText: "Tenant Name",
+              //         labelStyle: TextStyle(color: Colors.black)),
+              //   ),
+              // ),
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Tenant,
-                  decoration: InputDecoration(
-                      hintText: "Name of Tenant",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Tenant Name",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                   controller: _Rent,
-                  decoration: InputDecoration(
+                  decoration: InputDecoration( enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
                       hintText: "in Rs",
                       hintStyle: TextStyle(color: Colors.white),
                       labelText: "Rent Value",
-                      labelStyle: TextStyle(color: Colors.black)),
+                      labelStyle: TextStyle(color: Colors.white)),
                 ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                   controller: _AssetValue,
                   decoration: InputDecoration(
                       hintText: "in Rs",
                       hintStyle: TextStyle(color: Colors.white),
                       labelText: "Asset Value",
-                      labelStyle: TextStyle(color: Colors.black)),
+                      labelStyle: TextStyle(color: Colors.white)),
                 ),
               ),
               Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  // Container(
+                  //     //  margin: EdgeInsets.only(right: 30),
+                  //     // padding: EdgeInsets.all(10.0),
+                  //     width: MediaQuery.of(context).size.width,
+                  //     height: MediaQuery.of(context).size.height / 20,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular((15.0)),
+                  //     ),
+                  //     child: TextFormField(
+                  //       controller: _ImageValue,
+                  //       decoration: InputDecoration(
+                  //           hintText: "image name",
+                  //           hintStyle: TextStyle(color: Colors.white),
+                  //           labelText: "Image",
+                  //           labelStyle: TextStyle(color: Colors.black)),
+                  //       onChanged: (value) {
+                  //         imageName = value;
+                  //         print(imageName);
+                  //       },
+                  //     )),
                   Container(
-                      //  margin: EdgeInsets.only(right: 30),
-                      // padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular((15.0)),
+                    child: DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF1E1E1E), width: 2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF1E1E1E), width: 2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFF1E1E1E),
                       ),
-                      child: TextFormField(
-                        controller: _ImageValue,
-                        decoration: InputDecoration(
-                            hintText: "image name",
-                            hintStyle: TextStyle(color: Colors.white),
-                            labelText: "Image",
-                            labelStyle: TextStyle(color: Colors.black)),
-                        onChanged: (value) {
-                          imageName = value;
-                          print(imageName);
-                        },
-                      )),
-                Container(
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      filled: true,
-                      fillColor: Colors.blueAccent,
+                      value: dropdownvalue2,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      items: type.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownvalue2 = newValue!;
+                          if (dropdownvalue2 == 'Vacant') {
+                            Vacant = true;
+                            Occupied = false;
+                            Upcoming = false;
+                          } else if (dropdownvalue2 == 'Occupied') {
+                            Vacant = false;
+                            Occupied = true;
+                            Upcoming = false;
+                          } else if (dropdownvalue2 == 'Upcoming') {
+                            Vacant = false;
+                            Occupied = false;
+                            Upcoming = true;
+                          }
+                        });
+                      },
                     ),
-                    value: dropdownvalue2,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: type.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownvalue2 = newValue!;
-                      });
-                    },
-                  ),
-                )],
-              ),
-              
-            
-             Column(
-                children: [
-                  if (dropdownvalue2 == 'Occupied' || dropdownvalue2 == null)...
-                 [Text(
-                ('Agreement Details'),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              Container(
-                  width: MediaQuery.of(context).size.width / 1.3,
-                  child: Row(
-                    children: [
-                      Text(
-                        ('Start Date'),
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => _selectDate(context),
-                        icon: Icon(Icons.calendar_month_rounded),
-                      ),
-                      Text("${selectedDate.toLocal()}".split(' ')[0]),
-                    ],
-                  )),
-              Container(
-                  width: MediaQuery.of(context).size.width / 1.3,
-                  child: Row(
-                    children: [
-                      Text(
-                        ('End Date'),
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => _selectDate2(context),
-                        icon: Icon(Icons.calendar_month_rounded),
-                      ),
-                      Text("${selectedDate2.toLocal()}".split(' ')[0]),
-                    ],
-                  )),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Rent_Escalation,
-                  decoration: InputDecoration(
-                      hintText: "Rent Escalation",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Rent Escalation",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Security__Deposit,
-                  decoration: InputDecoration(
-                      hintText: "Security Deposit",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Security Deposit",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
+                  )
+                ],
               ),
               Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                      //  margin: EdgeInsets.only(right: 30),
-                      // padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular((15.0)),
+                  if (dropdownvalue2 == 'Occupied' ||
+                      dropdownvalue2 == null) ...[
+                    Text(
+                      ('Agreement Details'),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white,
                       ),
+                    ),
+                    Container(
+                        width: MediaQuery.of(context).size.width /1.3,
+                        child: Row(
+                          children: [
+                            Text(
+                              ('Start Date'),
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => _selectDate(context),
+                              icon: Icon(Icons.calendar_month_rounded,color: Colors.white,),
+                            ),
+                            Text("${selectedDate.toLocal()}".split(' ')[0]),
+                          ],
+                        )),
+                    Container(
+                        width: MediaQuery.of(context).size.width / 1.3,
+                        child: Row(
+                          children: [
+                            Text(
+                              ('End Date'),
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => _selectDate2(context),
+                              icon: Icon(Icons.calendar_month_rounded,color: Colors.white,),
+                            ),
+                            Text("${selectedDate2.toLocal()}".split(' ')[0]),
+                          ],
+                        )),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
-                        controller: _ImageValue,
-                        decoration: InputDecoration(
-                            hintText: "image name",
+                        style: TextStyle(color: Colors.white),
+                        controller: _Rent_Escalation,
+                        decoration: InputDecoration( enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "Rent Escalation",
                             hintStyle: TextStyle(color: Colors.white),
-                            labelText: "Aadhar Card png",
-                            labelStyle: TextStyle(color: Colors.black)),
-                        onChanged: (value) {
-                          imagename2 = value;
-                          print(imageName);
-                        },
-                      )),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 30),
-                    width: MediaQuery.of(context).size.width / 5,
-                    height: MediaQuery.of(context).size.height / 20,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular((15.0)),
-                        color: Colors.blueAccent),
-                    child: MaterialButton(
-                      onPressed: (() async{
-                          String url = '';
-                  final file = await pickFile();
-                  if (file == null) return;
-                      }),
-                      child: Text("ADD AADHAR CARD PHOTO"),
-                      textColor: Colors.white,
+                            labelText: "Rent Escalation",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 30),
-                    width: MediaQuery.of(context).size.width / 5,
-                    height: MediaQuery.of(context).size.height / 20,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular((15.0)),
-                        color: Colors.blueAccent),
-                    child: MaterialButton(
-                      onPressed: () async {
-            final path = await FlutterDocumentPicker.openDocument();
-            print(path);
-            File file = File(path!);
-            firebase_storage.UploadTask? task = await uploadFile(file);
-          },
-                      child: Text("ADD passport pdf"),
-                      textColor: Colors.white,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: Security_Deposit,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "Security Deposit",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Security Deposit",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
                     ),
-                  ),
+                    // Column(
+                    //   // mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: [
+                    //     Container(
+                    //         //  margin: EdgeInsets.only(right: 30),
+                    //         // padding: EdgeInsets.all(10.0),
+                    //         width: MediaQuery.of(context).size.width,
+                    //         height: MediaQuery.of(context).size.height / 20,
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular((15.0)),
+                    //         ),
+                    //         child: TextFormField(
+                    //           controller: _ImageValue,
+                    //           decoration: InputDecoration(
+                    //               hintText: "image name",
+                    //               hintStyle: TextStyle(color: Colors.white),
+                    //               labelText: "Aadhar Card png",
+                    //               labelStyle: TextStyle(color: Colors.black)),
+                    //           onChanged: (value) {
+                    //             imagename2 = value;
+                    //             print(imageName);
+                    //           },
+                    //         )),
+                    //   ],
+                    // ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     Container(
+                    //       margin: EdgeInsets.only(right: 30),
+                    //       width: MediaQuery.of(context).size.width / 5,
+                    //       height: MediaQuery.of(context).size.height / 20,
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular((15.0)),
+                    //           color: Colors.blueAccent),
+                    //       child: MaterialButton(
+                    //         onPressed: (() async {
+                    //           String url = '';
+                    //           final file = await pickFile();
+                    //           if (file == null) return;
+                    //         }),
+                    //         child: Text("ADD AADHAR CARD PHOTO"),
+                    //         textColor: Colors.white,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+    //                 Row(
+    //                   mainAxisAlignment: MainAxisAlignment.end,
+    //                   children: [
+    //                     Container(
+    //                       margin: EdgeInsets.only(right: 30),
+    //                       width: MediaQuery.of(context).size.width / 5,
+    //                       height: MediaQuery.of(context).size.height / 20,
+    //                       decoration: BoxDecoration(
+    //                           borderRadius: BorderRadius.circular((15.0)),
+    //                           color: Colors.blueAccent),
+    //                       child: MaterialButton(
+    //                         onPressed: () async {
+    //                           final path =
+    //                               await FlutterDocumentPicker.openDocument();
+    //                           print(path);
+    //                           File file = File(path!);
+    //                           setState(() {
+    //   _pdf.add(File(file!.path));
+    // });
+    //                           firebase_storage.UploadTask? task =
+    //                               await uploadFile(file);
+    //                         },
+    //                         child: Text("ADD passport pdf"),
+    //                         textColor: Colors.white,
+    //                       ),
+    //                     ),
+    //                   ],
+    //                 ),
+                    Text(
+                      ('Tenant Details'),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: _Tenant_Name,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "name",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Tenant Name",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: _Tenant_Email,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "email",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Tenant email",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: _Tenant_Address,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "Addr",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Tenant Address",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: _Tenant_Number,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "No",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Tenant Phone No.",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Text(
+                      ('Firm Details'),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: _Firm_Name,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "name",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Firm Name",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: _Firm_Docs,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "email",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Docs",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        controller: _Firm_GST,
+                        decoration: InputDecoration(
+                           enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                            hintText: "Addr",
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "GST",
+                            labelStyle: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                  ],
                 ],
               ),
 
-              Text(
-                ('Tenant Details'),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Tenant_Name,
-                  decoration: InputDecoration(
-                      hintText: "name",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Tenant Name",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Tenant_Email,
-                  decoration: InputDecoration(
-                      hintText: "email",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Tenant email",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Tenant_Address,
-                  decoration: InputDecoration(
-                      hintText: "Addr",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Tenant Address",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Tenant_Number,
-                  decoration: InputDecoration(
-                      hintText: "No",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Tenant Phone No.",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
+              SizedBox(height: 20),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     Container(
+              //       margin: EdgeInsets.only(right: 30),
+              //       width: MediaQuery.of(context).size.width / 5,
+              //       height: MediaQuery.of(context).size.height / 20,
+              //       decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular((15.0)),
+              //           color: Colors.blueAccent),
+              //       child: MaterialButton(
+              //         onPressed: (() => getImage()),
+              //         child: Text("ADD A PHOTO"),
+              //         textColor: Colors.white,
+              //       ),
+              //     ),
+              //   ],
+              // ),
 
-              Text(
-                ('Firm Details'),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Firm_Name,
-                  decoration: InputDecoration(
-                      hintText: "name",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Firm Name",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Firm_Docs,
-                  decoration: InputDecoration(
-                      hintText: "email",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "Docs",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _Firm_GST,
-                  decoration: InputDecoration(
-                      hintText: "Addr",
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelText: "GST",
-                      labelStyle: TextStyle(color: Colors.black)),
-                ),
-              ),],
-                ],
-              ),
-              
-          
-            
-
-           
-              
-              
-
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -688,34 +875,37 @@ class _ResidentialViewState extends State<ResidentialView> {
                     height: MediaQuery.of(context).size.height / 20,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular((15.0)),
-                        color: Colors.blueAccent),
+                        color: Color(0xFF1E1E1E)),
                     child: MaterialButton(
                       onPressed: (() {
+                        
+                       if(_PropertyName.text!="" && _Address.text!="" && _CarpetArea.text!="" && _Floor.text!="" && _Rent.text!="" && _AssetValue.text!="" ){
+                         print(Commercial);
                         property_main
                             .add({
                               'Property_Details': {
                                 'Carpet_Area': _CarpetArea.text,
-                                'Rent':_Rent.text,
-                                'Asset':_AssetValue.text,
+                                'Rent': _Rent.text,
+                                'Asset': _AssetValue.text,
+                                'Address':_Address.text,
+                                // 'Firm': _Firm.text,
                                 'Floor': _Floor.text,
                                 'Property_name': _PropertyName.text,
                                 // 'Tenant': _Tenant.text,
                                 'Yield': _Yeild.text,
-                               'Property_Types':{
-                                
-                                
-                                'Residential': Residential,
-                                'Commercial': Commercial,
-                                'MNC': MNC,
-                                'Bank': Bank,
-                                'Warehouse': Warehouse,
+                                'Property_Status': {
+                                  'Vacant': Vacant,
+                                  'Occupied': Occupied,
+                                  'Upcoming': Upcoming
                                 },
-                                'imageurl': {
-                                  'image1': _imageurl.toString(),
-                                  'image2': _imageurl.toString(),
-                                  'image3': _imageurl.toString(),
-                                  'image4': _imageurl.toString(),
-                                }
+                                'Property_Types': {
+                                  'Residential': Residential,
+                                  'Commercial': Commercial,
+                                  'MNC': MNC,
+                                  'Bank': Bank,
+                                  'Warehouse': Warehouse,
+                                },
+                                
                               },
                               'Agreement_Details': {
                                 'Start_Date':
@@ -723,8 +913,8 @@ class _ResidentialViewState extends State<ResidentialView> {
                                 'End_date':
                                     "${selectedDate2.toLocal()}".split(' ')[0],
                                 'Rent_Escalation': _Rent_Escalation.text,
-                                'Security_Deposit': _Security__Deposit.text,
-                                'Aadhar Card': _imageurl2.toString(),
+                                'Security_Deposit': Security_Deposit.text,
+                                // 'Aadhar Card': _imageurl2.toString(),
                               },
                               'Tenant_Details': {
                                 'Tenant_name': _Tenant_Name.text,
@@ -732,17 +922,100 @@ class _ResidentialViewState extends State<ResidentialView> {
                                 'email': _Tenant_Email.text,
                                 'mobile': _Tenant_Number.text
                               },
+                              'Firm_Details': {
+                                'Firm_name': _Firm_Name.text,
+                                'GST': _Firm_GST.text,
+                                'Docs': _Firm_Docs.text
+                              },
+                              'Rent_Details':{
+                                DateTime.now().year.toString():
+                                {
+                                  "1":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "2":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "3":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "4":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "5":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "6":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "7":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "8":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "9":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "10":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  },
+                                   "11":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  }
+                                  ,
+                                   "12":{
+                                    "Paid_on":"",
+                                    "Rent_Paid":"0"
+                                    ,"status":false
+                                  }
+                                }
+                              }
                             })
-                            .then((value) => print("User Added"))
-                            .catchError((error) => print("failed to add"));
-
-                        Navigator.pop(
+                            .then((value) => 
+                            
+                            ((Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomeView(),
+                            builder: (context) => AddImagesRes(value.id.toString())
                           ),
-                        );
-                      }),
+                        ))))
+                            // print(value.id))
+                            .catchError((error) => print("failed to add"));
+
+                        
+                        print(Commercial);
+                      
+                       }
+                       else
+                       {
+                        null;
+                       }
+                       
+                       }
+                       ),
                       child: Text("ADD"),
                       textColor: Colors.white,
                     ),
@@ -760,22 +1033,3 @@ class _ResidentialViewState extends State<ResidentialView> {
     ;
   }
 }
-
-
-
- // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     IconButton(
-            //       iconSize: 80,
-            //       icon: Icon(Icons.search,color:Colors.black),
-            //       onPressed: (){
-            //         print("name"+ _nameController.text);
-            //       }
-            //     ),
-             
-               
-
-            //   ],
-              
-            // ),

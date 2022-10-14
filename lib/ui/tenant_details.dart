@@ -8,8 +8,8 @@ import 'agreement_details.dart';
 
 class TenantDetails extends StatefulWidget {
   // const TenantDetails({Key? key}) : super(key: key);
-  final String docID;//if you have multiple values add here
-TenantDetails(this.docID, {Key? key}): super(key: key);
+  final String docID; //if you have multiple values add here
+  TenantDetails(this.docID, {Key? key}) : super(key: key);
 
   @override
   State<TenantDetails> createState() => _TenantDetailsState();
@@ -22,30 +22,63 @@ class _TenantDetailsState extends State<TenantDetails> {
 
   final _bottomNavigationBarItems = [
     const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.blue),
-        label:"1"
-        ),
+        icon: Icon(Icons.star, color: Colors.blue), label: "1"),
     const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.green),
-        label:"2"
-        ),
+        icon: Icon(Icons.star, color: Colors.green), label: "2"),
     const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.pink),
-        label:"3"),
+        icon: Icon(Icons.star, color: Colors.pink), label: "3"),
     const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.red),
-        label:"4"),
+        icon: Icon(Icons.star, color: Colors.red), label: "4"),
   ];
+
+  String firm_name = "";
+  String GST = "";
+  String tenant_name = "";
+  String tenant_mobile = "";
+  String tenant_address = "";
+  String tenant_email = "";
+  String tenant_image="";
+  bool is_residential = false;
+  funq() async {
+    var collection = FirebaseFirestore.instance.collection('property_main');
+    var docSnapshot = await collection.doc(widget.docID).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      firm_name = data['Firm_Details']['Firm_name'];
+      GST = data['Firm_Details']['GST'];
+      tenant_name = data['Tenant_Details']['Tenant_name'];
+      tenant_address = data['Tenant_Details']['address'];
+      tenant_email = data['Tenant_Details']['email'];
+      tenant_mobile = data['Tenant_Details']['mobile'];
+      is_residential =
+          data['Property_Details']['Property_Types']['Residential'];
+      tenant_image=data['Tenant_Details']['imageurl']["image1"];
+    }
+  }
+
+  void initState() {
+    // TODO: implement initState
+    () async {
+      await funq();
+      setState(() {
+        funq();
+      });
+    }();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-     final ButtonStyle style = TextButton.styleFrom(
+    final ButtonStyle style = TextButton.styleFrom(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
     );
-     return DefaultTabController(length: 5, child: Scaffold(
+    return Scaffold(
+      backgroundColor: Color(0xFF000000),
       // appBar:AppBar(
       //   leading:null,
       //   automaticallyImplyLeading: false,
-        
+
       //   backgroundColor: Colors.white,
       //   foregroundColor: Colors.black,
       //   actions: <Widget>[
@@ -64,7 +97,7 @@ class _TenantDetailsState extends State<TenantDetails> {
       //     TextButton(
       //       style: style,
       //       onPressed: (){
-         
+
       //   },
       //       child: const Text('Tenant'),
       //     ),
@@ -102,8 +135,10 @@ class _TenantDetailsState extends State<TenantDetails> {
       // ),
       body: Column(
         children: [
+          SizedBox(height: MediaQuery.of(context).size.height / 13),
           Container(
             child: Card(
+              color: Color(0xFF1E1E1E),
               // shadowColor: Color.fromARGB(255, 180, 38, 236),
               elevation: 8,
               clipBehavior: Clip.antiAlias,
@@ -111,320 +146,175 @@ class _TenantDetailsState extends State<TenantDetails> {
                 borderRadius: BorderRadius.circular(24),
               ),
               child: Container(
-                decoration:
-                    BoxDecoration(color: Color.fromARGB(18, 113, 125, 137)),
+                decoration: BoxDecoration(
+                    // color: Color(0xFF221A2C),
+                    ),
                 padding: EdgeInsets.all(10),
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 200,
+                      width:
+                          MediaQuery.of(context).size.width/2, //??????????????????????????????????????????????
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 80),
+                          SizedBox(height: 
+                          MediaQuery.of(context).size.height*0.03),
                           Text(
                             ('Tenant Details'),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black,
+                              fontSize: 25,
+                              color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-                              var output = snapshot.data!.data();
-                              // if(output!['Firm_Details']['check'] == false){
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Tenant_Details']['Tenant_name'];
-                                return Text(
-                                  ('Tenant name= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                    color: Colors.black,
-                                  ),
-                                );
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
+                          SizedBox(height:MediaQuery.of(context).size.height*0.03 ),
+                          Text(
+                            ('Tenant name: $tenant_name'),
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                            ),
                           ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Tenant_Details']['address'];
-                                return Text(
-                                  ('Address= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                    color: Colors.black,
-                                  ),
-                                );
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
+                          SizedBox(height: MediaQuery.of(context).size.height*0.03),
+                          Text(
+                            ('Tenant address: $tenant_address'),
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                            ),
                           ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Tenant_Details']['email'];
-                                return Text(
-                                  ('Email= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                    color: Colors.black,
-                                  ),
-                                );
-                              }
-
-                              return Center(child: CircularProgressIndicator());
-                            },
+                          SizedBox(height: MediaQuery.of(context).size.height*0.03),
+                          Text(
+                            ('Tenant email: $tenant_email'),
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                            ),
                           ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Tenant_Details']['address'];
-                                return Text(
-                                  ('Address = $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                    color: Colors.black,
-                                  ),
-                                );
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
+                          SizedBox(height: MediaQuery.of(context).size.height*0.03),
+                          Text(
+                            ('Tenant mobile number: $tenant_mobile'),
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                            ),
                           ),
+                           SizedBox(height: MediaQuery.of(context).size.height*0.03),
                         ],
                       ),
                     ),
+                    
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/2.35,
+                      child: Column(
+                                      children: [
+                                        if (tenant_image==
+                                            "")
+                                           Container(
+                // width: Med,
+                // width: MediaQuery.of(context).size.width/5,
+                margin: EdgeInsets.all(10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    width: MediaQuery.of(context).size.width/2.2,
+                    image: NetworkImage(
+                        'https://st4.depositphotos.com/14953852/22772/v/450/depositphotos_227725040-stock-illustration-image-available-icon-flat-vector.jpg'),
+                  ),
+                ),
+              )        
+                                        else
+                                      Container(
+                width: 130,
+                margin: EdgeInsets.all(10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    image: NetworkImage(
+                        tenant_image),
+                  ),
+                ),
+              ),              ],
+                                    )
+                                    ),
+      
                   ],
                 ),
               ),
             ),
           ),
           SizedBox(height: 50),
-          Container(
-            child: Card(
-              // shadowColor: Color.fromARGB(255, 180, 38, 236),
-              elevation: 8,
-              clipBehavior: Clip.antiAlias,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Container(
-                decoration:
-                    BoxDecoration(color: Color.fromARGB(18, 113, 125, 137)),
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ('Firm Details'),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black,
+          if (is_residential == false) ...[
+            Container(
+              child: Card(
+                // shadowColor: Color.fromARGB(255, 180, 38, 236),
+                color: Color(0xFF1E1E1E),
+                elevation: 8,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Container(
+                  decoration:
+                      BoxDecoration(color: Color.fromARGB(18, 134, 156, 178)),
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                             SizedBox(height: MediaQuery.of(context).size.height*0.03),
+                            Text(
+                              ('Firm Details'),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-                              var output = snapshot.data!.data();
-                              // if(output!['Firm_Details']['check'] == false){
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Firm_Details']['check'];
-                                if (value == false) {
-                                  return Text(
-                                    ('NO firm details to display'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                }
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-                              var output = snapshot.data!.data();
-                              // if(output!['Firm_Details']['check'] == false){
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Firm_Details']['Firm_name'];
-                                if (value == "") {
-                                  return Text(
-                                    ('Firm name= -'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                } else {
-                                  return Text(
-                                    ('Firm name= $value'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                }
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Firm_Details']['GST'];
-
-                                if (value == "") {
-                                  return Text(
-                                    ('GST= -'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                } else {
-                                  return Text(
-                                    ('GST= $value'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                }
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection
-                                .doc(widget.docID)
-                                .snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Firm_Details']['Docs'];
-                                if (value == "") {
-                                  return Text(
-                                    ('Docs= -'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                } else {
-                                  return Text(
-                                    ('Docs= $value'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                }
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                        ],
+                            SizedBox(height: MediaQuery.of(context).size.height*0.03),
+                            Text(
+                              ('Firm name: $firm_name'),
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: MediaQuery.of(context).size.height*0.03),
+                            Text(
+                              ('GST: $GST'),
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
+            )
+          ] else ...[
+            Text(
+              ('No firm details to display'),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                color: Color(0xFF1E1E1E),
+              ),
             ),
-          )
+          ]
         ],
       ),
-  bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: _bottomNavigationBarItems,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        //type: BottomNavigationBarType.fixed,
-      ), )
-     );  
-  
-  
-  
+    );
   }
 }

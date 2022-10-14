@@ -107,6 +107,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         return true;
       },
     child:Scaffold(
+      backgroundColor: Colors.black,
         
         body: Column(
           children: [
@@ -133,7 +134,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         style: TextStyle(fontSize: 15),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black, // background
+                        primary: Color(0xFF1E1E1E), // background
                         // onPrimary: Colors.green, // foreground
                       ),
                     ),
@@ -144,7 +145,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                     width: 120,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black, // background
+                        primary: Color(0xFF1E1E1E), // background
                         // onPrimary: Colors.red, // foreground
                       ),
                       onPressed: () async {
@@ -168,7 +169,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                     width: 120,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black, // background
+                        primary: Color(0xFF1E1E1E), // background
                         // onPrimary: Colors.red, // foreground
                       ),
                       onPressed: () async {
@@ -191,12 +192,18 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
             Container(
               margin: const EdgeInsets.fromLTRB(16, 16,16, 16),
               child: TextField(
+                style: TextStyle(
+                  color: Colors.white
+                ),
                 controller: _controller,
                 decoration: InputDecoration(
+                  labelText: "Search",
+                  
                   prefixIcon: const Icon(Icons.search),
                   hintText: "Search for properties",
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(22),
-                  borderSide: const BorderSide(color: Colors.blueAccent)),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(22),
+                  
+                  borderSide: const BorderSide(color: Colors.white)),
                 ),
                 onChanged: search,
               ),
@@ -207,6 +214,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                 
 
               // shadowColor: Color.fromARGB(255, 180, 38, 236),
+              color: Color(0xFF1E1E1E),
             elevation: 8,
             clipBehavior: Clip.antiAlias,
             shape: RoundedRectangleBorder(
@@ -246,7 +254,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                               fontWeight:FontWeight.bold,
                               
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Colors.white,
                               
                             ),),
                          Text(sea.Tenantname,
@@ -254,7 +262,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                               fontWeight:FontWeight.bold,
                               
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Colors.white,
                               
                             ),),
                          Text(sea.Firmname,
@@ -262,7 +270,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                               fontWeight:FontWeight.bold,
                               
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Colors.white,
                               
                             ),),
                              IconButton(

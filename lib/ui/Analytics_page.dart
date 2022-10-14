@@ -27,6 +27,11 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   double TotalCommRent=0;
   double TotalMNCRent=0;
   double TotalWareRent=0;
+
+  double TotalRentpermonth=0;
+  int TotalProperties=0;
+  int TotalVacant=0;
+  int TotalOccupied=0;
   // String rent_paid="";
   // String rent="dummy";
   // funq() async {
@@ -68,12 +73,303 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   //     print(rent_paid);
   //   }
   // }
+  int jan = 0;
+  int feb = 0;
+  int mar = 0;
+  int apr = 0;
+  int may = 0;
+  int jun = 0;
+  int july = 0;
+  int aug = 0;
+  int sept = 0;
+  int oct = 0;
+  int nov = 0;
+  int dec = 0;
+  getData2() async {
+    final now = DateTime.now();
+    var cur_year = now.year;
+    var cur_mon = now.month;
+    await FirebaseFirestore.instance
+        .collection('property_main')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('1')) {
+          jan = jan +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['1']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('2')) {
+          feb = feb +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['2']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('3')) {
+          mar = mar +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['3']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('4')) {
+          apr = apr +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['4']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('5')) {
+          may = may +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['5']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('6')) {
+          jun = jun +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['6']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('7')) {
+          july = july +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['7']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('8')) {
+          aug = aug +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['8']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('9')) {
+          sept = sept +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['9']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('10')) {
+          oct = oct +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['10']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('11')) {
+          nov = nov +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['11']['Rent_Paid']);
+        }
+
+        if (doc['Rent_Details'][cur_year.toString()].containsKey('12')) {
+          dec = dec +
+              int.parse(
+                  doc['Rent_Details'][cur_year.toString()]['12']['Rent_Paid']);
+        }
+
+        if (cur_mon < 12) {
+          int prev_year_mon = cur_mon + 1;
+          int prev_year = cur_year - 1;
+          if (doc['Rent_Details'].containsKey(cur_year.toString())) {
+            while (prev_year_mon <= 12) {
+              if (doc['Rent_Details'][cur_year.toString()]
+                  .containsKey(prev_year_mon.toString())) {
+                if (prev_year_mon == 1)
+                  jan = jan +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 2)
+                  feb = feb +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 3)
+                  mar = mar +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 4)
+                  apr = apr +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 5)
+                  may = may +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 6)
+                  jun = jun +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 7)
+                  july = july +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 8)
+                  aug = aug +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 9)
+                  sept = sept +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 10)
+                  oct = oct +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 11)
+                  nov = nov +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+
+                if (prev_year_mon == 12)
+                  dec = dec +
+                      int.parse(doc['Rent_Details'][cur_year.toString()]
+                          [prev_year_mon.toString()]['Rent_Paid']);
+              }
+              prev_year_mon += 1;
+            }
+          }
+        }
+      });
+    });
+      DateTime now2=DateTime.now();
+    int curmonth=now.month;
+    int curmonth2=1;
+    int curmonth3=now.month+1;
+    
+    
+    while(curmonth3<=12){
+      if(curmonth3==1)
+       {
+        chartdata3.add(ChartData('JAN', jan.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==2)
+       {
+        chartdata3.add(ChartData('FEB', feb.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==3)
+       {
+        chartdata3.add(ChartData('MAR', mar.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==4)
+       {
+        chartdata3.add(ChartData('APR', apr.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==5)
+       {
+        chartdata3.add(ChartData('MAY', may.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==6)
+       {
+        chartdata3.add(ChartData('JUN', jun.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==7)
+       {
+        chartdata3.add(ChartData('JUL', july.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==8)
+       {
+        chartdata3.add(ChartData('AUG', aug.toDouble(), Colors.teal),);
+       }
+       if(curmonth3==9)
+       {
+        chartdata3.add(ChartData('SEPT', sept.toDouble(), Colors.teal),);
+       }if(curmonth3==10)
+       {
+        
+        chartdata3.add(ChartData('OCT', oct.toDouble(), Colors.teal),);
+       }if(curmonth3==11)
+       {
+        chartdata3.add(ChartData('NOV', nov.toDouble(), Colors.teal),);
+       }if(curmonth3==12)
+       {
+        chartdata3.add(ChartData('DEC', dec.toDouble(), Colors.teal),);
+       }
+      curmonth3++;
+
+    }
+    
+      
+      while(curmonth2<=curmonth)
+      {
+        if(curmonth2==1)
+       {
+        chartdata3.add(ChartData('JAN', jan.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==2)
+       {
+        chartdata3.add(ChartData('FEB', feb.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==3)
+       {
+        chartdata3.add(ChartData('MAR', mar.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==4)
+       {
+        chartdata3.add(ChartData('APR', apr.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==5)
+       {
+        chartdata3.add(ChartData('MAY', may.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==6)
+       {
+        chartdata3.add(ChartData('JUN', jun.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==7)
+       {
+        chartdata3.add(ChartData('JUL', july.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==8)
+       {
+        chartdata3.add(ChartData('AUG', aug.toDouble(), Colors.teal),);
+       }
+       if(curmonth2==9)
+       {
+        chartdata3.add(ChartData('SEPT', sept.toDouble(), Colors.teal),);
+       }if(curmonth2==10)
+       {
+      
+        chartdata3.add(ChartData('OCT', oct.toDouble(), Colors.teal),);
+       }if(curmonth2==11)
+       {
+        chartdata3.add(ChartData('NOV', nov.toDouble(), Colors.teal),);
+       }if(curmonth2==12)
+       {
+        chartdata3.add(ChartData('DEC', dec.toDouble(), Colors.teal),);
+       }
+       curmonth2++;
+      }
+      // chartdata3=chartdata3.reversed.toList();
+      // chartdata3=List.from(chartdata3.reversed);
+    
+    
+    
+  }
   getData() async {
 
   await FirebaseFirestore.instance.collection("property_main").get().then((value) {
     for(var i in value.docs) {
+        TotalProperties++;
         //  print("nah didnt enter the loop");
-        
+        TotalRentpermonth=TotalRentpermonth+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        // TotalProperties++;
+        if (i["Property_Details"]["Property_Status"]["Vacant"] == true ) {
+          TotalVacant = TotalVacant + 1;
+        }
+
+        if(i["Property_Details"]["Property_Status"]["Occupied"]==true)
+        {
+           TotalOccupied++;
+           print("totaloccuipied");
+        }
         if((i["Property_Details"]["Property_Types"]["Residential"])==true)
         {
           print(" entered the loop");
@@ -118,30 +414,130 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     }
     // suggestionslist=Properties;
   });
-}
-getData2() async {
+  }
+  double Rentpermonthyield=0;
+  double Assetpermonthyield=0;
+  double ResRentpermonthyield=0;
+  double ResAssetpermonthyield=0;
+  double one=0;
+  double two=0;
+  double three=0;
+  double four=0;
+  double five=0;
+  double finalone=0;
+  double finaltwo=0;
+  double finalthree=0;
+  double finalfour=0;
+  double finalfive=0;
+
+    double BankRentpermonthyield=0;
+  double BankAssetpermonthyield=0;
+    double MNCRentpermonthyield=0;
+  double MNCAssetpermonthyield=0;
+    double WareRentpermonthyield=0;
+  double WareAssetpermonthyield=0;
+    double CommRentpermonthyield=0;
+  double CommAssetpermonthyield=0;
+   
+   int res=0;
+    int bank=0;
+     int comm=0;
+      int mnc=0;
+       int ware=0;
+       
+  getData3() async {
 
   await FirebaseFirestore.instance.collection("property_main").get().then((value) {
     for(var i in value.docs) {
+        
         //  print("nah didnt enter the loop");
         
+        
+       
         if((i["Property_Details"]["Property_Types"]["Residential"])==true)
         {
-          print(" entered the loop");
-          TotalResProp=TotalResProp+1;
-            TotalResRent=TotalResRent+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
-          print("Totalt rent 11");
-          print(TotalResProp);
+        
+           ResRentpermonthyield=ResRentpermonthyield+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        ResAssetpermonthyield=ResAssetpermonthyield+double.parse(i["Property_Details"]["Asset"]);
+          one=one +(ResRentpermonthyield*100/ResAssetpermonthyield);
+          
+          res++;
+        }
+        if(i["Property_Details"]["Property_Types"]["Bank"]==true)
+        {
+            BankRentpermonthyield=BankRentpermonthyield+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        BankAssetpermonthyield=BankAssetpermonthyield+double.parse(i["Property_Details"]["Asset"]);
+        two=two+(BankRentpermonthyield*100/BankAssetpermonthyield);
+        bank++;
+        print("ggggggggggggggggggggggggggggggggggggg");
+        print(two);
+        print("ggggggggggggggggggggggggggggggggggggg");
+        }
+         if(i["Property_Details"]["Property_Types"]["Commercial"]==true)
+        {
+           CommRentpermonthyield=CommRentpermonthyield+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        CommAssetpermonthyield=CommAssetpermonthyield+double.parse(i["Property_Details"]["Asset"]);
+        three=three+(CommRentpermonthyield*100/CommAssetpermonthyield);
+        comm++;
         }
         
+         if(i["Property_Details"]["Property_Types"]["MNC"]==true)
+        {
+          MNCRentpermonthyield=MNCRentpermonthyield+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        MNCAssetpermonthyield=MNCAssetpermonthyield+double.parse(i["Property_Details"]["Asset"]);
+        four=four+(MNCRentpermonthyield*100/MNCAssetpermonthyield);
+        mnc++;
+        }
+         if(i["Property_Details"]["Property_Types"]["Warehouse"]==true)
+        {
+            WareRentpermonthyield=WareRentpermonthyield+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        WareAssetpermonthyield=WareAssetpermonthyield+double.parse(i["Property_Details"]["Asset"]);
+        five=five + (WareRentpermonthyield*100/WareAssetpermonthyield);
+        ware++;
+        }
        
 
         //  print("nah didnt enter the loop2");
       // print("getdata called");
+
+    
     }
+     if(res!=0)
+     {
+         finalone=one/res;
+   
+     }
+     if(bank!=0)
+     {
+         finaltwo=two/bank;
+   
+     }
+     if(comm!=0)
+     {
+         finalthree=three/comm;
+   
+     }
+     if(mnc!=0)
+     {
+         finalfour=four/mnc;
+   
+     }
+     if(ware!=0)
+     {
+         finalfive=five/ware;
+   
+     }
+
     // suggestionslist=Properties;
   });
 }
+// getData2() async {
+
+//   await FirebaseFirestore.instance.collection("property_main").get().then((value) {
+//     if(value.)
+//     // suggestionslist=Properties;
+//   });
+// }
 
 
 
@@ -153,17 +549,30 @@ getData2() async {
        return value.docs; // Access your after your get the data
      });
 }
-  
-   
+  List<ChartData> chartdata3=[];
+ 
   
   
   void initState()  {
     ()async{
       await getData();
       setState(() {
+        // getData();
+      });
+    }();
+    ()async{
+      await getData2();
+      setState(() {
         
       });
     }();
+    ()async{
+      await getData3();
+      setState(() {
+        
+      });
+    }();
+   
 
       super.initState();
    
@@ -188,7 +597,16 @@ getData2() async {
             ChartData('Commercial', TotalCommRent.toDouble(), Colors.deepOrange),
             ChartData('Warehouse', TotalWareRent.toDouble(), Colors.green)
         ];
+         final List<ChartData> chartData4= [
+            ChartData('Residential',finalone, Colors.teal),
+            ChartData('Bank', finaltwo, Colors.orange),
+            ChartData('Commercial',finalthree, Colors.brown),
+            ChartData('MNC',finalfour, Colors.deepOrange),
+            ChartData('Warehouse', finalfive, Colors.green)
+        ];
+        
     return Scaffold(
+      backgroundColor: Colors.black,
      body:ListView(
   padding: const EdgeInsets.all(8),
   children: <Widget>[
@@ -196,7 +614,29 @@ getData2() async {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(height: 60,),
-        Padding(
+        Text(
+                              ('Overall Overview'),
+                              style: TextStyle(
+                                fontWeight:FontWeight.bold,
+                                
+                                fontSize: 25,
+                                color: Colors.white,
+                                
+                              ),
+                              
+                            ),
+        Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(11),
+                            ),
+
+                child:Column(
+                   children:
+                    
+                    [Padding(
           padding: const EdgeInsets.only(left: 50.0,right:50.0),
           
           child: Row(
@@ -205,21 +645,21 @@ getData2() async {
               Text(
                               ('Monthly Rental Income'),
                               style: TextStyle(
-                                fontWeight:FontWeight.bold,
+                                // fontWeight:FontWeight.bold,
                                 
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: Colors.white,
                                 
                               ),
                               
                             ),
                             Text(
-                              (' 56'),
+                              (TotalRentpermonth.toString()),
                               style: TextStyle(
-                                fontWeight:FontWeight.bold,
+                                // fontWeight:FontWeight.bold,
                                 
-                                fontSize: 20,
-                                color: Colors.black,
+                                fontSize: 15,
+                                color: Colors.white,
                                 
                               ),
                               
@@ -229,6 +669,7 @@ getData2() async {
         ),
         SizedBox(height: 10,),
         Padding(
+          
           padding: const EdgeInsets.only(left: 50.0,right:50.0),
           
           child: Row(
@@ -237,10 +678,10 @@ getData2() async {
               Text(
                               ('Average Yield'),
                               style: TextStyle(
-                                fontWeight:FontWeight.bold,
+                                // fontWeight:FontWeight.bold,
                                 
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: Colors.white,
                                 
                               ),
                               
@@ -248,113 +689,288 @@ getData2() async {
                             Text(
                               (' 56'),
                               style: TextStyle(
-                                fontWeight:FontWeight.bold,
+                                // fontWeight:FontWeight.bold,
                                 
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: Colors.white,
                                 
                               ),
                               
                             ),
             ],
           ),
-        ),
-        SizedBox(height: 45,),
-        InkWell(
-            onTap: () {
-              
-            },
-            child: Column(
-            children: [
-              PieChart(
-              data: const [
-                PieChartData(Colors.purple, 55),
-                PieChartData(Colors.blue, 45),
-                
-              ],
-              radius: 90,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    'Total',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25
-                    ),
-                  ),
-                  Text('163',
-                  style: TextStyle(
-                    fontSize: 20
-                  ),),
-                ],
+        ),],
+
+                )
               ),
-            ),
-            SizedBox(height: 40,),
-            Padding(padding:  const EdgeInsets.only(left: 15.0,right:15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                              width: 30,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            
-                    Container(
-                      width: MediaQuery.of(context).size.width/3,
-                      child: Text(
-                        'Vacant : 39',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                              width: 30,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.purple,
-                              ),
-                            ),
-                            
-                    Container(
-                      width: MediaQuery.of(context).size.width/3,
-                      child: Text(
-                        'Occupied : 134',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+        // SizedBox(height: 45,),
+//         InkWell(
+//             onTap: () {
+              
+//             },
+//             child: Column(
+//             children: [
+//               PieChart(
+//               data: const [
+//                 PieChartData(Colors.purple, 55),
+//                 PieChartData(Colors.blue, 45),
                 
-              ],
-            )
-,),
-SizedBox(height: 50,),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+//               ],
+//               radius: 90,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children:  [
+//                   Text(
+//                     'Total',
+//                     style: TextStyle(
+//                       // fontWeight: FontWeight.bold,
+//                       fontSize: 25,
+//                       color: Colors.white
+//                     ),
+//                   ),
+//                   Text((TotalProperties).toString(),
+//                   style: TextStyle(
+//                     fontSize: 20,
+//                     color: Colors.white
+//                   ),),
+//                 ],
+//               ),
+//             ),
+//             SizedBox(height: 40,),
+//             Padding(padding:  const EdgeInsets.only(left: 15.0,right:15.0),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.start,
+//                   children: [
+//                     Container(
+//                               width: 30,
+//                               height: 20,
+//                               decoration: BoxDecoration(
+//                                 shape: BoxShape.circle,
+//                                 color: Colors.blue,
+//                               ),
+//                             ),
+                            
+//                     Container(
+//                       width: MediaQuery.of(context).size.width/3,
+//                       child: Text(
+//                         'Vacant : $TotalVacant',
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 18,
+//                           color: Colors.white
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                  Row(
+//                   mainAxisAlignment: MainAxisAlignment.end,
+//                   children: [
+//                     Container(
+//                               width: 30,
+//                               height: 20,
+//                               decoration: BoxDecoration(
+//                                 shape: BoxShape.circle,
+//                                 color: Colors.purple,
+//                               ),
+//                             ),
+                            
+//                     Container(
+//                       width: MediaQuery.of(context).size.width/3,
+//                       child: Text(
+//                         'Occupied : $TotalOccupied',
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 18,
+//                           color: Colors.white
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+                
+//               ],
+//             )
+// ,),
+// SizedBox(height: 50,),
+      
+             
+
+                 
+     
+//             ],
+//           ),
+//           ),Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceAround,
+//         children: [
+//           Card(
+              
+    
+//             // shadowColor: Color.fromARGB(255, 180, 38, 236),
+//             color: Color(0xFF1E1E1E),
+//           elevation: 8,
+//           clipBehavior: Clip.antiAlias,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(24),
+//           ),
+//             child:
+//            // ignore: unnecessary_new
+           
+              
+             
+//               Container(
+              
+//               decoration: BoxDecoration(
+//                color: Color.fromARGB(18, 113, 125, 137)
+//               ),
+//               padding: EdgeInsets.all(16),
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+                 
+//                                Container(
+//                               width: 30,
+//                               height: 20,
+//                               decoration: BoxDecoration(
+//                                 shape: BoxShape.circle,
+//                                 color: Colors.purple,
+//                               ),
+//                             ),
+//                             SizedBox(height: 10,),
+                            
+                      
+//                          Text(
+//                         (TotalProperties).toString(),
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 25,
+//                           color: Colors.white
+//                         ),
+//                       ),
+//                       SizedBox(height: 10,),
+//                         Text(
+//                         'Total Properties',
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 18,
+//                           color: Colors.white
+//                         ),
+//                       ),
+       
+                  
+                 
+        
+//        ],
+//               ),
+              
+//           ),
+          
+          
+          
+          
+    
+           
+           
+//         ),
+//         Card(
+              
+    
+//             // shadowColor: Color.fromARGB(255, 180, 38, 236),
+//             color: Color(0xFF1E1E1E),
+//           elevation: 8,
+//           clipBehavior: Clip.antiAlias,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(24),
+//           ),
+//             child:
+//            // ignore: unnecessary_new
+           
+              
+             
+//               Container(
+              
+//               decoration: BoxDecoration(
+//                color: Color.fromARGB(18, 113, 125, 137)
+//               ),
+//               padding: EdgeInsets.all(16),
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+                 
+//                                Container(
+//                               width: 30,
+//                               height: 20,
+//                               decoration: BoxDecoration(
+//                                 shape: BoxShape.circle,
+//                                 color: Colors.purple,
+
+//                               ),
+//                             ),
+//                             SizedBox(height: 10,),
+                            
+                      
+//                          Text(
+//                         TotalOccupied.toString(),
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 25,
+//                           color: Colors.white
+//                         ),
+//                       ),
+//                       SizedBox(height: 10,),
+//                         Text(
+//                         'Occupied Properties',
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 18,
+//                           color: Colors.white
+//                         ),
+//                       ),
+       
+                  
+                 
+        
+//        ],
+//               ),
+              
+//           ),
+          
+          
+          
+          
+    
+           
+           
+//         ),
+//         ],
+//       ),
+
+      // Text("Asdsad"),
+      Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+
+                child:Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width/2,
+                      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Card(
+          Container(
+            width:MediaQuery.of(context).size.width/2 ,
+            child: Card(
               
     
             // shadowColor: Color.fromARGB(255, 180, 38, 236),
+            color: Color(0xFF1E1E1E),
           elevation: 8,
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
@@ -380,25 +996,27 @@ SizedBox(height: 50,),
                               height: 20,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.purple,
+                                color:Colors.blue,
                               ),
                             ),
                             SizedBox(height: 10,),
                             
                       
                          Text(
-                        '164',
+                        (TotalVacant).toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25
+                          fontSize: 25,
+                          color: Colors.white
                         ),
                       ),
                       SizedBox(height: 10,),
                         Text(
-                        'Total Properties',
+                        'Vacant Properties',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18
+                          fontSize: 18,
+                          color: Colors.white
                         ),
                       ),
        
@@ -417,10 +1035,14 @@ SizedBox(height: 50,),
            
            
         ),
-        Card(
+          ),
+        Container(
+          width: MediaQuery.of(context).size.width/2,
+          child: Card(
               
     
             // shadowColor: Color.fromARGB(255, 180, 38, 236),
+            color: Color(0xFF1E1E1E),
           elevation: 8,
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
@@ -447,16 +1069,18 @@ SizedBox(height: 50,),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.purple,
+
                               ),
                             ),
                             SizedBox(height: 10,),
                             
                       
                          Text(
-                        '139',
+                        TotalOccupied.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25
+                          fontSize: 25,
+                          color: Colors.white
                         ),
                       ),
                       SizedBox(height: 10,),
@@ -464,7 +1088,8 @@ SizedBox(height: 50,),
                         'Occupied Properties',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18
+                          fontSize: 17,
+                          color: Colors.white
                         ),
                       ),
        
@@ -483,24 +1108,67 @@ SizedBox(height: 50,),
            
            
         ),
+        )
         ],
-      )
-             
+      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width/2.5,
+                      height: MediaQuery.of(context).size.width/2.5 ,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [PieChart(
+              data: const [
+                PieChartData(Colors.purple, 55),
+                PieChartData(Colors.blue, 45),
+                
+              ],
+              radius: 60,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:  [
+                  Text(
+                    'Total',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Colors.white
+                    ),
+                  ),
+                  Text((TotalProperties).toString(),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white
+                  ),),
+                ],
+              ),
+            ),]
+            ,)
 
-                 
-     
-            ],
-          ),
-          ),
+
+                    )
+                  ],
+                )
+              ),
            Container(
              width: MediaQuery.of(context).size.width,
             height: 350,
             child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
-              Column(
+              Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+
+                child:Column(
                 children: [
-                  Text("No of Property types"),
+                  Text("No of Property types",
+                  style: TextStyle(color: Colors.white),),
                   Container(
                 width: 380,
                 
@@ -520,10 +1188,20 @@ SizedBox(height: 50,),
                     )
                 ),
                 ],
+              ) ,
               ),
-              Column(
+              Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+
+                child:Column(
                 children: [
-                  Text("Total Rent per Property Type"),
+                  Text("Total Rent per Property Type",
+                  style: TextStyle(color: Colors.white),),
                   Container(
                 width: 380,
                 
@@ -543,6 +1221,74 @@ SizedBox(height: 50,),
                     )
                 ),
                 ],
+              ),
+              ),
+              
+              Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+
+                child:Column(
+                children: [
+                  Text("TTM",
+                  style: TextStyle(color: Colors.white),),
+                  Container(
+                width: 400,
+                
+                    child: SfCartesianChart(
+                        primaryXAxis: CategoryAxis(
+                          
+                        ),
+                        series: <CartesianSeries>[
+                            ColumnSeries<ChartData, String>(
+                                dataSource: chartdata3,
+                                xValueMapper: (ChartData data, _) => data.x,
+                                yValueMapper: (ChartData data, _) => data.y,
+                                // Map color for each data points from the data source
+                                pointColorMapper: (ChartData data, _) => data.color
+                            )
+                        ]
+                    )
+                ),
+                ],
+              ),
+              ),
+              Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+
+                child:Column(
+                children: [
+                  Text("Yield",
+                  style: TextStyle(color: Colors.white),),
+                  Container(
+                width: 380,
+                
+                    child: SfCartesianChart(
+                        primaryXAxis: CategoryAxis(
+                          
+                        ),
+                        series: <CartesianSeries>[
+                            ColumnSeries<ChartData, String>(
+                                dataSource: chartData4,
+                                xValueMapper: (ChartData data, _) => data.x,
+                                yValueMapper: (ChartData data, _) => data.y,
+                                // Map color for each data points from the data source
+                                pointColorMapper: (ChartData data, _) => data.color
+                            )
+                        ]
+                    )
+                ),
+                ],
+              ),
               ),
                 // Container(
                 //   width: 380,
@@ -584,7 +1330,8 @@ SizedBox(height: 50,),
                         'Performance',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25
+                          fontSize: 25,
+                          color: Colors.white
                         ),
                       ),
                       SizedBox(height: 20,),
@@ -750,7 +1497,7 @@ class PieChart extends StatelessWidget {
   PieChart({
     required this.data,
     required this.radius,
-    this.strokeWidth = 14,
+    this.strokeWidth = 11,
     this.child,
     Key? key,
   })  : // make sure sum of data is never ovr 100 percent

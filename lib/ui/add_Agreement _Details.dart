@@ -20,7 +20,7 @@ class _AddAgreementState extends State<AddAgreement> {
   @override
   Widget build(BuildContext context) {
      CollectionReference property_main=FirebaseFirestore.instance.collection("property_main");
-    
+     
     return Scaffold(
       body: Container(
         child: Padding(

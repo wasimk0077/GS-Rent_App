@@ -764,9 +764,17 @@ class _UpdateDiscoverVacantState extends State<UpdateDiscoverVacant> {
                       // print(_Tenant_name.text);
                       if(Residentialcheck==false)
                       {
-                        DocUser.update
+                        DocUser.set
                             ({
-                              
+                              'Property_Details':{
+                                'Property_Status':{
+                                  "Occupied":true,
+                                  "Vacant":false,
+                                  "Upcoming":false,
+
+                                  
+                                }
+                              },
                               'Agreement_Details': {
                                 'Start_Date':
                                     "${selectedDate.toLocal()}".split(' ')[0],
@@ -790,7 +798,7 @@ class _UpdateDiscoverVacantState extends State<UpdateDiscoverVacant> {
                               ,
                             
                               
-                            })
+                            }, SetOptions(merge: true))
                             .then((value) => print("User Added"))
                             .catchError((error) => print("failed to add"));}
                             else{
@@ -814,7 +822,7 @@ class _UpdateDiscoverVacantState extends State<UpdateDiscoverVacant> {
                               },
                               
                               
-                            })
+                            },)
                             .then((value) => print("User Added"))
                             .catchError((error) => print("failed to add"));
                             }

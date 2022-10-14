@@ -59,6 +59,7 @@ class _PreAddState extends State<PreAdd> {
     // }
     print(dropdownvalue);
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -88,15 +89,15 @@ class _PreAddState extends State<PreAdd> {
             child: DropdownButtonFormField(
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2),
+                  borderSide: BorderSide(color:Color(0xFF1E1E1E), width: 2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2),
+                  borderSide: BorderSide(color:Color(0xFF1E1E1E), width: 2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 filled: true,
-                fillColor: Colors.blueAccent,
+                fillColor: Color(0xFF1E1E1E),
               ),
               value: dropdownvalue,
               icon: const Icon(Icons.keyboard_arrow_down),

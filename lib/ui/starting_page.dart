@@ -1,5 +1,7 @@
 import 'package:authh_app/ui/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import './discover_vacant.dart';
 
 void main() => runApp(Starting_page());
 
@@ -18,12 +20,20 @@ class Starting_page extends StatelessWidget {
               image: AssetImage('assets/logo.png'),
             ),
             SizedBox(
-              height: 70, //height of button
-              width: 200,
+              height: MediaQuery.of(context).size.height / 9, //height of button
+              width: MediaQuery.of(context).size.width / 2,
               child: Container(
-                margin: const EdgeInsets.only(top: 30.0),
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 20),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DiscoverVacant(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     primary:
                         Color.fromARGB(255, 196, 22, 22), // Background color
@@ -33,16 +43,19 @@ class Starting_page extends StatelessWidget {
                         borderRadius: BorderRadius.circular(
                             10)), // Text Color (Foreground color)
                   ),
-                  child: const Text(
-                    'Log in with Google',
-                    style: TextStyle(fontSize: 20),
+                  child: FittedBox(
+                    child: Text(
+                      "Guest",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                 ),
               ),
             ),
             SizedBox(
-              height: 50, //height of button
-              width: 200,
+              height:
+                  MediaQuery.of(context).size.height / 13, //height of button
+              width: MediaQuery.of(context).size.width / 2,
               child: Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: ElevatedButton(
@@ -62,9 +75,11 @@ class Starting_page extends StatelessWidget {
                         borderRadius: BorderRadius.circular(
                             10)), // Text Color (Foreground color)
                   ),
-                  child: const Text(
-                    'Sign up with Mail',
-                    style: TextStyle(fontSize: 20),
+                  child: FittedBox(
+                    child: Text(
+                      "Admin/Employee",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                 ),
               ),
