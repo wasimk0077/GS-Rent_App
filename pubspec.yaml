@@ -73,7 +73,7 @@ dependencies:
   date_time_picker: ^2.1.0
   # geocoder: ^0.2.1
   syncfusion_flutter_charts: ^20.2.48
-  charts_flutter: ^0.11.0
+  # charts_flutter: ^0.11.0
   # pdf: ^3.8.3
   
   # open_file: 
@@ -113,6 +113,7 @@ dependencies:
   universal_html: ^2.0.8
   permission: ^0.1.7
   flutter_full_pdf_viewer: 1.0.6
+  d_chart: ^0.0.2
 
   
 

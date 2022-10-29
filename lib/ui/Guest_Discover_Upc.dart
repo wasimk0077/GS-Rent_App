@@ -1,6 +1,9 @@
 import 'package:authh_app/ui/BottomNavbar.dart';
+import 'package:authh_app/ui/Guest_Discover_Vac.dart';
+import 'package:authh_app/ui/Guest_details_view.dart';
 import 'package:authh_app/ui/add_property.dart';
 import 'package:authh_app/ui/home_view.dart';
+import 'package:authh_app/ui/starting_page.dart';
 import 'package:authh_app/ui/update_disc_upc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,14 +15,14 @@ import './discover_vacant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class DiscoverUpcoming extends StatefulWidget {
-  const DiscoverUpcoming({Key? key}) : super(key: key);
+class GuestDiscoverUpcoming extends StatefulWidget {
+  const GuestDiscoverUpcoming({Key? key}) : super(key: key);
 
   @override
-  State<DiscoverUpcoming> createState() => _DiscoverUpcomingState();
+  State<GuestDiscoverUpcoming> createState() => _GuestDiscoverUpcomingState();
 }
 
-class _DiscoverUpcomingState extends State<DiscoverUpcoming> {
+class _GuestDiscoverUpcomingState extends State<GuestDiscoverUpcoming> {
   final Stream<QuerySnapshot> property_main =
       FirebaseFirestore.instance.collection('property_main').snapshots();
   @override
@@ -29,7 +32,7 @@ class _DiscoverUpcomingState extends State<DiscoverUpcoming> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MyNavigationBar(),
+            builder: (context) => Starting_page(),
           ),
         );
         return true;
@@ -56,7 +59,7 @@ class _DiscoverUpcomingState extends State<DiscoverUpcoming> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DiscoverVacant(),
+                              builder: (context) => GuestDiscoverVacant(),
                             ),
                           );
                         },
@@ -88,7 +91,7 @@ class _DiscoverUpcomingState extends State<DiscoverUpcoming> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DiscoverUpcoming(),
+                              builder: (context) => GuestDiscoverUpcoming(),
                             ),
                           );
                         },
@@ -131,7 +134,14 @@ class _DiscoverUpcomingState extends State<DiscoverUpcoming> {
                                         // ignore: unnecessary_new
                                         new InkWell(
                                       onTap: () {
-                                        print("Hello welocme to second page");
+                                        Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GuestDetailsView(data.docs[index].reference.id
+                                          .toString()
+                                    ),
+                                  ),
+                                );
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -206,30 +216,30 @@ class _DiscoverUpcomingState extends State<DiscoverUpcoming> {
                                                                 .height *
                                                             0.015,
                                                   ),
-                                                  Column(children: [
-                                                    FloatingActionButton(
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                UpdateDiscoverUpcoming(
-                                                              (data.docs[index]
-                                                                  .reference.id
-                                                                  .toString()),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                      backgroundColor:
-                                                          Colors.black,
-                                                      child: Icon(
-                                                        Icons
-                                                            .keyboard_control_sharp,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ])
+                                                  // Column(children: [
+                                                  //   FloatingActionButton(
+                                                  //     onPressed: () {
+                                                  //       Navigator.push(
+                                                  //         context,
+                                                  //         MaterialPageRoute(
+                                                  //           builder: (context) =>
+                                                  //               UpdateDiscoverUpcoming(
+                                                  //             (data.docs[index]
+                                                  //                 .reference.id
+                                                  //                 .toString()),
+                                                  //           ),
+                                                  //         ),
+                                                  //       );
+                                                  //     },
+                                                  //     backgroundColor:
+                                                  //         Colors.black,
+                                                  //     child: Icon(
+                                                  //       Icons
+                                                  //           .keyboard_control_sharp,
+                                                  //       color: Colors.white,
+                                                  //     ),
+                                                  //   ),
+                                                  // ])
                                                   // // Row(
                                                   // //   children: [
                                                   // //        new Image.asset('assets/images/avatar.png'),

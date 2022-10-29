@@ -29,16 +29,16 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:universal_html/html.dart';
 
-class DetailsView extends StatefulWidget {
+class GuestDetailsView extends StatefulWidget {
   // const DetailsView({ Key? key }) : super(key: key);
   final String docID; //if you have multiple values add here
-  DetailsView(this.docID, {Key? key}) : super(key: key);
+  GuestDetailsView(this.docID, {Key? key}) : super(key: key);
 
   @override
-  State<DetailsView> createState() => _DetailsViewState();
+  State<GuestDetailsView> createState() => _GuestDetailsViewState();
 }
 
-class _DetailsViewState extends State<DetailsView> {
+class _GuestDetailsViewState extends State<GuestDetailsView> {
   final List<Map<String, dynamic>> clityList = [
     // {"address":Address,"image":"https://cdn.britannica.com/25/143425-050-A26CDA50/apartment-building-Calgary-Alberta.jpg","lat":locations[0],"lng":locations[1]}
   ];
@@ -132,16 +132,16 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
   final List<String> NoimageList=["https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"];
   int _currentIndex = 0;
 
-  final _bottomNavigationBarItems = [
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.blue), label: "1"),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.green), label: "2"),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.pink), label: "3"),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.star, color: Colors.red), label: "4"),
-  ];
+  // final _bottomNavigationBarItems = [
+  //   const BottomNavigationBarItem(
+  //       icon: Icon(Icons.star, color: Colors.blue), label: "1"),
+  //   const BottomNavigationBarItem(
+  //       icon: Icon(Icons.star, color: Colors.green), label: "2"),
+  //   const BottomNavigationBarItem(
+  //       icon: Icon(Icons.star, color: Colors.pink), label: "3"),
+  //   const BottomNavigationBarItem(
+  //       icon: Icon(Icons.star, color: Colors.red), label: "4"),
+  // ];
 
   void initState() {
     // TODO: implement initState
@@ -452,7 +452,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
 
                               if (snapshot.hasData) {
                                 var output = snapshot.data!.data();
-                                var value = output!['Firm_Details']['Firm_name'];
+                                var value = output!['Property_Details']['Firm'];
                                 return Text(
                                   ('Firm= $value'),
                                   style: TextStyle(
@@ -476,7 +476,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                               if (snapshot.hasData) {
                                 var output = snapshot.data!.data();
                                 var value =
-                                    output!['Tenant_Details']['Tenant_name'];
+                                    output!['Property_Details']['Tenant'];
                                 return Text(
                                   ('Tenant= $value'),
                                   style: TextStyle(
@@ -491,28 +491,28 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                             },
                           ),
                           SizedBox(height: 8),
-                          // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                          //   stream: collection.doc(widget.docID).snapshots(),
-                          //   builder: (_, snapshot) {
-                          //     if (snapshot.hasError)
-                          //       return Text('Error = ${snapshot.error}');
+                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                            stream: collection.doc(widget.docID).snapshots(),
+                            builder: (_, snapshot) {
+                              if (snapshot.hasError)
+                                return Text('Error = ${snapshot.error}');
 
-                          //     if (snapshot.hasData) {
-                          //       var output = snapshot.data!.data();
-                          //       var value = output!['Property_Details']['Firm'];
-                          //       return Text(
-                          //         ('Value = $value'),
-                          //         style: TextStyle(
-                          //           fontWeight: FontWeight.bold,
-                          //           fontSize: 20,
-                          //           color: Colors.white,
-                          //         ),
-                          //       );
-                          //     }
+                              if (snapshot.hasData) {
+                                var output = snapshot.data!.data();
+                                var value = output!['Property_Details']['Firm'];
+                                return Text(
+                                  ('Value = $value'),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }
 
-                          //     return Center(child: CircularProgressIndicator());
-                          //   },
-                          // ),
+                              return Center(child: CircularProgressIndicator());
+                            },
+                          ),
                          
                         ],
                       ),
@@ -832,108 +832,108 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                             },
                           ),
                           SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+                          // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          //   stream: collection.doc(widget.docID).snapshots(),
+                          //   builder: (_, snapshot) {
+                          //     if (snapshot.hasError)
+                          //       return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Property_Details']['Firm'];
-                                return Text(
-                                  ('Firm= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+                          //     if (snapshot.hasData) {
+                          //       var output = snapshot.data!.data();
+                          //       var value = output!['Property_Details']['Firm'];
+                          //       return Text(
+                          //         ('Firm= $value'),
+                          //         style: TextStyle(
+                          //           fontWeight: FontWeight.bold,
+                          //           fontSize: 32,
+                          //           color: Colors.white,
+                          //         ),
+                          //       );
+                          //     }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
+                          //     return Center(child: CircularProgressIndicator());
+                          //   },
+                          // ),
                           SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+                          // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          //   stream: collection.doc(widget.docID).snapshots(),
+                          //   builder: (_, snapshot) {
+                          //     if (snapshot.hasError)
+                          //       return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Property_Details']['Tenant'];
-                                return Text(
-                                  ('Tenant= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+                          //     if (snapshot.hasData) {
+                          //       var output = snapshot.data!.data();
+                          //       var value =
+                          //           output!['Property_Details']['Tenant'];
+                          //       return Text(
+                          //         ('Tenant= $value'),
+                          //         style: TextStyle(
+                          //           fontWeight: FontWeight.bold,
+                          //           fontSize: 32,
+                          //           color: Colors.white,
+                          //         ),
+                          //       );
+                          //     }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+                          //     return Center(child: CircularProgressIndicator());
+                          //   },
+                          // ),
+                          // SizedBox(height: 8),
+                          // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          //   stream: collection.doc(widget.docID).snapshots(),
+                          //   builder: (_, snapshot) {
+                          //     if (snapshot.hasError)
+                          //       return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Property_Details']['Firm'];
-                                return Text(
-                                  ('Value = $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+                          //     if (snapshot.hasData) {
+                          //       var output = snapshot.data!.data();
+                          //       var value = output!['Property_Details']['Firm'];
+                          //       return Text(
+                          //         ('Value = $value'),
+                          //         style: TextStyle(
+                          //           fontWeight: FontWeight.bold,
+                          //           fontSize: 32,
+                          //           color: Colors.white,
+                          //         ),
+                          //       );
+                          //     }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
+                          //     return Center(child: CircularProgressIndicator());
+                          //   },
+                          // ),
                          
                         ],
                       ),
-                      Column(
-                        children: [
-                          if (n == 1)
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  child: FloatingActionButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdateDetailsViews(widget.docID),
-                                        ),
-                                      );
-                                    },
-                                    backgroundColor: Colors.black,
-                                    child: Icon(
-                                      Icons.keyboard_control_sharp,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          else
-                            Container()
-                        ],
-                      )
+                      // Column(
+                      //   children: [
+                      //     if (n == 1)
+                      //       Column(
+                      //         mainAxisAlignment: MainAxisAlignment.end,
+                      //         children: [
+                      //           Container(
+                      //             child: FloatingActionButton(
+                      //               onPressed: () {
+                      //                 Navigator.push(
+                      //                   context,
+                      //                   MaterialPageRoute(
+                      //                     builder: (context) =>
+                      //                         UpdateDetailsViews(widget.docID),
+                      //                   ),
+                      //                 );
+                      //               },
+                      //               backgroundColor: Colors.black,
+                      //               child: Icon(
+                      //                 Icons.keyboard_control_sharp,
+                      //                 color: Colors.white,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       )
+                      //     else
+                      //       Container()
+                      //   ],
+                      // )
                     ],
                   ),
                 ),

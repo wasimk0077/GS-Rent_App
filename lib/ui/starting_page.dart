@@ -1,3 +1,5 @@
+import 'package:authh_app/ui/Guest_Auth.dart';
+import 'package:authh_app/ui/Guest_Discover_Vac.dart';
 import 'package:authh_app/ui/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -30,7 +32,7 @@ class Starting_page extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DiscoverVacant(),
+                        builder: (context) => GuestAuthentication(),
                       ),
                     );
                   },

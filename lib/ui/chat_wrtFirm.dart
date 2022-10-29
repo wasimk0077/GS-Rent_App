@@ -147,9 +147,13 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                     width: 120,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF1E1E1E), // background
-                        // onPrimary: Colors.red, // foreground
-                      ),
+                          // primary: Color(0xFF221A2C), // background
+                          // onPrimary: Colors.green, // foreground
+                          primary: Color(0xFF1E1E1E),
+                          shadowColor: Colors.yellow,
+                              elevation: 20,
+ // foreground
+                        ),
                       onPressed: () async {
                         // Navigator.push(
                         //   context,

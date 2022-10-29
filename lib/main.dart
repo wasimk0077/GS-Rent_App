@@ -1,4 +1,5 @@
 import 'package:authh_app/ui/Analytics_page.dart';
+import 'package:authh_app/ui/BottomNavbar.dart';
 import 'package:authh_app/ui/Chat.dart';
 import 'package:authh_app/ui/DiscoverSlider.dart';
 import 'package:authh_app/ui/Pre_add.dart';
@@ -6,7 +7,7 @@ import 'package:authh_app/ui/add_property.dart';
 import 'package:authh_app/ui/authentication.dart';
 import 'package:authh_app/ui/chat_wrtFirm.dart';
 import 'package:authh_app/ui/chatwrtTenant.dart';
-import 'package:authh_app/ui/dummy.dart';
+// import 'package:authh_app/ui/dummy.dart';
 import 'package:authh_app/ui/excelgen.dart';
 import 'package:authh_app/ui/home_view.dart';
 import 'package:authh_app/ui/location.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Rent App',
-      home: Starting_page()
+      home: MyNavigationBar()
 
     );
   }

@@ -133,10 +133,14 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         'Property Name',
                         style: TextStyle(fontSize: 15),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF1E1E1E), // background
-                        // onPrimary: Colors.green, // foreground
-                      ),
+                         style: ElevatedButton.styleFrom(
+                          // primary: Color(0xFF221A2C), // background
+                          // onPrimary: Colors.green, // foreground
+                          primary: Color(0xFF1E1E1E),
+                          shadowColor: Colors.yellow,
+                              elevation: 20,
+ // foreground
+                        ),
                     ),
                   ),
                   SizedBox(width: 4),

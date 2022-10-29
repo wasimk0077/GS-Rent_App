@@ -357,7 +357,11 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
 
   await FirebaseFirestore.instance.collection("property_main").get().then((value) {
     for(var i in value.docs) {
-        TotalProperties++;
+
+      if (i["Property_Details"]["Property_Status"]["Upcoming"] != true ){
+TotalProperties++;
+      }
+        
         //  print("nah didnt enter the loop");
         TotalRentpermonth=TotalRentpermonth+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
         // TotalProperties++;
@@ -370,7 +374,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
            TotalOccupied++;
            print("totaloccuipied");
         }
-        if((i["Property_Details"]["Property_Types"]["Residential"])==true)
+        if((i["Property_Details"]["Property_Types"]["Residential"])==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true )
         {
           print(" entered the loop");
           TotalResProp=TotalResProp+1;
@@ -378,7 +382,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           print("Totalt rent 11");
           print(TotalResProp);
         }
-        if(i["Property_Details"]["Property_Types"]["Bank"]==true)
+        if(i["Property_Details"]["Property_Types"]["Bank"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true )
         {
             TotalBankProp=TotalBankProp+1;
             
@@ -387,7 +391,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
              print("Totalt bank rent 11");
             print(TotalBankRent);
         }
-         if(i["Property_Details"]["Property_Types"]["Commercial"]==true)
+         if(i["Property_Details"]["Property_Types"]["Commercial"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true)
         {
             TotalCommProp=TotalCommProp+1;
               TotalCommRent=TotalCommRent+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
@@ -397,12 +401,12 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         
         }
         
-         if(i["Property_Details"]["Property_Types"]["MNC"]==true)
+         if(i["Property_Details"]["Property_Types"]["MNC"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true)
         {
             TotalMNCProp=TotalMNCProp+1;
               TotalMNCRent=TotalMNCRent+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
         }
-         if(i["Property_Details"]["Property_Types"]["Warehouse"]==true)
+         if(i["Property_Details"]["Property_Types"]["Warehouse"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true)
         {
             TotalWareProp=TotalWareProp+1;
               TotalMNCRent=TotalMNCRent+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
@@ -417,8 +421,11 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   }
   double Rentpermonthyield=0;
   double Assetpermonthyield=0;
-  double ResRentpermonthyield=0;
-  double ResAssetpermonthyield=0;
+  List<double> Yields=[];
+  double TotalYield=0;
+  double Noofproperties=0;
+  double averageYield=0;
+  
   double one=0;
   double two=0;
   double three=0;
@@ -429,7 +436,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   double finalthree=0;
   double finalfour=0;
   double finalfive=0;
-
+double ResRentpermonthyield=0;
+  double ResAssetpermonthyield=0;
     double BankRentpermonthyield=0;
   double BankAssetpermonthyield=0;
     double MNCRentpermonthyield=0;
@@ -451,9 +459,21 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     for(var i in value.docs) {
         
         //  print("nah didnt enter the loop");
+
+ if (i["Property_Details"]["Property_Status"]["Upcoming"] != true ){
+        Noofproperties++;
+        Rentpermonthyield=Rentpermonthyield+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        Assetpermonthyield=Assetpermonthyield+double.parse(i["Property_Details"]["Asset"]);
+        TotalYield=TotalYield+(Rentpermonthyield*100/Assetpermonthyield);  
+        Yields.add((double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"])*100/double.parse(i["Property_Details"]["Asset"])));
+
+
+      }
         
         
-       
+        
+
+
         if((i["Property_Details"]["Property_Types"]["Residential"])==true)
         {
         
@@ -527,7 +547,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
          finalfive=five/ware;
    
      }
-
+     averageYield=(TotalYield/Noofproperties);
+     Yields.sort();
     // suggestionslist=Properties;
   });
 }
@@ -654,7 +675,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                               
                             ),
                             Text(
-                              (TotalRentpermonth.toString()),
+                              (TotalRentpermonth.toInt().toString()),
                               style: TextStyle(
                                 // fontWeight:FontWeight.bold,
                                 
@@ -687,7 +708,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                               
                             ),
                             Text(
-                              (' 56'),
+          (((averageYield).toInt()).toString()),
                               style: TextStyle(
                                 // fontWeight:FontWeight.bold,
                                 
@@ -1366,7 +1387,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                             
                       
                          Text(
-                        '15%',
+                        Yields.last.toInt().toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25
@@ -1424,7 +1445,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                             
                       
                          Text(
-                        '3.1%',
+                        Yields.first.toInt().toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25

@@ -64,7 +64,7 @@ class _PreAddState extends State<PreAdd> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: 40,
+            height: 90,
           ),
           Container(
             margin: const EdgeInsets.only(
@@ -73,7 +73,7 @@ class _PreAddState extends State<PreAdd> {
             child: Text(
               'Select the type of property',
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
             ),

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:authh_app/net/flutterfire.dart';
 import 'package:authh_app/ui/BottomSliderperProperty.dart';
 import 'package:authh_app/ui/ChangePassword.dart';
@@ -9,6 +8,7 @@ import 'package:authh_app/ui/Property_type_Res.dart';
 import 'package:authh_app/ui/Views.dart';
 import 'package:authh_app/ui/add_property.dart';
 import 'package:authh_app/ui/auth_as_Admin.dart';
+import 'package:authh_app/ui/authentication.dart';
 import 'package:authh_app/ui/barchart.dart';
 import 'package:authh_app/ui/details_view.dart';
 import 'package:authh_app/ui/discover_upcoming.dart';
@@ -23,6 +23,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,12 +31,75 @@ import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'categories_row.dart';
+import 'pie_chart_view.dart';
+
 class HomeView extends StatefulWidget {
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+
+
+
+
+    int TotalResProp=0;
+  int TotalBankProp=0;
+  int TotalCommProp=0;
+  int TotalWareProp=0;
+  int TotalMNCProp=0;
+   get_No_of_PropertyTypes() async {
+
+  await FirebaseFirestore.instance.collection("property_main").get().then((value) {
+    for(var i in value.docs) {
+
+//     
+        if((i["Property_Details"]["Property_Types"]["Residential"])==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true )
+        {
+          print(" entered the loop");
+          TotalResProp=TotalResProp+1;
+            
+        }
+        if(i["Property_Details"]["Property_Types"]["Bank"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true )
+        {
+            TotalBankProp=TotalBankProp+1;
+            
+            
+        }
+         if(i["Property_Details"]["Property_Types"]["Commercial"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true)
+        {
+            TotalCommProp=TotalCommProp+1;
+           
+        
+        }
+        
+         if(i["Property_Details"]["Property_Types"]["MNC"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true)
+        {
+            TotalMNCProp=TotalMNCProp+1;
+              // TotalMNCRent=TotalMNCRent+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        }
+         if(i["Property_Details"]["Property_Types"]["Warehouse"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true)
+        {
+            TotalWareProp=TotalWareProp+1;
+              // TotalMNCRent=TotalMNCRent+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        }
+       
+
+        //  print("nah didnt enter the loop2");
+      // print("getdata called");
+    }
+    // suggestionslist=Properties;
+  });
+  }
+
+
+
+
+
+
+
+
   int TotalRent = 0;
   int TotalVacant = 0;
   getData() async {
@@ -103,6 +167,13 @@ class _HomeViewState extends State<HomeView> {
         check();
       });
     }();
+    () async {
+      await get_No_of_PropertyTypes();
+      setState(() {
+        get_No_of_PropertyTypes();
+      });
+    }();
+    
     // print(MediaQuery.of(context).size.width);
 
     super.initState();
@@ -110,16 +181,31 @@ class _HomeViewState extends State<HomeView> {
 
   Widget build(BuildContext context) {
     print(MediaQuery.of(context).size.height);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return  WillPopScope(
+        onWillPop: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Authentication(),
+            ),
+          );
+          return true;
+        }, child: Scaffold(
+      // resizeToAvoidBottomInset: false,
       backgroundColor:Colors.black,
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
         
-        children: [
-          SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height:MediaQuery.of(context).size.height/1.05 ,
+        child:CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.black,
+            toolbarHeight: MediaQuery.of(context).size.height/1.5,
+            actions: [
+              Column(
+                children: [SizedBox(
             height: 30,
           ),
           Container(
@@ -139,35 +225,47 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                PieChart(
-                  data: const [
-                    PieChartData(Colors.purple, 50),
-                    PieChartData(Colors.blue, 5),
-                    PieChartData(Colors.orange, 15),
-                    PieChartData(Colors.green, 15),
-                    PieChartData(Colors.red, 15),
-                  ],
-                  radius: 65,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Rental Shares',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                // PieChart(
+                //   data: const [
+                //     PieChartData(Colors.purple, 50),
+                //     PieChartData(Colors.blue, 5),
+                //     PieChartData(Colors.orange, 15),
+                //     PieChartData(Colors.green, 15),
+                //     PieChartData(Colors.red, 15),
+                //   ],
+                //   radius: 65,
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         'Rental Shares',
+                //         style: TextStyle(
+                //           fontWeight: FontWeight.bold,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       Text(
+                //         "Rs " + TotalRent.toString(),
+                //         style: TextStyle(
+                //           fontWeight: FontWeight.bold,
+                //           color: Colors.white,
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
+
+                Container(
+                  height: 140,
+                  width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          CategoriesRow(),
+                          PieChartView(TotalResProp.toString(),TotalMNCProp.toString(),TotalWareProp.toString(),TotalCommProp.toString(),TotalBankProp.toString()),
+                        ],
                       ),
-                      Text(
-                        "Rs " + TotalRent.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                    ),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -238,6 +336,9 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           ),
+           SizedBox(
+            height: 10,
+          ),
           // Container(
           //   width: MediaQuery.of(context).size.width,
           //   height: 350,
@@ -281,7 +382,11 @@ class _HomeViewState extends State<HomeView> {
           //   ),
           // ),
 
+
           // ),
+
+
+          
           Row(
            children: [ 
             SizedBox(width: 5,),Text(
@@ -295,6 +400,10 @@ class _HomeViewState extends State<HomeView> {
                             ),
                             
                           ),],
+          ),
+
+          SizedBox(
+            height: 10,
           ),
           Container(
             width: MediaQuery.of(context).size.width,
@@ -319,6 +428,9 @@ class _HomeViewState extends State<HomeView> {
 
                   return ListView.builder(
                       scrollDirection: Axis.horizontal,
+                        // scrollDirection: Axis.vertical,
+                    // physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                       // shrinkWrap: true,
                       itemCount: data.size,
                       itemBuilder: ((context, index) {
@@ -411,7 +523,7 @@ class _HomeViewState extends State<HomeView> {
                                           Column(
                                             children: [
                                               // SizedBox(height: 4),
-                                            if((MediaQuery.of(context).size.width)<800)...[
+                                            
                                                Container(
                         width:(MediaQuery.of(context).size.width),
                         // height: 100,
@@ -513,107 +625,7 @@ class _HomeViewState extends State<HomeView> {
 
                        ),
 
-                                            ]else
-                                            Container(
-                        width:(MediaQuery.of(context).size.width),
-                        // height: 100,
-                        
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            // SizedBox(width: 2,),
-                            Column(
-                              children: [
-                                SizedBox(height: 15,),
-                                Text(
-                            ('Name'),
-                            style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 20,
-                              color: Colors.white,
-                              
-                            ),
-                            
-                          ),
-                          SizedBox(height: 5,),
-                          
-                          Text(
-                            ("${data.docs[index]['Property_Details']['Property_name']}"),
-                            style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 20,
-                              color: Colors.white,
-                              
-                            ),
-                            
-                          ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(height: 15,),
-                                Text(
-                            ('Sale Price'),
-                            style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 20,
-                              color: Colors.white,
-                              
-                            ),
-                            
-                          ),
-                          SizedBox(height: 5,),
-                          
-                          Text(
-                            ("${data.docs[index]['Property_Details']['Asset']}"),
-                            style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 20,
-                              color: Colors.white,
-                              
-                            ),
-                            
-                          ),
-                              ],
-                            ),Column(
-                              children: [
-                                SizedBox(height: 15,),
-                                Text(
-                            ('Sq. Ft'),
-                            style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 20,
-                              color: Colors.white,
-                              
-                            ),
-                            
-                          ),
-                          SizedBox(height: 5,),
-                          
-                          Text(
-                            ("${data.docs[index]['Property_Details']['Carpet_Area']}"),
-                            style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 20,
-                              color: Colors.white,
-                              
-                            ),
-                            
-                          ),
-                              ],
-                            ),
-                            
-                          ],
-                        ),
-                         
-
-                       ),
+                                            
                                             ],
                                           )
                                          
@@ -640,12 +652,40 @@ class _HomeViewState extends State<HomeView> {
 
             // );
           ),
-         Column(
+           SizedBox(
+            height: 5,
+          ),
+          
+          
+          ],
+              )
+            ],
+           
+          ),
+          SliverFillRemaining(
+            child: 
+
+
+
+ Column(
           children: [
-            if(MediaQuery.of(context).size.height<1000)...[
+
+            SizedBox(height: 10,),
+            Text(
+                            (" \u{2193} \u{2193} Listed Properties \u{2193} \u{2193}"),
+                            style: TextStyle(
+                              fontWeight:FontWeight.bold,
+                              
+                              fontSize: 20,
+                              color: Colors.white,
+                              
+                            ),
+                            
+                          ),
+          
                Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height/3.5,
+            // height: MediaQuery.of(context).size.height/3.5,
             
             
             child: StreamBuilder<QuerySnapshot>(
@@ -663,6 +703,12 @@ class _HomeViewState extends State<HomeView> {
                   print(data);
 
                   return ListView.builder(
+
+                    scrollDirection: Axis.vertical,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                      //  primary: false,
+
                       itemCount: data.size,
                       itemBuilder: ((context, index) {
                         // String url=data.docs[index]['imageurl'];
@@ -707,13 +753,13 @@ class _HomeViewState extends State<HomeView> {
                                           if(data.docs[index]['Rent_Details']
                                                 [DateTime.now().year.toString()][DateTime.now().month.toString()]["status"]==false)...[
                                                   Container(
-      height: 200,
+      height: 222,
       width: 20,
       color: Colors.red,
     ),
                                                 ]
                                                 else Container(
-      height: 200,
+      height: 222,
       width: 20,
       color: Colors.green,
     ),
@@ -730,9 +776,10 @@ class _HomeViewState extends State<HomeView> {
                                             "")
                                            Container(
                 width: 130,
-                margin: EdgeInsets.all(10),
+                height: 250,
+                margin: EdgeInsets.all(8),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(30),
                   child: Image(
                     image: NetworkImage(
                         'https://st4.depositphotos.com/14953852/22772/v/450/depositphotos_227725040-stock-illustration-image-available-icon-flat-vector.jpg'),
@@ -742,9 +789,10 @@ class _HomeViewState extends State<HomeView> {
                                         else
                                       Container(
                 width: 130,
-                margin: EdgeInsets.all(10),
+                 height: 200,
+                margin: EdgeInsets.all(8),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(30),
                   child: Image(
                     image: NetworkImage(
                         '${data.docs[index]['Property_Details']['imageurl']['image1']}'),
@@ -837,194 +885,17 @@ class _HomeViewState extends State<HomeView> {
 
             // );
           ),
-            ]
-            else
-            Column(
-              children: [ Container(
-            width: MediaQuery.of(context).size.width,
-            height:  MediaQuery.of(context).size.height/2.5,
             
-            
-            child: StreamBuilder<QuerySnapshot>(
-                stream: property_main,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text(('Something went wrong'));
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text("loading");
-                  }
-                  final data = snapshot.requireData;
-
-                  print(data);
-
-                  return ListView.builder(
-                      itemCount: data.size,
-                      itemBuilder: ((context, index) {
-                        // String url=data.docs[index]['imageurl'];
-                        // print(url);
-                        // print("ggs");
-                        // print(data.docs[index]['imageurl']);
-                        if (data.docs[index]['Property_Details']
-                                ['Property_Status']['Occupied'] ==
-                            true) {
-                          return Card(
-                            // shadowColor: Color.fromARGB(255, 180, 38, 236),
-                            color: Color(0xFF1E1E1E),
-                            elevation: 8,
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            child:
-                                // ignore: unnecessary_new
-                                new InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => NavBarForProperty(
-                                      (data.docs[index].reference.id
-                                          .toString()),
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(18, 113, 125, 137)),
-                                // padding: EdgeInsets.all(2),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  // mainAxisAlignment:MainAxisAlignment.spaceAround,
-                                  children: [
-                                        Container(
-      height: 200,
-      width: 20,
-      color: Colors.brown,
-    ),
-    // SizedBox(width: 5,),
-    SizedBox(
-                                        child: Column(
-                                      children: [
-                                        if (data.docs[index]['Property_Details']
-                                                ['imageurl']['image1'] ==
-                                            "")
-                                           Container(
-                width: 130,
-                margin: EdgeInsets.all(10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image(
-                    image: NetworkImage(
-                        'https://st4.depositphotos.com/14953852/22772/v/450/depositphotos_227725040-stock-illustration-image-available-icon-flat-vector.jpg'),
-                  ),
-                ),
-              ) 
-                                        else
-                                      Container(
-                width: 130,
-                margin: EdgeInsets.all(10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image(
-                    image: NetworkImage(
-                        '${data.docs[index]['Property_Details']['imageurl']['image1']}'),
-                  ),
-                ),
-              ),              ],
-                                    )),
-                                    SizedBox(
-                                      width: 200,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                      
-                                          // Text(
-                                          //   'Colored card',
-                                          //   style: TextStyle(
-                                          //     fontSize: 20,
-                                          //     color: Colors.white,
-                                          //     fontWeight: FontWeight.bold,
-                                          //   ),
-                                          // ),
-
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            ('${data.docs[index]['Property_Details']['Property_name']}'),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            (' ${data.docs[index]['Property_Details']['Carpet_Area']} Sqft'),
-                                            style: TextStyle(
-                                              // fontWeight:FontWeight.bold,
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          // Text(
-                                          //   ('Firm Name : ${data.docs[index]['Firm_Details']['Firm_name']}'),
-                                          //   style: TextStyle(
-                                          //     // fontWeight:FontWeight.bold,
-                                          //     fontSize: 20,
-                                          //     color: Colors.white,
-                                          //   ),
-                                          // ),
-                                          Text(
-                                            ('Tenant Name : ${data.docs[index]['Tenant_Details']['Tenant_name']}'),
-                                            style: TextStyle(
-                                              // fontWeight:FontWeight.bold,
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          SizedBox(height: 15),
-                                          // Text(
-                                          //   ('Yield : ${data.docs[index]['Property_Details']['Yield']}'),
-                                          //   style: TextStyle(
-                                          //     fontWeight: FontWeight.bold,
-                                          //     fontSize: 20,
-                                          //     color: Colors.white,
-                                          //   ),
-                                          // ),
-
-                                          //                    FirebaseFirestore.instance
-                                          // .collection('users').document('')
-                                          // .get()
-                                          // .then((value) =>
-                                          // print("Fetched ==>>>"+value.data["username"])),
-                                        ],
-                                      ),
-                                    ),
-                                    
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return const SizedBox(height: 4);
-                        }
-                      }));
-                }),
-
-            // );
-          ),],
-            )
+    //         
             
           ],
-         )
+         ),
+          )
 
         ],
-      ),
-      ),
+      ) ,),
+       
+      
 
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
@@ -1041,8 +912,10 @@ class _HomeViewState extends State<HomeView> {
       //     color: Colors.white,
       //   ),
       // ),
+      
       floatingActionButton: _getFAB(),
-    );
+    ));
+    
   }
 
   Widget _getFAB() {

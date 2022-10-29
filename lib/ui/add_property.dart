@@ -85,6 +85,7 @@ class _AddpropertyState extends State<Addproperty> {
   TextEditingController _Tenant = TextEditingController();
   TextEditingController _Rent = TextEditingController();
   TextEditingController _AssetValue = TextEditingController();
+  TextEditingController _KNumber = TextEditingController();
   TextEditingController _ImageValue = TextEditingController();
   TextEditingController _Yeild = TextEditingController();
   TextEditingController _Start_Date = TextEditingController();
@@ -512,6 +513,21 @@ class _AddpropertyState extends State<Addproperty> {
                       labelStyle: TextStyle(color: Colors.white)),
                 ),
               ),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.3,
+                child: TextFormField(
+                  style: TextStyle(color: Colors.white),
+                  controller: _KNumber,
+                  decoration: InputDecoration(
+                     enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      hintText: "Knumber",
+                      hintStyle: TextStyle(color: Colors.white),
+                      labelText: "KNumber",
+                      labelStyle: TextStyle(color: Colors.white)),
+                ),
+              ),
               Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -606,7 +622,10 @@ class _AddpropertyState extends State<Addproperty> {
                               onPressed: () => _selectDate(context),
                               icon: Icon(Icons.calendar_month_rounded,color: Colors.white,),
                             ),
-                            Text("${selectedDate.toLocal()}".split(' ')[0]),
+                            Text("${selectedDate.toLocal()}".split(' ')[0],
+                            style: TextStyle(
+                              color: Colors.white
+                            )),
                           ],
                         )),
                     Container(
@@ -624,7 +643,10 @@ class _AddpropertyState extends State<Addproperty> {
                               onPressed: () => _selectDate2(context),
                               icon: Icon(Icons.calendar_month_rounded,color: Colors.white,),
                             ),
-                            Text("${selectedDate2.toLocal()}".split(' ')[0]),
+                            Text("${selectedDate2.toLocal()}".split(' ')[0],
+                            style: TextStyle(
+                              color: Colors.white
+                            ),),
                           ],
                         )),
                     Container(
@@ -822,21 +844,21 @@ class _AddpropertyState extends State<Addproperty> {
                             labelStyle: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 1.3,
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.white),
-                        controller: _Firm_Docs,
-                        decoration: InputDecoration(
-                           enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                            hintText: "email",
-                            hintStyle: TextStyle(color: Colors.white),
-                            labelText: "Docs",
-                            labelStyle: TextStyle(color: Colors.white)),
-                      ),
-                    ),
+                    // Container(
+                    //   width: MediaQuery.of(context).size.width / 1.3,
+                    //   child: TextFormField(
+                    //     style: TextStyle(color: Colors.white),
+                    //     controller: _Firm_Docs,
+                    //     decoration: InputDecoration(
+                    //        enabledBorder: UnderlineInputBorder(
+                    //     borderSide: BorderSide(color: Colors.white),
+                    //   ),
+                    //         hintText: "email",
+                    //         hintStyle: TextStyle(color: Colors.white),
+                    //         labelText: "Docs",
+                    //         labelStyle: TextStyle(color: Colors.white)),
+                    //   ),
+                    // ),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
@@ -846,7 +868,7 @@ class _AddpropertyState extends State<Addproperty> {
                            enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                            hintText: "Addr",
+                            hintText: "GST",
                             hintStyle: TextStyle(color: Colors.white),
                             labelText: "GST",
                             labelStyle: TextStyle(color: Colors.white)),
@@ -890,8 +912,8 @@ class _AddpropertyState extends State<Addproperty> {
                     child: MaterialButton(
                       onPressed: (() {
                         
-                       if(_PropertyName.text!="" && _Address.text!="" && _CarpetArea.text!="" && _Floor.text!="" && _Rent.text!="" && _AssetValue.text!="" ){
-                         print(Commercial);
+                       
+                        //  print(Commercial);
                         property_main
                             .add({
                               'Property_Details': {
@@ -899,11 +921,12 @@ class _AddpropertyState extends State<Addproperty> {
                                 'Rent': _Rent.text,
                                 'Asset': _AssetValue.text,
                                 'Address':_Address.text,
+                                'KNUMBER':_KNumber.text,
                                 // 'Firm': _Firm.text,
                                 'Floor': _Floor.text,
                                 'Property_name': _PropertyName.text,
                                 // 'Tenant': _Tenant.text,
-                                'Yield': _Yeild.text,
+                                // 'Yield': _Yeild.text,
                                 'Property_Status': {
                                   'Vacant': Vacant,
                                   'Occupied': Occupied,
@@ -936,7 +959,7 @@ class _AddpropertyState extends State<Addproperty> {
                               'Firm_Details': {
                                 'Firm_name': _Firm_Name.text,
                                 'GST': _Firm_GST.text,
-                                'Docs': _Firm_Docs.text
+                                // 'Docs': _Firm_Docs.text
                               },
                               'Rent_Details':{
                                 DateTime.now().year.toString():
@@ -1013,17 +1036,14 @@ class _AddpropertyState extends State<Addproperty> {
                             builder: (context) => AddImages(value.id.toString())
                           ),
                         ))))
-                            // print(value.id))
+                            // print(value.id));
                             .catchError((error) => print("failed to add"));
 
                         
-                        print(Commercial);
+                        // print(Commercial);
                       
-                       }
-                       else
-                       {
-                        null;
-                       }
+                       
+                      
                        
                        }
                        ),

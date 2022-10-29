@@ -1,4 +1,5 @@
 import 'package:authh_app/net/flutterfire.dart';
+import 'package:authh_app/ui/BottomNavbar.dart';
 import 'package:authh_app/ui/home_view.dart';
 // import 'package:authh_app/ui/tenant.dart';
 import 'package:flutter/material.dart';
@@ -34,17 +35,44 @@ class ChangePass extends StatelessWidget {
 
       //Pass in the password to updatePassword.
       user?.updatePassword(newpass.text).then((_) {
-        print("Successfully changed password");
+        
+                                        print("Password changed");
       }).catchError((error) {
         print("Password can't be changed" + error.toString());
         //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
       });
-      Navigator.push(
+      showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                          icon: Icon( // <-- Icon
+    Icons.check_circle_outline_sharp,
+    size: 24.0,
+  ),
+                                          iconColor: Colors.green,
+                                          title: const Text(" Success "),
+                                          content: Text(
+                                              'Your password was changed successfully.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text("OK"),
+                                              onPressed: () {
+                                                // Navigator.of(context).pop();
+                                                Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeView(),
+          builder: (context) => MyNavigationBar(),
         ),
       );
+                                              },
+                                            )
+                                          ],
+                                        ));
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => MyNavigationBar(),
+      //   ),
+      // );
     }
 
     return Scaffold(
@@ -79,7 +107,8 @@ class ChangePass extends StatelessWidget {
             height: 20,
           ),
           ElevatedButton(
-            onPressed: fun,
+            onPressed: fun
+            ,
             child: Text('Change password'),
           ),
         ],

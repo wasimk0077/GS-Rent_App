@@ -1,8 +1,11 @@
 import 'dart:ffi';
 
 import 'package:authh_app/ui/BottomNavbar.dart';
+import 'package:authh_app/ui/Guest_Discover_Upc.dart';
+import 'package:authh_app/ui/Guest_details_view.dart';
 import 'package:authh_app/ui/add_property.dart';
 import 'package:authh_app/ui/home_view.dart';
+import 'package:authh_app/ui/starting_page.dart';
 import 'package:authh_app/ui/update_disc_vac.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,14 +17,14 @@ import './discover_upcoming.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class DiscoverVacant extends StatefulWidget {
-  const DiscoverVacant({Key? key}) : super(key: key);
+class GuestDiscoverVacant extends StatefulWidget {
+  const GuestDiscoverVacant({Key? key}) : super(key: key);
 
   @override
-  State<DiscoverVacant> createState() => _DiscoverVacantState();
+  State<GuestDiscoverVacant> createState() => _GuestDiscoverVacantState();
 }
 
-class _DiscoverVacantState extends State<DiscoverVacant> {
+class _GuestDiscoverVacantState extends State<GuestDiscoverVacant> {
   final Stream<QuerySnapshot> property_main =
       FirebaseFirestore.instance.collection('property_main').snapshots();
   @override
@@ -31,7 +34,7 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MyNavigationBar(),
+              builder: (context) => Starting_page(),
             ),
           );
           return true;
@@ -60,7 +63,7 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DiscoverVacant(),
+                                  builder: (context) => GuestDiscoverVacant(),
                                 ),
                               );
                             },
@@ -98,7 +101,7 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DiscoverUpcoming(),
+                                  builder: (context) => GuestDiscoverUpcoming(),
                                 ),
                               );
                             },
@@ -143,8 +146,14 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
                                             // ignore: unnecessary_new
                                             new InkWell(
                                           onTap: () {
-                                            print(
-                                                "Hello welocme to second page");
+                                            Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GuestDetailsView(data.docs[index].reference.id
+                                          .toString()
+                                    ),
+                                  ),
+                                );
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
@@ -220,35 +229,35 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
                                                                 .height *
                                                             0.020,
                                                       ),
-                                                      Column(children: [
-                                                        FloatingActionButton(
-                                                          onPressed: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        UpdateDiscoverVacant(
-                                                                  (data
-                                                                      .docs[
-                                                                          index]
-                                                                      .reference
-                                                                      .id
-                                                                      .toString()),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                          backgroundColor:
-                                                              Colors.black,
-                                                          child: Icon(
-                                                            Icons
-                                                                .keyboard_control_sharp,
-                                                            color: Colors.white,
-                                                            size: 20,
-                                                          ),
-                                                        ),
-                                                      ])
+                                                      // Column(children: [
+                                                      //   FloatingActionButton(
+                                                      //     onPressed: () {
+                                                      //       Navigator.push(
+                                                      //         context,
+                                                      //         MaterialPageRoute(
+                                                      //           builder:
+                                                      //               (context) =>
+                                                      //                   UpdateDiscoverVacant(
+                                                      //             (data
+                                                      //                 .docs[
+                                                      //                     index]
+                                                      //                 .reference
+                                                      //                 .id
+                                                      //                 .toString()),
+                                                      //           ),
+                                                      //         ),
+                                                      //       );
+                                                      //     },
+                                                      //     backgroundColor:
+                                                      //         Colors.black,
+                                                      //     child: Icon(
+                                                      //       Icons
+                                                      //           .keyboard_control_sharp,
+                                                      //       color: Colors.white,
+                                                      //       size: 20,
+                                                      //     ),
+                                                      //   ),
+                                                      // ])
                                                       // Row(
                                                       //   children: [
                                                       //        new Image.asset('assets/images/avatar.png'),

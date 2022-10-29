@@ -38,7 +38,15 @@ class _Rent_DetailsState extends State<Rent_Details> {
   //       }
   //     }, SetOptions(merge: true));
   //   }
+  String Knumber="";
   launchURL() async {
+      var collection = FirebaseFirestore.instance.collection('property_main');
+    var docSnapshot = await collection.doc(widget.docID).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      Knumber= data['Property_Details']['KNUMBER'];
+    }
+
     const url =
         'https://www.billdesk.com/pgidsk/pgmerc/jvvnljp/JVVNLJPDetails.jsp';
     if (await canLaunch(url)) {
@@ -47,7 +55,7 @@ class _Rent_DetailsState extends State<Rent_Details> {
       throw 'Could not launch $url';
     }
 
-    FlutterClipboard.copy('hello flutter friends')
+    FlutterClipboard.copy(Knumber)
         .then((value) => print('copied'));
   }
 
@@ -90,10 +98,20 @@ class _Rent_DetailsState extends State<Rent_Details> {
   TextEditingController _Change_Amount = TextEditingController();
 
   // var collection = FirebaseFirestore.instance.collection('property_main');
+    String TenantMobileNumber="";
+  String TenantName="";
+
   launchWhatsApp() async {
+
+      var collection = FirebaseFirestore.instance.collection('property_main');
+    var docSnapshot = await collection.doc(widget.docID).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      TenantMobileNumber= data['Tenant_Details']['mobile'];
+      TenantName= data['Tenant_Details']['Tenant_name'];}
     final link = WhatsAppUnilink(
-      phoneNumber: '+91-8790337204',
-      text: "Hey! I'm inquiring about the apartment listing",
+      phoneNumber: TenantMobileNumber,
+      text: "Hey!$TenantName I'm inquiring about the apartment listing",
     );
     await launch('$link');
   }
@@ -411,7 +429,7 @@ TextEditingController _year = TextEditingController();
                         // ),
                         Row(
                           children: [
-                            Text("Due date is 10th of this monthj",
+                            Text("Due date is 10th of this month",
                             style:TextStyle(
                               fontSize: 19,
                               color: Colors.white
