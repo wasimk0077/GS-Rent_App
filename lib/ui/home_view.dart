@@ -40,7 +40,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
+ScrollController scrollController = ScrollController();
+  bool showbtn = false;
 
 
 
@@ -175,6 +176,22 @@ class _HomeViewState extends State<HomeView> {
     }();
     
     // print(MediaQuery.of(context).size.width);
+    scrollController.addListener(() { //scroll listener 
+        double showoffset = 5.0; //Back to top botton will show on scroll offset 10.0
+
+        if(scrollController.offset > showoffset){
+              showbtn = true;
+              setState(() {
+                //update state 
+              });
+        }else{
+             showbtn = false;
+              setState(() {
+                //update state
+                
+              });
+        }
+    });
 
     super.initState();
   }
@@ -198,6 +215,7 @@ class _HomeViewState extends State<HomeView> {
         width: MediaQuery.of(context).size.width,
         height:MediaQuery.of(context).size.height/1.05 ,
         child:CustomScrollView(
+          controller: scrollController,
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
@@ -475,7 +493,7 @@ class _HomeViewState extends State<HomeView> {
     SizedBox(width: 5,),         
      
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width,
+                                      width: 250,
                                       
                                       child: Column(
                                         crossAxisAlignment:
@@ -484,7 +502,7 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           // SizedBox(width: 10,),
                                            Container(
-                                            width: MediaQuery.of(context).size.width,
+                                            width: 250,
                                             height: 170,
                                             child: FittedBox(
                                             fit: BoxFit.fill,
@@ -495,18 +513,22 @@ class _HomeViewState extends State<HomeView> {
                                         if (data.docs[index]['Property_Details']
                                                 ['imageurl'] ==
                                             null)
-                                          Image.network("https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930",
+                                          ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.network("https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930",
                                           
                                           // width: MediaQuery.of(context).size.width,
                                           // height: MediaQuery.of(context).size.height/8,
-                                          )
+                                          ))
                                         else
-                                          Image.network(
+                                         ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child:  Image.network(
                                             data.docs[index]['Property_Details']
                                                 ['imageurl']['image1'],
                                             // width:MediaQuery.of(context).size.width,
                                             
-                                          ),
+                                          )),
                                       ],
                                     )),
                                            ),
@@ -540,7 +562,7 @@ class _HomeViewState extends State<HomeView> {
                             style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                               
                             ),
@@ -551,9 +573,9 @@ class _HomeViewState extends State<HomeView> {
                           Text(
                             ("${data.docs[index]['Property_Details']['Property_name']}"),
                             style: TextStyle(
-                              fontWeight:FontWeight.bold,
+                              // fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                               
                             ),
@@ -569,7 +591,7 @@ class _HomeViewState extends State<HomeView> {
                             style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                               
                             ),
@@ -580,9 +602,9 @@ class _HomeViewState extends State<HomeView> {
                           Text(
                             ("${data.docs[index]['Property_Details']['Asset']}"),
                             style: TextStyle(
-                              fontWeight:FontWeight.bold,
+                              // fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                               
                             ),
@@ -597,7 +619,7 @@ class _HomeViewState extends State<HomeView> {
                             style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                               
                             ),
@@ -608,9 +630,9 @@ class _HomeViewState extends State<HomeView> {
                           Text(
                             ("${data.docs[index]['Property_Details']['Carpet_Area']}"),
                             style: TextStyle(
-                              fontWeight:FontWeight.bold,
+                              // fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                               
                             ),
@@ -663,16 +685,23 @@ class _HomeViewState extends State<HomeView> {
            
           ),
           SliverFillRemaining(
+            // hasScrollBody: true,
+            fillOverscroll: true,
             child: 
 
 
 
- Column(
-          children: [
+ ListView(
 
-            SizedBox(height: 10,),
+          
+
+            //  physics: NeverScrollableScrollPhysics(),
+            primary: false,
+             shrinkWrap: true,
+          children:[ Column(
+            children: [SizedBox(height: 10,),
             Text(
-                            (" \u{2193} \u{2193} Listed Properties \u{2193} \u{2193}"),
+                            (" \u{2193} \u{2193} Occupied Properties \u{2193} \u{2193}"),
                             style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
@@ -707,6 +736,7 @@ class _HomeViewState extends State<HomeView> {
                     scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
+                    
                       //  primary: false,
 
                       itemCount: data.size,
@@ -845,14 +875,17 @@ class _HomeViewState extends State<HomeView> {
                                           //     color: Colors.white,
                                           //   ),
                                           // ),
-                                          Text(
+                                          FittedBox(
+        fit: BoxFit.fitWidth, 
+        child:Text(
                                             ('Tenant Name : ${data.docs[index]['Tenant_Details']['Tenant_name']}'),
                                             style: TextStyle(
                                               // fontWeight:FontWeight.bold,
-                                              fontSize: 20,
+                                              // fontSize: 20,
                                               color: Colors.white,
                                             ),
                                           ),
+    ),
                                           SizedBox(height: 15),
                                           // Text(
                                           //   ('Yield : ${data.docs[index]['Property_Details']['Yield']}'),
@@ -887,9 +920,9 @@ class _HomeViewState extends State<HomeView> {
           ),
             
     //         
-            
-          ],
-         ),
+           ],
+          ),
+         ] ),
           )
 
         ],
@@ -913,7 +946,50 @@ class _HomeViewState extends State<HomeView> {
       //   ),
       // ),
       
-      floatingActionButton: _getFAB(),
+      // floatingActionButton: _getFAB(),
+      // floatingActionButton: AnimatedOpacity(
+      //      duration: Duration(milliseconds: 1000),  //show/hide animation
+      //      opacity: showbtn?1.0:0.0, //set obacity to 1 on visible, or hide
+      //      child: FloatingActionButton( 
+      //         onPressed: () {  
+      //            scrollController.animateTo( //go to top of scroll
+      //              0,  //scroll offset to go
+      //              duration: Duration(milliseconds: 500), //duration of scroll
+      //              curve:Curves.fastOutSlowIn //scroll type
+      //             );
+      //         },
+      //         child: Icon(Icons.arrow_upward),
+      //         backgroundColor: Colors.redAccent,
+      //      ), 
+      //    ),
+      floatingActionButton: Wrap( //will break to another line on overflow
+    direction: Axis.horizontal, //use vertical to show  on vertical axis
+    children: <Widget>[
+      Container(
+        margin:EdgeInsets.all(10),
+        child: AnimatedOpacity(
+        duration: Duration(milliseconds: 1000),  //show/hide animation
+           opacity: showbtn?1.0:0.0,
+           child: FloatingActionButton( 
+            heroTag: "btn1",
+              onPressed: () {  
+                 scrollController.animateTo( //go to top of scroll
+                   0,  //scroll offset to go
+                   duration: Duration(milliseconds: 500), //duration of scroll
+                   curve:Curves.fastOutSlowIn //scroll type
+                  );
+              },
+              child: Icon(Icons.arrow_upward),
+              backgroundColor: Colors.redAccent,
+           ),
+      ),
+      ),
+      
+          Container(
+            margin:EdgeInsets.all(10),
+            child: _getFAB(),
+          )
+    ],),
     ));
     
   }

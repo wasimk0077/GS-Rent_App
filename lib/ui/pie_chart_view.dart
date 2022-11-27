@@ -57,7 +57,7 @@ Widget build(BuildContext context)
                 spreadRadius: -2,
                 blurRadius: 10,
                 offset: Offset(7, 7),
-                color: Color.fromRGBO(146, 182, 216, 1),
+                color: Color.fromARGB(255, 12, 12, 12),
               )
             ],
           ),

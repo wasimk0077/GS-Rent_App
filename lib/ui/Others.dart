@@ -28,6 +28,8 @@ import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'update_agreement_doc.dart';
+
 class Others extends StatefulWidget {
   const Others({Key? key}) : super(key: key);
 
@@ -56,14 +58,31 @@ class _OthersState extends State<Others> {
     return temp;
   }
 
+void initState() {
+    // TODO: implement initState
+    () async {
+      await check();
+      setState(() {
+        check();
+      });
+    }();
+
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
+      body: Container(
+        width: MediaQuery.of(context).size.width,height: MediaQuery.of(context).size.height,
+        child: Column(
+        // crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height / 13,
+            height: MediaQuery.of(context).size.height*0.05,
           ),
           TextButton(
               onPressed: () {
@@ -76,7 +95,7 @@ class _OthersState extends State<Others> {
               },
               child: Text('Change Password')),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 13,
+            height: MediaQuery.of(context).size.height*0.01,
           ),
           Column(
             children: [
@@ -92,11 +111,21 @@ class _OthersState extends State<Others> {
                     },
                     child: Text('Add new admin')),
               ] else
-                Container(),
+                Container()
+,
+                TextButton(onPressed: (){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UpdatAgreementDoc(),
+            ),
+          );
+      }, child: Text("Generate Agreement Invoice"))
             ],
           )
         ],
       ),
+      )
     );
   }
 }

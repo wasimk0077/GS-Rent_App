@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:authh_app/ui/BottomNavbar.dart';
+import 'package:authh_app/ui/Guest_Auth.dart';
 import 'package:authh_app/ui/Guest_Discover_Upc.dart';
 import 'package:authh_app/ui/Guest_details_view.dart';
 import 'package:authh_app/ui/add_property.dart';
@@ -34,7 +35,7 @@ class _GuestDiscoverVacantState extends State<GuestDiscoverVacant> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Starting_page(),
+              builder: (context) => GuestAuthentication(),
             ),
           );
           return true;
@@ -268,6 +269,19 @@ class _GuestDiscoverVacantState extends State<GuestDiscoverVacant> {
                                                 ),
                                                 SizedBox(
                                                     child: Column(
+                                                  children:  [
+                                              if (data.docs[index]
+                                                          ['Property_Details']
+                                                      ['imageurl'] ==
+                                                  null) ...[
+                                                Text(
+                                                  "No image Available",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              ] else
+                                                Column(
                                                   children: [
                                                     Image.network(
                                                       data.docs[index][
@@ -286,6 +300,8 @@ class _GuestDiscoverVacantState extends State<GuestDiscoverVacant> {
                                                               3,
                                                     )
                                                   ],
+                                                )
+                                            ]
                                                 ))
                                               ],
                                             ),

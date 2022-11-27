@@ -1,4 +1,5 @@
 import 'package:authh_app/ui/BottomNavbar.dart';
+import 'package:authh_app/ui/Guest_details_view.dart';
 import 'package:authh_app/ui/add_property.dart';
 import 'package:authh_app/ui/home_view.dart';
 import 'package:authh_app/ui/update_disc_upc.dart';
@@ -130,8 +131,15 @@ class _DiscoverUpcomingState extends State<DiscoverUpcoming> {
                                     child:
                                         // ignore: unnecessary_new
                                         new InkWell(
-                                      onTap: () {
-                                        print("Hello welocme to second page");
+                                      onTap:  () {
+                                        Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GuestDetailsView(data.docs[index].reference.id
+                                          .toString()
+                                    ),
+                                  ),
+                                );
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(

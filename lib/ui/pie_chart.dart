@@ -11,11 +11,11 @@ class PieChart extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Offset center = Offset(size.width / 2, size.height / 2);
-    double radius = min(size.width / 3, size.height / 3);
+    double radius = min(size.width / 3.8, size.height / 2);
 
     var paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = width / 2;
+      ..strokeWidth = width / 2.3;
 
     double total = 0;
     // Calculate total amount from each category

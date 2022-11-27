@@ -452,9 +452,9 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
 
                               if (snapshot.hasData) {
                                 var output = snapshot.data!.data();
-                                var value = output!['Property_Details']['Firm'];
+                                var value = output!['Property_Details']['Asset'];
                                 return Text(
-                                  ('Firm= $value'),
+                                  ('Value= $value'),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -467,52 +467,52 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                             },
                           ),
                           SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+                          // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          //   stream: collection.doc(widget.docID).snapshots(),
+                          //   builder: (_, snapshot) {
+                          //     if (snapshot.hasError)
+                          //       return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Property_Details']['Tenant'];
-                                return Text(
-                                  ('Tenant= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+                          //     if (snapshot.hasData) {
+                          //       var output = snapshot.data!.data();
+                          //       var value =
+                          //           output!['Property_Details']['Tenant'];
+                          //       return Text(
+                          //         ('Tenant= $value'),
+                          //         style: TextStyle(
+                          //           fontWeight: FontWeight.bold,
+                          //           fontSize: 20,
+                          //           color: Colors.white,
+                          //         ),
+                          //       );
+                          //     }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
+                          //     return Center(child: CircularProgressIndicator());
+                          //   },
+                          // ),
                           SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+                          // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          //   stream: collection.doc(widget.docID).snapshots(),
+                          //   builder: (_, snapshot) {
+                          //     if (snapshot.hasError)
+                          //       return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Property_Details']['Firm'];
-                                return Text(
-                                  ('Value = $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+                          //     if (snapshot.hasData) {
+                          //       var output = snapshot.data!.data();
+                          //       var value = output!['Property_Details']['Firm'];
+                          //       return Text(
+                          //         ('Value = $value'),
+                          //         style: TextStyle(
+                          //           fontWeight: FontWeight.bold,
+                          //           fontSize: 20,
+                          //           color: Colors.white,
+                          //         ),
+                          //       );
+                          //     }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
+                          //     return Center(child: CircularProgressIndicator());
+                          //   },
+                          // ),
                          
                         ],
                       ),

@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:authh_app/ui/BottomNavbar.dart';
+import 'package:authh_app/ui/Guest_details_view.dart';
 import 'package:authh_app/ui/add_property.dart';
 import 'package:authh_app/ui/home_view.dart';
 import 'package:authh_app/ui/update_disc_vac.dart';
@@ -143,9 +144,15 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
                                             // ignore: unnecessary_new
                                             new InkWell(
                                           onTap: () {
-                                            print(
-                                                "Hello welocme to second page");
-                                          },
+                                        Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GuestDetailsView(data.docs[index].reference.id
+                                          .toString()
+                                    ),
+                                  ),
+                                );
+                                      },
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 color: Color.fromARGB(
@@ -259,6 +266,19 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
                                                 ),
                                                 SizedBox(
                                                     child: Column(
+                                                  children:  [
+                                              if (data.docs[index]
+                                                          ['Property_Details']
+                                                      ['imageurl'] ==
+                                                  null) ...[
+                                                Text(
+                                                  "No image Available",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              ] else
+                                                Column(
                                                   children: [
                                                     Image.network(
                                                       data.docs[index][
@@ -277,6 +297,8 @@ class _DiscoverVacantState extends State<DiscoverVacant> {
                                                               3,
                                                     )
                                                   ],
+                                                )
+                                            ]
                                                 ))
                                               ],
                                             ),

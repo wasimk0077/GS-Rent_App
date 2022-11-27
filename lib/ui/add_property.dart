@@ -349,7 +349,9 @@ class _AddpropertyState extends State<Addproperty> {
   // }
 
   
-
+ final _Propertyform=GlobalKey<FormState>();
+ final _Otherform=GlobalKey<FormState>();
+ final _Dropdownform=GlobalKey<FormState>();
 
   @override
   TextEditingController _nameController = TextEditingController();
@@ -398,12 +400,20 @@ class _AddpropertyState extends State<Addproperty> {
                 ),
               ),
 
+              Form(
+                key:_Propertyform,child: 
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width / 1.3,
                     child: TextFormField(
+                      validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                       style: TextStyle(color: Colors.white),
                       controller: _PropertyName,
                       decoration: InputDecoration(
@@ -419,6 +429,12 @@ class _AddpropertyState extends State<Addproperty> {
                   Container(
                     width: MediaQuery.of(context).size.width / 1.3,
                     child: TextFormField(
+                      validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                       style: TextStyle(color: Colors.white),
                       controller: _Address,
                       decoration: InputDecoration(
@@ -431,11 +447,17 @@ class _AddpropertyState extends State<Addproperty> {
                           labelStyle: TextStyle(color: Colors.white)),
                     ),
                   ),
-                ],
-              ),
+              
+              
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
+                  validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                   style: TextStyle(color: Colors.white),
                   controller: _CarpetArea,
                   decoration: InputDecoration(
@@ -451,6 +473,12 @@ class _AddpropertyState extends State<Addproperty> {
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
+                  validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                   style: TextStyle(color: Colors.white),
                   controller: _Floor,
                   decoration: InputDecoration(
@@ -463,33 +491,16 @@ class _AddpropertyState extends State<Addproperty> {
                       labelStyle: TextStyle(color: Colors.white)),
                 ),
               ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width / 1.3,
-              //   child: TextFormField(
-              //     style: TextStyle(color: Colors.black),
-              //     controller: _Firm,
-              //     decoration: InputDecoration(
-              //         hintText: "Name of Company",
-              //         hintStyle: TextStyle(color: Colors.white),
-              //         labelText: "Firm Name",
-              //         labelStyle: TextStyle(color: Colors.black)),
-              //   ),
-              // ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width / 1.3,
-              //   child: TextFormField(
-              //     style: TextStyle(color: Colors.black),
-              //     controller: _Tenant,
-              //     decoration: InputDecoration(
-              //         hintText: "Name of Tenant",
-              //         hintStyle: TextStyle(color: Colors.white),
-              //         labelText: "Tenant Name",
-              //         labelStyle: TextStyle(color: Colors.black)),
-              //   ),
-              // ),
+              
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
+                  validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                   style: TextStyle(color: Colors.white),
                   controller: _Rent,
                   decoration: InputDecoration( enabledBorder: UnderlineInputBorder(
@@ -504,6 +515,12 @@ class _AddpropertyState extends State<Addproperty> {
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
+                  validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                   style: TextStyle(color: Colors.white),
                   controller: _AssetValue,
                   decoration: InputDecoration(
@@ -516,6 +533,12 @@ class _AddpropertyState extends State<Addproperty> {
               Container(
                 width: MediaQuery.of(context).size.width / 1.3,
                 child: TextFormField(
+                  validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                   style: TextStyle(color: Colors.white),
                   controller: _KNumber,
                   decoration: InputDecoration(
@@ -528,6 +551,12 @@ class _AddpropertyState extends State<Addproperty> {
                       labelStyle: TextStyle(color: Colors.white)),
                 ),
               ),
+            ],),),
+
+            Form(
+              key:_Dropdownform,
+              child: 
+            
               Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -553,6 +582,12 @@ class _AddpropertyState extends State<Addproperty> {
                   //     )),
                   Container(
                     child: DropdownButtonFormField(
+                     validator: (value) {
+if (value == null) {
+    return 'Relationship is required';
+}
+},
+                     
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF1E1E1E), width: 2),
@@ -569,12 +604,16 @@ class _AddpropertyState extends State<Addproperty> {
                       icon: const Icon(Icons.keyboard_arrow_down),
                       items: type.map((String items) {
                         return DropdownMenuItem(
+                          
                           value: items,
                           child: Text(items),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
+                        
+                        
                         setState(() {
+                          
                           dropdownvalue2 = newValue!;
                           if (dropdownvalue2 == 'Vacant') {
                             Vacant = true;
@@ -589,13 +628,19 @@ class _AddpropertyState extends State<Addproperty> {
                             Occupied = false;
                             Upcoming = true;
                           }
-                        });
+                          
+                        }
+                        ) ;
+                        
                       },
                     ),
                   )
                 ],
-              ),
-              Column(
+              ),),
+              Form(
+                key:_Otherform, 
+                
+                child: Column(
                 children: [
                   if (dropdownvalue2 == 'Occupied' ||
                       dropdownvalue2 == null) ...[
@@ -652,6 +697,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: _Rent_Escalation,
                         decoration: InputDecoration( enabledBorder: UnderlineInputBorder(
@@ -666,6 +717,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: Security_Deposit,
                         decoration: InputDecoration(
@@ -764,6 +821,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: _Tenant_Name,
                         decoration: InputDecoration(
@@ -779,6 +842,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: _Tenant_Email,
                         decoration: InputDecoration(
@@ -794,6 +863,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: _Tenant_Address,
                         decoration: InputDecoration(
@@ -809,6 +884,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: _Tenant_Number,
                         decoration: InputDecoration(
@@ -832,6 +913,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: _Firm_Name,
                         decoration: InputDecoration(
@@ -862,6 +949,12 @@ class _AddpropertyState extends State<Addproperty> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: TextFormField(
+                        validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                         style: TextStyle(color: Colors.white),
                         controller: _Firm_GST,
                         decoration: InputDecoration(
@@ -876,7 +969,7 @@ class _AddpropertyState extends State<Addproperty> {
                     ),
                   ],
                 ],
-              ),
+              ),),
 
               SizedBox(height: 20),
               // Row(
@@ -913,7 +1006,8 @@ class _AddpropertyState extends State<Addproperty> {
                       onPressed: (() {
                         
                        
-                        //  print(Commercial);
+                        if(_Propertyform.currentState!.validate() && _Otherform.currentState!.validate()){
+                          //  print(Commercial);
                         property_main
                             .add({
                               'Property_Details': {
@@ -1027,6 +1121,10 @@ class _AddpropertyState extends State<Addproperty> {
                                   }
                                 }
                               }
+                              ,
+                              "imageurl":{
+                                "image1":"",
+                              }
                             })
                             .then((value) => 
                             
@@ -1042,6 +1140,7 @@ class _AddpropertyState extends State<Addproperty> {
                         
                         // print(Commercial);
                       
+                        }
                        
                       
                        

@@ -57,7 +57,7 @@ class ChangePass extends StatelessWidget {
                                               child: const Text("OK"),
                                               onPressed: () {
                                                 // Navigator.of(context).pop();
-                                                Navigator.push(
+                                                Navigator.pop(
         context,
         MaterialPageRoute(
           builder: (context) => MyNavigationBar(),

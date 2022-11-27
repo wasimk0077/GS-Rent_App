@@ -770,14 +770,7 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
       )
       else Container()
       ,
-      ElevatedButton(onPressed: (){
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UpdatAgreementDoc(),
-            ),
-          );
-      }, child: Text("AGR"))
+      
                   ],
                  ),
 

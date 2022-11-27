@@ -4,6 +4,7 @@
 
 
 import 'package:authh_app/ui/agreement_details.dart';
+import 'package:authh_app/ui/home_view.dart';
 import 'package:authh_app/ui/rentTable.dart';
 // import 'package:authh_app/ui/tenant.dart';
 import 'package:authh_app/ui/tenant_details.dart';
@@ -129,7 +130,7 @@ class _Rent_DetailsState extends State<Rent_Details> {
         icon: Icon(Icons.star, color: Colors.red), label: "4"),
   ];
   String rent_paid = "";
-  String rent = "dummy";
+  String rent = "";
   bool? value = false;
   bool rent_status = false;
   int recent_rent_paid = 0;
@@ -278,7 +279,7 @@ TextEditingController _year = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFF000000),
-        body: SingleChildScrollView(
+        body:SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
@@ -518,6 +519,12 @@ TextEditingController _year = TextEditingController();
                                         }
                                       }
                                     }, SetOptions(merge: true));
+                                    Navigator.pop(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeView(),
+                          ),
+                        );
                                   }
                                 } else {
                                   {
@@ -556,7 +563,14 @@ TextEditingController _year = TextEditingController();
                                           }
                                         }
                                       }, SetOptions(merge: true));
+                                      
                                     }
+                                     Navigator.pop(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeView(),
+                          ),
+                        );
                                     ;
                                   }
                                 }
@@ -763,9 +777,9 @@ TextEditingController _year = TextEditingController();
                     print(oct);
 
                     pdfdoc=pdfdocs(jan, feb, mar, apr, may, jun, jul, aug, sept, oct, nov, dec,janRent,febRent,marRent,aprRent,mayRent,junRent,julRent,augRent,septRent,octRent,novRent,decRent);
-   final pdfFile2 =await  RentPdfInvoiceApi.generate(pdfdoc: pdfdoc,
+                   final pdfFile2 =await  RentPdfInvoiceApi.generate(pdfdoc: pdfdoc,
    
-   );
+                   );
 
                 // opening the pdf file
                 //  OpenFile.open(pdfFile2.path);
@@ -815,7 +829,7 @@ TextEditingController _year = TextEditingController();
           //   },
           //   //type: BottomNavigationBarType.fixed,
           // ),
-        ));
+         ));
   }
 }
 // class Vaccination {

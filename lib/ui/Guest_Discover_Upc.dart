@@ -1,4 +1,5 @@
 import 'package:authh_app/ui/BottomNavbar.dart';
+import 'package:authh_app/ui/Guest_Auth.dart';
 import 'package:authh_app/ui/Guest_Discover_Vac.dart';
 import 'package:authh_app/ui/Guest_details_view.dart';
 import 'package:authh_app/ui/add_property.dart';
@@ -32,7 +33,7 @@ class _GuestDiscoverUpcomingState extends State<GuestDiscoverUpcoming> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Starting_page(),
+            builder: (context) => GuestAuthentication()
           ),
         );
         return true;
@@ -281,7 +282,8 @@ class _GuestDiscoverUpcomingState extends State<GuestDiscoverUpcoming> {
                                                     )
                                                   ],
                                                 )
-                                            ]))
+                                            ]
+                                            ))
                                           ],
                                         ),
                                       ),

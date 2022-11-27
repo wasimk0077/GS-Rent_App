@@ -1,4 +1,5 @@
 
+import 'package:authh_app/ui/NewBarchart.dart';
 import 'package:authh_app/ui/bar_chart_graph.dart';
 import 'package:authh_app/ui/bar_chart_model.dart';
 import 'package:authh_app/ui/bar_chart_model.dart';
@@ -1174,7 +1175,7 @@ double ResRentpermonthyield=0;
               ),
            Container(
              width: MediaQuery.of(context).size.width,
-            height: 350,
+            height: 420,
             child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
@@ -1188,25 +1189,12 @@ double ResRentpermonthyield=0;
 
                 child:Column(
                 children: [
-                  Text("No of Property types",
-                  style: TextStyle(color: Colors.white),),
+                  // Text("No of Property types",
+                  // style: TextStyle(color: Colors.white),),
                   Container(
-                width: 380,
+                width: MediaQuery.of(context).size.width,
                 
-                    child: SfCartesianChart(
-                        primaryXAxis: CategoryAxis(
-                          
-                        ),
-                        series: <CartesianSeries>[
-                            ColumnSeries<ChartData, String>(
-                                dataSource: chartData,
-                                xValueMapper: (ChartData data, _) => data.x,
-                                yValueMapper: (ChartData data, _) => data.y,
-                                // Map color for each data points from the data source
-                                pointColorMapper: (ChartData data, _) => data.color
-                            )
-                        ]
-                    )
+                    child: BarChartSample1()
                 ),
                 ],
               ) ,

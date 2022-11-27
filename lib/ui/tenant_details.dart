@@ -1,10 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:authh_app/ui/details_view.dart';
 import 'package:authh_app/ui/rent_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:open_file/open_file.dart';
 import 'agreement_details.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
+
+// import 'package:dio/dio.dart';
 
 class TenantDetails extends StatefulWidget {
   // const TenantDetails({Key? key}) : super(key: key);
@@ -55,7 +60,17 @@ class _TenantDetailsState extends State<TenantDetails> {
       tenant_image=data['Tenant_Details']['imageurl']["image1"];
     }
   }
-
+  // _save() async {
+  //  var response = await Dio().get(
+  //          "https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg",
+  //          options: Options(responseType: ResponseType.bytes));
+  //  final result = await ImageGallerySaver.saveImage(
+  //          Uint8List.fromList(response.data),
+  //          quality: 60,
+  //          name: "hello");
+  //  print(result);
+  // }
+ 
   void initState() {
     // TODO: implement initState
     () async {
@@ -205,6 +220,11 @@ class _TenantDetailsState extends State<TenantDetails> {
                         ],
                       ),
                     ),
+              //       TextButton(
+              // onPressed: () {
+              //   OpenFile.open("https://firebasestorage.googleapis.com/v0/b/authentiicate.appspot.com/o/images%2Fimage_picker7210789797975572109.jpg?alt=media&token=388ec9af-f92e-4972-8504-5e5a9cb6391c",);
+              // },
+              // child: Text('Open PDF')),
                     
                     SizedBox(
                       width: MediaQuery.of(context).size.width/2.35,
@@ -236,7 +256,16 @@ class _TenantDetailsState extends State<TenantDetails> {
                         tenant_image),
                   ),
                 ),
-              ),              ],
+              ),     
+              //       TextButton(
+              // onPressed: () {
+              //   // OpenFile.open("https://firebasestorage.googleapis.com/v0/b/authentiicate.appspot.com/o/images%2Fimage_picker7210789797975572109.jpg?alt=media&token=388ec9af-f92e-4972-8504-5e5a9cb6391c",);
+              // // GallerySaver.saveImage("https://firebasestorage.googleapis.com/v0/b/authentiicate.appspot.com/o/images%2Fimage_picker7210789797975572109.jpg?alt=media&token=388ec9af-f92e-4972-8504-5e5a9cb6391c");
+              // // _save();
+              // },
+              // child: Text('Open PDF')),
+              
+                       ],
                                     )
                                     ),
       

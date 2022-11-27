@@ -116,6 +116,30 @@ class _LoginPageState extends State<LoginPage> {
                         );
                         print(user!.email);
                       }
+                      else{
+                        showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                          icon: Icon( // <-- Icon
+    Icons.error,
+    size: 24.0,
+  ),
+                                          iconColor: Colors.red,
+                                          title: const Text(" Error "),
+                                          content: Text(
+                                              'The password entered is incorrect.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text("OK"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                
+     
+                                              },
+                                            )
+                                          ],
+                                        ));
+                      }
                     },
                     child: FittedBox(
                       child: Text(

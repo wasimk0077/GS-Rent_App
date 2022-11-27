@@ -4,6 +4,7 @@ import 'package:authh_app/ui/ChangePassword.dart';
 import 'package:authh_app/ui/Guest_Discover_Upc.dart';
 import 'package:authh_app/ui/Guest_Discover_Vac.dart';
 import 'package:authh_app/ui/home_view.dart';
+import 'package:authh_app/ui/starting_page.dart';
 // import 'package:authh_app/ui/tenant.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,7 +51,17 @@ class _GuestAuthenticationState extends State<GuestAuthentication> {
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection("users");
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Starting_page()
+          ),
+        );
+        return true;
+      },
+      child:  Scaffold(
         backgroundColor: Color(0x121212),
         body: SingleChildScrollView(
           child: Container(
@@ -106,24 +117,24 @@ class _GuestAuthenticationState extends State<GuestAuthentication> {
                 //             color: Colors.white, fontWeight: FontWeight.bold)),
                 //   ),
                 // ),
-                // SizedBox(height: MediaQuery.of(context).size.height / 35),
-                // Container(
-                //   width: MediaQuery.of(context).size.width / 1.3,
-                //   child: TextFormField(
-                //     style: TextStyle(color: Colors.white),
-                //     controller: _nameField,
-                //     decoration: InputDecoration(
-                //       enabledBorder: UnderlineInputBorder(
-                //         borderSide: BorderSide(color: Colors.white),
-                //       ),
-                //       // hintText: "something@gmail.com",
-                //       // hintStyle: TextStyle(color: Colors.white),
-                //       labelText: "User name",
-                //       labelStyle: TextStyle(
-                //           color: Colors.white, fontWeight: FontWeight.bold),
-                //     ),
-                //   ),
-                // ),
+                SizedBox(height: MediaQuery.of(context).size.height / 35),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.3,
+                  child: TextFormField(
+                    style: TextStyle(color: Colors.white),
+                    controller: _nameField,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      // hintText: "something@gmail.com",
+                      // hintStyle: TextStyle(color: Colors.white),
+                      labelText: "User name",
+                      labelStyle: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
                 SizedBox(height: MediaQuery.of(context).size.height / 35),
                 Container(
                   width: MediaQuery.of(context).size.width / 1.3,
@@ -178,12 +189,12 @@ class _GuestAuthenticationState extends State<GuestAuthentication> {
                           final user = FirebaseAuth.instance.currentUser;
                           var collection =
                               FirebaseFirestore.instance.collection('users');
-                          collection.doc(user!.uid) // <-- Document ID
+                          collection.doc(user?.uid) // <-- Document ID
                               .set({
                             'User_email': _emailField.text,
                             // 'User_password': _passwordField.text,
                             'User_type': 'Guest',
-                            // 'User_name': _nameField.text,
+                            'User_name': _nameField.text,
                             'User_mobile': _mobileField.text,
                           });
                           Navigator.push(
@@ -272,6 +283,6 @@ class _GuestAuthenticationState extends State<GuestAuthentication> {
               ],
             ),
           ),
-        ));
+        )));
   }
 }
