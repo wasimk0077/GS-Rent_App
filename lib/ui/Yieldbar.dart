@@ -5,8 +5,16 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class BarChartSample1 extends StatefulWidget {
-  const BarChartSample1({key});
+class BarChartSample3 extends StatefulWidget {
+
+  // const BarChartSample1({key});
+  final String RES;
+  final String MNC;
+  final String WARE;
+  final String BANK;
+  final String COMM;
+   //if you have multiple values add here
+  BarChartSample3(this.RES,this.MNC,this.WARE,this.BANK,this.COMM, {Key? key}) : super(key: key);
 
   List<Color> get availableColors => const <Color>[
         Colors.purpleAccent,
@@ -18,10 +26,10 @@ class BarChartSample1 extends StatefulWidget {
       ];
 
   @override
-  State<StatefulWidget> createState() => BarChartSample1State();
+  State<StatefulWidget> createState() => BarChartSample3State();
 }
 
-class BarChartSample1State extends State<BarChartSample1> {
+class BarChartSample3State extends State<BarChartSample3> {
   final Color barBackgroundColor =  Color(0xFF1E1E1E);
   final Duration animDuration = const Duration(milliseconds: 250);
 
@@ -35,7 +43,7 @@ class BarChartSample1State extends State<BarChartSample1> {
       aspectRatio: 1,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        color: const Color(0xff72d8bf),
+        color:  Color(0xFF1E1E1E),
         child: Stack(
           children: <Widget>[
             Padding(
@@ -44,7 +52,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   const Text(
-                    'No of Property Types',
+                    'Yield',
                     style: TextStyle(
                       color: Colors.white
                 ,
@@ -111,7 +119,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     int x,
     double y, {
     bool isTouched = false,
-    Color barColor =const Color.fromARGB(255, 24, 62, 124),
+    Color barColor =Colors.yellow,
     double width = 18,
     List<int> showTooltips = const [],
   }) {
@@ -139,15 +147,15 @@ class BarChartSample1State extends State<BarChartSample1> {
   List<BarChartGroupData> showingGroups() => List.generate(5, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, 500, isTouched: i == touchedIndex);
+            return makeGroupData(0, double.parse(widget.MNC), isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(1, 200, isTouched: i == touchedIndex);
+            return makeGroupData(1, double.parse(widget.RES), isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, 290, isTouched: i == touchedIndex);
+            return makeGroupData(2, double.parse(widget.WARE), isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, 150, isTouched: i == touchedIndex);
+            return makeGroupData(3, double.parse(widget.BANK), isTouched: i == touchedIndex);
           case 4:
-            return makeGroupData(4, 600, isTouched: i == touchedIndex);
+            return makeGroupData(4, double.parse(widget.COMM), isTouched: i == touchedIndex);
           // case 5:
           //   return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
           // case 6:
@@ -166,25 +174,25 @@ class BarChartSample1State extends State<BarChartSample1> {
             String weekDay;
             switch (group.x) {
               case 0:
-                weekDay = 'Monday';
+                weekDay = '';
                 break;
               case 1:
-                weekDay = 'Tuesday';
+                weekDay = '';
                 break;
               case 2:
-                weekDay = 'Wednesday';
+                weekDay = '';
                 break;
               case 3:
-                weekDay = 'Thursday';
+                weekDay = '';
                 break;
               case 4:
-                weekDay = 'Friday';
+                weekDay = '';
                 break;
               case 5:
-                weekDay = 'Saturday';
+                weekDay = '';
                 break;
               case 6:
-                weekDay = 'Sunday';
+                weekDay = '';
                 break;
               default:
                 throw Error();

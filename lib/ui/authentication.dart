@@ -2,6 +2,7 @@ import 'package:authh_app/net/flutterfire.dart';
 import 'package:authh_app/ui/BottomNavbar.dart';
 import 'package:authh_app/ui/ChangePassword.dart';
 import 'package:authh_app/ui/home_view.dart';
+import 'package:authh_app/ui/starting_page.dart';
 // import 'package:authh_app/ui/tenant.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,6 +36,9 @@ class Authentication extends StatefulWidget {
 }
 
 class _AuthenticationState extends State<Authentication> {
+  
+
+
   TextEditingController _emailField = TextEditingController();
   TextEditingController _passwordField = TextEditingController();
   TextEditingController _nameField = TextEditingController();
@@ -43,7 +47,8 @@ class _AuthenticationState extends State<Authentication> {
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection("users");
-    return Scaffold(
+     return  WillPopScope(
+        onWillPop: null, child: Scaffold(
         backgroundColor: Color(0x121212),
         body: SingleChildScrollView(
           child: Container(
@@ -233,6 +238,7 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
+        )
         ));
   }
 }

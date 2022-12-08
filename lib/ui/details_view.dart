@@ -129,7 +129,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
   // @override
 
   final List<String> imageList = [];
-  final List<String> NoimageList=["https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"];
+  final List<String> NoimageList=["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAh8YVQhMCGhp1xDo9Pew7q0W4H1zLD-9wbA&usqp=CAU"];
   int _currentIndex = 0;
 
   final _bottomNavigationBarItems = [
@@ -245,14 +245,18 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
               Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height/12,
+            ),
             Container(
-              margin: EdgeInsets.all(15),
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.only(left: 5,right: 5),
               child: CarouselSlider.builder(
                 itemCount:imageList.length,
                 options: CarouselOptions(
                   disableCenter: true,
                   // enlargeCenterPage: true,
-                  height: 230,
+                  height: MediaQuery.of(context).size.height/3.5,
                   autoPlay: true,
                   autoPlayInterval: Duration(seconds: 3),
                   reverse: false,
@@ -269,6 +273,8 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
                             // color: Colors.white,
+                               width: 4,
+                            
                           )),
                       //ClipRRect for image border radius
                       child: ClipRRect(
@@ -288,6 +294,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
                             // color: Colors.white,
+                            width: 4,
                           )),
                       //ClipRRect for image border radius
                       child: ClipRRect(
@@ -375,6 +382,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
             ),
             Container(
               width: MediaQuery.of(context).size.width,
+              height:MediaQuery.of(context).size.height/4.5,
               child: Card(
                 // shadowColor: Color.fromARGB(255, 180, 38, 236),
                 elevation: 8,
@@ -395,6 +403,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection.doc(widget.docID).snapshots(),
@@ -419,7 +428,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                               return Center(child: CircularProgressIndicator());
                             },
                           ),
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection.doc(widget.docID).snapshots(),
                             builder: (_, snapshot) {
@@ -443,7 +452,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                               return Center(child: CircularProgressIndicator());
                             },
                           ),
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection.doc(widget.docID).snapshots(),
                             builder: (_, snapshot) {
@@ -466,7 +475,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                               return Center(child: CircularProgressIndicator());
                             },
                           ),
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                             stream: collection.doc(widget.docID).snapshots(),
                             builder: (_, snapshot) {
@@ -490,7 +499,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                               return Center(child: CircularProgressIndicator());
                             },
                           ),
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                           // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                           //   stream: collection.doc(widget.docID).snapshots(),
                           //   builder: (_, snapshot) {
@@ -555,6 +564,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
             SizedBox(height: 20,),
             Container(
               width: MediaQuery.of(context).size.width,
+              // height: MediaQuery.of(context).size.height/10,
               child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -581,7 +591,7 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                 Image.network(
                         //  "https://thumbs.dreamstime.com/z/bangalore-bengaluru-map-close-up-shot-capital-indian-state-karnataka-114068364.jpg",
                   "https://media.istockphoto.com/vectors/city-urban-streets-roads-abstract-map-vector-id1137117479?k=20&m=1137117479&s=612x612&w=0&h=56n_1vX4IdhkyNZ0Xj6NfSPA0jZSwf6Ru2K68udk4H4=",
-                  height: 200,
+                  height: MediaQuery.of(context).size.height/4,
                   // width:200 ,
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width/1.04,
@@ -603,11 +613,12 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
+            child: FittedBox(fit: BoxFit.fitWidth,
             child: Text("Location",
             style: TextStyle(
               color: Colors.black,
-              fontSize: 20
-            ),)
+              // fontSize: 20
+            ),),)
           ),
             )
           )
@@ -622,394 +633,394 @@ imageList.add(data['Property_Details']["imageurl"]["image1"]);
           ],
         ),
             ]
-            else
-            Column(
-               mainAxisAlignment: MainAxisAlignment.start,
-              children: [Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              margin: EdgeInsets.all(15),
-              child: CarouselSlider.builder(
-                itemCount:imageList.length,
-                options: CarouselOptions(
-                  disableCenter: true,
-                  // enlargeCenterPage: true,
-                  height: 450,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  reverse: false,
-                  aspectRatio: 5.0,
-                ),
-                itemBuilder: (context, i, id) {
-                  //for onTap to redirect to another screen
-                  return GestureDetector(
-                    child:Column(
-                      children: [
-                        if(imageList.isEmpty)...[
-                         Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            // color: Colors.white,
-                          )),
-                      //ClipRRect for image border radius
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          NoimageList[i],
-                          width: 400,
-                          height: 320,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                        ]
-                        else
-                         Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            // color: Colors.white,
-                          )),
-                      //ClipRRect for image border radius
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          imageList[i],
-                          width: 590,
-                          height: 420,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                      ],
-                    ),
+            // else
+//             Column(
+//                mainAxisAlignment: MainAxisAlignment.start,
+//               children: [Column(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             Container(
+//               margin: EdgeInsets.all(15),
+//               child: CarouselSlider.builder(
+//                 itemCount:imageList.length,
+//                 options: CarouselOptions(
+//                   disableCenter: true,
+//                   // enlargeCenterPage: true,
+//                   height: 450,
+//                   autoPlay: true,
+//                   autoPlayInterval: Duration(seconds: 3),
+//                   reverse: false,
+//                   aspectRatio: 5.0,
+//                 ),
+//                 itemBuilder: (context, i, id) {
+//                   //for onTap to redirect to another screen
+//                   return GestureDetector(
+//                     child:Column(
+//                       children: [
+//                         if(imageList.isEmpty)...[
+//                          Container(
+//                       decoration: BoxDecoration(
+//                           borderRadius: BorderRadius.circular(15),
+//                           border: Border.all(
+//                             // color: Colors.white,
+//                           )),
+//                       //ClipRRect for image border radius
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(15),
+//                         child: Image.network(
+//                           NoimageList[i],
+//                           width: 400,
+//                           height: 320,
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+//                         ]
+//                         else
+//                          Container(
+//                       decoration: BoxDecoration(
+//                           borderRadius: BorderRadius.circular(15),
+//                           border: Border.all(
+//                             // color: Colors.white,
+//                           )),
+//                       //ClipRRect for image border radius
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(15),
+//                         child: Image.network(
+//                           imageList[i],
+//                           width: 590,
+//                           height: 420,
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+//                       ],
+//                     ),
 
-                    onTap: () {
-                      var url = imageList[i];
-                      print(url.toString());
-                    },
-                  );
-                },
-              ),
-            ),
-//     ListView(
-//     children: List.generate(
-//       List.from(property_main.doc("")).length,
-//       (i) {
-//        return Row(
-//         children: [
-//           Text(doc['orderDetails'][i]['quantity'].toString()),
-//           Text(doc['orderDetails'][i]['title'].toString())),
-//         ],
-//       );
-//     )
-// )
+//                     onTap: () {
+//                       var url = imageList[i];
+//                       print(url.toString());
+//                     },
+//                   );
+//                 },
+//               ),
+//             ),
+// //     ListView(
+// //     children: List.generate(
+// //       List.from(property_main.doc("")).length,
+// //       (i) {
+// //        return Row(
+// //         children: [
+// //           Text(doc['orderDetails'][i]['quantity'].toString()),
+// //           Text(doc['orderDetails'][i]['title'].toString())),
+// //         ],
+// //       );
+// //     )
+// // )
 
-// ListView(
-//     // shrinkWrap: true,
-// 		scrollDirection: Axis.horizontal,
-// 		children: <Widget>[
-// 			// Container(
-// 			// height: 480.0,
-// 			// width: 240.0,
-// 			// decoration: BoxDecoration(
-// 			// 	image: DecorationImage(
-// 			// 	image: AssetImage(
-// 			// 		'assets/images/aquaman.png'),
-// 			// 	fit: BoxFit.fill,
-// 			// 	),
-// 			// 	shape: BoxShape.rectangle,
-// 			// ),
-// 			// ),
-// 			Text("gg"),
-//       Text("ff")
-// 		],
+// // ListView(
+// //     // shrinkWrap: true,
+// // 		scrollDirection: Axis.horizontal,
+// // 		children: <Widget>[
+// // 			// Container(
+// // 			// height: 480.0,
+// // 			// width: 240.0,
+// // 			// decoration: BoxDecoration(
+// // 			// 	image: DecorationImage(
+// // 			// 	image: AssetImage(
+// // 			// 		'assets/images/aquaman.png'),
+// // 			// 	fit: BoxFit.fill,
+// // 			// 	),
+// // 			// 	shape: BoxShape.rectangle,
+// // 			// ),
+// // 			// ),
+// // 			Text("gg"),
+// //       Text("ff")
+// // 		],
 
-// 		),    
+// // 		),    
 
 
 
- Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: [
-              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+//  Row(
+//              mainAxisAlignment: MainAxisAlignment.center,
+//              children: [
+//               StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//                             stream: collection.doc(widget.docID).snapshots(),
+//                             builder: (_, snapshot) {
+//                               if (snapshot.hasError)
+//                                 return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Property_Details']['Property_name'];
-                                return Text(
-                                  (' $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+//                               if (snapshot.hasData) {
+//                                 var output = snapshot.data!.data();
+//                                 var value =
+//                                     output!['Property_Details']['Property_name'];
+//                                 return Text(
+//                                   (' $value'),
+//                                   style: TextStyle(
+//                                     fontWeight: FontWeight.bold,
+//                                     fontSize: 30,
+//                                     color: Colors.white,
+//                                   ),
+//                                 );
+//                               }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-             ],
-            ),
-            SizedBox(height: 10,),
+//                               return Center(child: CircularProgressIndicator());
+//                             },
+//                           ),
+//              ],
+//             ),
+//             SizedBox(height: 10,),
 
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Card(
-                // shadowColor: Color.fromARGB(255, 180, 38, 236),
-                elevation: 8,
-                color: Color(0xFF1E1E1E),
-                clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child:
-                    // ignore: unnecessary_new
+//             Container(
+//               width: MediaQuery.of(context).size.width,
+//               child: Card(
+//                 // shadowColor: Color.fromARGB(255, 180, 38, 236),
+//                 elevation: 8,
+//                 color: Color(0xFF1E1E1E),
+//                 clipBehavior: Clip.antiAlias,
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(24),
+//                 ),
+//                 child:
+//                     // ignore: unnecessary_new
 
-                    Container(
-                  decoration:
-                      BoxDecoration(color: Color.fromARGB(18, 113, 125, 137)),
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+//                     Container(
+//                   decoration:
+//                       BoxDecoration(color: Color.fromARGB(18, 113, 125, 137)),
+//                   padding: EdgeInsets.all(16),
+//                   child: Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: [
+//                       Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//                             stream: collection.doc(widget.docID).snapshots(),
+//                             builder: (_, snapshot) {
+//                               if (snapshot.hasError)
+//                                 return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Property_Details']['Carpet_Area'];
-                                return Text(
-                                  ('Carpet_Area : $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+//                               if (snapshot.hasData) {
+//                                 var output = snapshot.data!.data();
+//                                 var value =
+//                                     output!['Property_Details']['Carpet_Area'];
+//                                 return Text(
+//                                   ('Carpet_Area : $value'),
+//                                   style: TextStyle(
+//                                     fontWeight: FontWeight.bold,
+//                                     fontSize: 32,
+//                                     color: Colors.white,
+//                                   ),
+//                                 );
+//                               }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+//                               return Center(child: CircularProgressIndicator());
+//                             },
+//                           ),
+//                           SizedBox(height: 8),
+//                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//                             stream: collection.doc(widget.docID).snapshots(),
+//                             builder: (_, snapshot) {
+//                               if (snapshot.hasError)
+//                                 return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Property_Details']['Floor'];
-                                return Text(
-                                  ('Floor= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+//                               if (snapshot.hasData) {
+//                                 var output = snapshot.data!.data();
+//                                 var value =
+//                                     output!['Property_Details']['Floor'];
+//                                 return Text(
+//                                   ('Floor= $value'),
+//                                   style: TextStyle(
+//                                     fontWeight: FontWeight.bold,
+//                                     fontSize: 32,
+//                                     color: Colors.white,
+//                                   ),
+//                                 );
+//                               }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+//                               return Center(child: CircularProgressIndicator());
+//                             },
+//                           ),
+//                           SizedBox(height: 8),
+//                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//                             stream: collection.doc(widget.docID).snapshots(),
+//                             builder: (_, snapshot) {
+//                               if (snapshot.hasError)
+//                                 return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Property_Details']['Firm'];
-                                return Text(
-                                  ('Firm= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+//                               if (snapshot.hasData) {
+//                                 var output = snapshot.data!.data();
+//                                 var value = output!['Property_Details']['Firm'];
+//                                 return Text(
+//                                   ('Firm= $value'),
+//                                   style: TextStyle(
+//                                     fontWeight: FontWeight.bold,
+//                                     fontSize: 32,
+//                                     color: Colors.white,
+//                                   ),
+//                                 );
+//                               }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+//                               return Center(child: CircularProgressIndicator());
+//                             },
+//                           ),
+//                           SizedBox(height: 8),
+//                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//                             stream: collection.doc(widget.docID).snapshots(),
+//                             builder: (_, snapshot) {
+//                               if (snapshot.hasError)
+//                                 return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value =
-                                    output!['Property_Details']['Tenant'];
-                                return Text(
-                                  ('Tenant= $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+//                               if (snapshot.hasData) {
+//                                 var output = snapshot.data!.data();
+//                                 var value =
+//                                     output!['Property_Details']['Tenant'];
+//                                 return Text(
+//                                   ('Tenant= $value'),
+//                                   style: TextStyle(
+//                                     fontWeight: FontWeight.bold,
+//                                     fontSize: 32,
+//                                     color: Colors.white,
+//                                   ),
+//                                 );
+//                               }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: collection.doc(widget.docID).snapshots(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
+//                               return Center(child: CircularProgressIndicator());
+//                             },
+//                           ),
+//                           SizedBox(height: 8),
+//                           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//                             stream: collection.doc(widget.docID).snapshots(),
+//                             builder: (_, snapshot) {
+//                               if (snapshot.hasError)
+//                                 return Text('Error = ${snapshot.error}');
 
-                              if (snapshot.hasData) {
-                                var output = snapshot.data!.data();
-                                var value = output!['Property_Details']['Firm'];
-                                return Text(
-                                  ('Value = $value'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
+//                               if (snapshot.hasData) {
+//                                 var output = snapshot.data!.data();
+//                                 var value = output!['Property_Details']['Firm'];
+//                                 return Text(
+//                                   ('Value = $value'),
+//                                   style: TextStyle(
+//                                     fontWeight: FontWeight.bold,
+//                                     fontSize: 32,
+//                                     color: Colors.white,
+//                                   ),
+//                                 );
+//                               }
 
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          ),
+//                               return Center(child: CircularProgressIndicator());
+//                             },
+//                           ),
                          
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          if (n == 1)
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  child: FloatingActionButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdateDetailsViews(widget.docID),
-                                        ),
-                                      );
-                                    },
-                                    backgroundColor: Colors.black,
-                                    child: Icon(
-                                      Icons.keyboard_control_sharp,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          else
-                            Container()
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
+//                         ],
+//                       ),
+//                       Column(
+//                         children: [
+//                           if (n == 1)
+//                             Column(
+//                               mainAxisAlignment: MainAxisAlignment.end,
+//                               children: [
+//                                 Container(
+//                                   child: FloatingActionButton(
+//                                     onPressed: () {
+//                                       Navigator.push(
+//                                         context,
+//                                         MaterialPageRoute(
+//                                           builder: (context) =>
+//                                               UpdateDetailsViews(widget.docID),
+//                                         ),
+//                                       );
+//                                     },
+//                                     backgroundColor: Colors.black,
+//                                     child: Icon(
+//                                       Icons.keyboard_control_sharp,
+//                                       color: Colors.white,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ],
+//                             )
+//                           else
+//                             Container()
+//                         ],
+//                       )
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
                 
-                SizedBox(height: 20,),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                   InkWell(
-                    onTap:  () async {
-                              await getLocation();
-                              Future.delayed(Duration(seconds: 3));
-                              getDetails(
-                                  Latitude, Longitude, Address, Name, context);
-                            },
-                    child:  Stack(
-                      children: [Card(
+//                 SizedBox(height: 20,),
+//             Container(
+//               width: MediaQuery.of(context).size.width,
+//               child: Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 Column(
+//                   children: [
+//                    InkWell(
+//                     onTap:  () async {
+//                               await getLocation();
+//                               Future.delayed(Duration(seconds: 3));
+//                               getDetails(
+//                                   Latitude, Longitude, Address, Name, context);
+//                             },
+//                     child:  Stack(
+//                       children: [Card(
                       
-                      color: Color(0xFF1E1E1E),
-            elevation: 5,
-            clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-            child: Column(
-              children: [
-                Image.network(
-                        //  "https://thumbs.dreamstime.com/z/bangalore-bengaluru-map-close-up-shot-capital-indian-state-karnataka-114068364.jpg",
-                  "https://media.istockphoto.com/vectors/city-urban-streets-roads-abstract-map-vector-id1137117479?k=20&m=1137117479&s=612x612&w=0&h=56n_1vX4IdhkyNZ0Xj6NfSPA0jZSwf6Ru2K68udk4H4=",
-                  height: 315,
-                  // width:200 ,
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width/1.04,
-                ),
+//                       color: Color(0xFF1E1E1E),
+//             elevation: 5,
+//             clipBehavior: Clip.antiAlias,
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(24),
+//                 ),
+//             child: Column(
+//               children: [
+//                 Image.network(
+//                         //  "https://thumbs.dreamstime.com/z/bangalore-bengaluru-map-close-up-shot-capital-indian-state-karnataka-114068364.jpg",
+//                   "https://media.istockphoto.com/vectors/city-urban-streets-roads-abstract-map-vector-id1137117479?k=20&m=1137117479&s=612x612&w=0&h=56n_1vX4IdhkyNZ0Xj6NfSPA0jZSwf6Ru2K68udk4H4=",
+//                   height: 315,
+//                   // width:200 ,
+//                   fit: BoxFit.cover,
+//                   width: MediaQuery.of(context).size.width/1.04,
+//                 ),
                 
-              ],
-            ),
-          ),Center(
-            widthFactor: 1.5,
-            heightFactor: 2,
-            child: Container(
-              width: 90,
-              height: 40,
-              child: Card(
+//               ],
+//             ),
+//           ),Center(
+//             widthFactor: 1.5,
+//             heightFactor: 2,
+//             child: Container(
+//               width: 90,
+//               height: 40,
+//               child: Card(
                       
-                      // color: Color(0xFF1E1E1E),
-            elevation: 5,
-            clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-            child: Text("Location",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20
-            ),)
-          ),
-            )
-          )
-          ],
-                    )
-                   )
-                  ],
-                )
-              ]
-            ),
-            )
-          ],
-        ),],
-            )
+//                       // color: Color(0xFF1E1E1E),
+//             elevation: 5,
+//             clipBehavior: Clip.antiAlias,
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(10),
+//                 ),
+//             child: Text("Location",
+//             style: TextStyle(
+//               color: Colors.black,
+//               fontSize: 20
+//             ),)
+//           ),
+//             )
+//           )
+//           ],
+//                     )
+//                    )
+//                   ],
+//                 )
+//               ]
+//             ),
+//             )
+//           ],
+//         ),],
+//             )
           ],
         )
 

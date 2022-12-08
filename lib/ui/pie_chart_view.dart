@@ -13,8 +13,9 @@ class PieChartView extends StatefulWidget {
   final String WareProp;
   final String CommProp;
   final String BankProp;
+  final String TotalRent;
 
-  PieChartView( this.ResProp,this.MNCProp,this.WareProp,this.CommProp,this.BankProp,{Key? key}) : super(key: key);
+  PieChartView( this.ResProp,this.MNCProp,this.WareProp,this.CommProp,this.BankProp,this.TotalRent,{Key? key}) : super(key: key);
 
   @override
   State<PieChartView> createState() => _PieChartViewState();
@@ -30,17 +31,17 @@ class _PieChartViewState extends State<PieChartView> {
 Widget build(BuildContext context) 
 {
    final kCategories2 = [
-  Category('Residential', amount:double.parse(widget.ResProp)),
-  Category('MNC', amount: double.parse(widget.MNCProp)),
-  Category('WareHouse', amount: double.parse(widget.WareProp)),
-  Category('Commercial', amount: double.parse(widget.CommProp)),
-  Category('Bank', amount: double.parse(widget.BankProp)),
+  Category('Residential', amount:double.parse(widget.ResProp),),
+  Category('Warehouse', amount: double.parse(widget.WareProp)),
+  Category('MNC', amount:double.parse(widget.MNCProp)),
+  Category('Bank', amount:double.parse(widget.CommProp)),
+  Category('Commercial', amount: double.parse(widget.BankProp)),
   // Category('fees', amount: 20.00),
 ];
   
     return Expanded(
       
-      flex: 4,
+      flex: 5,
       child: LayoutBuilder(
         builder: (context, constraint) => Container(
           decoration: BoxDecoration(
@@ -103,7 +104,7 @@ Widget build(BuildContext context)
                         Text('Rental Income',style: TextStyle(color: Colors.white,
                     fontWeight: 
                     FontWeight.bold),),
-                    Text('Rs 10000',style: TextStyle(color: Colors.white,
+                    Text("Rs " + widget.TotalRent.toString(),style: TextStyle(color: Colors.white,
                     fontWeight: 
                     FontWeight.bold),),
                       ],

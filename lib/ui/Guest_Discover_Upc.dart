@@ -106,6 +106,9 @@ class _GuestDiscoverUpcomingState extends State<GuestDiscoverUpcoming> {
                     ),
                   ],
                 ),
+                 SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.025,
+                ),
                 StreamBuilder<QuerySnapshot>(
                     stream: property_main,
                     builder: (BuildContext context,

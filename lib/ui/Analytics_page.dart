@@ -1,5 +1,7 @@
 
-import 'package:authh_app/ui/NewBarchart.dart';
+
+import 'package:authh_app/ui/Noofpropbarchart.dart';
+import 'package:authh_app/ui/Yieldbar.dart';
 import 'package:authh_app/ui/bar_chart_graph.dart';
 import 'package:authh_app/ui/bar_chart_model.dart';
 import 'package:authh_app/ui/bar_chart_model.dart';
@@ -7,6 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'TTMbar.dart';
+import 'Totalrentperpropbar.dart';
 class AnalyticsPage extends StatefulWidget {
   const AnalyticsPage({Key? key}) : super(key: key);
 
@@ -359,12 +364,14 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   await FirebaseFirestore.instance.collection("property_main").get().then((value) {
     for(var i in value.docs) {
 
-      if (i["Property_Details"]["Property_Status"]["Upcoming"] != true ){
+      if (i["Property_Details"]["Property_Status"]["Upcoming"] == false ){
 TotalProperties++;
       }
         
         //  print("nah didnt enter the loop");
         TotalRentpermonth=TotalRentpermonth+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
+        print("TOtalrentpermonth is");
+        print(TotalRentpermonth);
         // TotalProperties++;
         if (i["Property_Details"]["Property_Status"]["Vacant"] == true ) {
           TotalVacant = TotalVacant + 1;
@@ -455,6 +462,7 @@ double ResRentpermonthyield=0;
        int ware=0;
        
   getData3() async {
+  
 
   await FirebaseFirestore.instance.collection("property_main").get().then((value) {
     for(var i in value.docs) {
@@ -465,9 +473,12 @@ double ResRentpermonthyield=0;
         Noofproperties++;
         Rentpermonthyield=Rentpermonthyield+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
         Assetpermonthyield=Assetpermonthyield+double.parse(i["Property_Details"]["Asset"]);
-        TotalYield=TotalYield+(Rentpermonthyield*100/Assetpermonthyield);  
+        TotalYield=TotalYield+(Rentpermonthyield*100/Assetpermonthyield); 
+        print("Total yield is"); 
+        print(TotalYield);
         Yields.add((double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"])*100/double.parse(i["Property_Details"]["Asset"])));
-
+         print(" yields is"); 
+        print(Yields);
 
       }
         
@@ -664,28 +675,28 @@ double ResRentpermonthyield=0;
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                              ('Monthly Rental Income'),
-                              style: TextStyle(
-                                // fontWeight:FontWeight.bold,
-                                
-                                fontSize: 20,
-                                color: Colors.white,
-                                
-                              ),
-                              
-                            ),
-                            Text(
-                              (TotalRentpermonth.toInt().toString()),
-                              style: TextStyle(
-                                // fontWeight:FontWeight.bold,
-                                
-                                fontSize: 15,
-                                color: Colors.white,
-                                
-                              ),
-                              
-                            ),
+              FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                        'Monthly Rental Income',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          // fontSize: 18,
+                          color: Colors.white
+                        ),
+                      ),
+                        ),
+                            FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        (TotalRentpermonth.toInt().toString()),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          // fontSize: 18,
+                          color: Colors.white
+                        ),
+                      ),
+                        ),
             ],
           ),
         ),
@@ -697,28 +708,28 @@ double ResRentpermonthyield=0;
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                              ('Average Yield'),
-                              style: TextStyle(
-                                // fontWeight:FontWeight.bold,
-                                
-                                fontSize: 20,
-                                color: Colors.white,
-                                
-                              ),
-                              
-                            ),
-                            Text(
-          (((averageYield).toInt()).toString()),
-                              style: TextStyle(
-                                // fontWeight:FontWeight.bold,
-                                
-                                fontSize: 20,
-                                color: Colors.white,
-                                
-                              ),
-                              
-                            ),
+              FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                        'Average Yield',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          // fontSize: 18,
+                          color: Colors.white
+                        ),
+                      ),
+                        ),
+                            FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        ((averageYield)).toStringAsFixed(2),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          // fontSize: 18,
+                          color: Colors.white
+                        ),
+                      ),
+                        ),
             ],
           ),
         ),],
@@ -1033,14 +1044,17 @@ double ResRentpermonthyield=0;
                         ),
                       ),
                       SizedBox(height: 10,),
-                        Text(
+                        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
                         'Vacant Properties',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          // fontSize: 18,
                           color: Colors.white
                         ),
                       ),
+                        )
        
                   
                  
@@ -1106,14 +1120,17 @@ double ResRentpermonthyield=0;
                         ),
                       ),
                       SizedBox(height: 10,),
-                        Text(
+                        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
                         'Occupied Properties',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          // fontSize: 18,
                           color: Colors.white
                         ),
                       ),
+                        )
        
                   
                  
@@ -1141,28 +1158,37 @@ double ResRentpermonthyield=0;
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [PieChart(
-              data: const [
-                PieChartData(Colors.purple, 55),
-                PieChartData(Colors.blue, 45),
+              data:  [
+                PieChartData(Colors.purple, 27),
+                PieChartData(Colors.blue,73),
                 
               ],
               radius: 60,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children:  [
-                  Text(
-                    'Total',
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Colors.white
-                    ),
-                  ),
-                  Text((TotalProperties).toString(),
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.white
-                  ),),
+                  FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        ("Total"),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          // fontSize: 18,
+                          color: Colors.white
+                        ),
+                      ),
+                        ),
+                 FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        ((TotalProperties).toString()),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          // fontSize: 18,
+                          color: Colors.white
+                        ),
+                      ),
+                        ),
                 ],
               ),
             ),]
@@ -1175,7 +1201,7 @@ double ResRentpermonthyield=0;
               ),
            Container(
              width: MediaQuery.of(context).size.width,
-            height: 420,
+            height: MediaQuery.of(context).size.height/1.92,
             child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
@@ -1194,7 +1220,48 @@ double ResRentpermonthyield=0;
                   Container(
                 width: MediaQuery.of(context).size.width,
                 
-                    child: BarChartSample1()
+                    child: BarChartSample1(TotalResProp.toDouble().toString(),TotalMNCProp.toDouble().toString(),TotalWareProp.toDouble().toString(),TotalBankProp.toDouble().toString(),TotalCommProp.toDouble().toString(),)
+                ),
+                ],
+              ) ,
+              ),
+              Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+
+                child: Column(
+                children: [
+                  // Text("No of Property types",
+                  // style: TextStyle(color: Colors.white),),
+                  Container(
+                width: MediaQuery.of(context).size.width,
+                
+                    child: BarChartSample2(TotalResRent.toDouble().toString(),TotalMNCRent.toDouble().toString(),TotalWareRent.toDouble().toString(),TotalBankRent.toDouble().toString(),TotalCommRent.toDouble().toString(),)
+                ),
+                ],
+              ) ,
+              ),
+              
+              Card(
+                color: Color(0xFF1E1E1E),
+                            elevation: 8,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+
+                child:Column(
+                children: [
+                  // Text("No of Property types",
+                  // style: TextStyle(color: Colors.white),),
+                  Container(
+                width: MediaQuery.of(context).size.width,
+                
+                    child: BarChartSample4(chartdata3),
                 ),
                 ],
               ) ,
@@ -1209,95 +1276,15 @@ double ResRentpermonthyield=0;
 
                 child:Column(
                 children: [
-                  Text("Total Rent per Property Type",
-                  style: TextStyle(color: Colors.white),),
+                  // Text("No of Property types",
+                  // style: TextStyle(color: Colors.white),),
                   Container(
-                width: 380,
+                width: MediaQuery.of(context).size.width,
                 
-                    child: SfCartesianChart(
-                        primaryXAxis: CategoryAxis(
-                          
-                        ),
-                        series: <CartesianSeries>[
-                            ColumnSeries<ChartData, String>(
-                                dataSource: chartData2,
-                                xValueMapper: (ChartData data, _) => data.x,
-                                yValueMapper: (ChartData data, _) => data.y,
-                                // Map color for each data points from the data source
-                                pointColorMapper: (ChartData data, _) => data.color
-                            )
-                        ]
-                    )
+                    child: BarChartSample3(finalone.toDouble().toString(),finalfour.toDouble().toString(),finalfive.toDouble().toString(),finaltwo.toDouble().toString(),finalthree.toDouble().toString(),)
                 ),
                 ],
-              ),
-              ),
-              
-              Card(
-                color: Color(0xFF1E1E1E),
-                            elevation: 8,
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-
-                child:Column(
-                children: [
-                  Text("TTM",
-                  style: TextStyle(color: Colors.white),),
-                  Container(
-                width: 400,
-                
-                    child: SfCartesianChart(
-                        primaryXAxis: CategoryAxis(
-                          
-                        ),
-                        series: <CartesianSeries>[
-                            ColumnSeries<ChartData, String>(
-                                dataSource: chartdata3,
-                                xValueMapper: (ChartData data, _) => data.x,
-                                yValueMapper: (ChartData data, _) => data.y,
-                                // Map color for each data points from the data source
-                                pointColorMapper: (ChartData data, _) => data.color
-                            )
-                        ]
-                    )
-                ),
-                ],
-              ),
-              ),
-              Card(
-                color: Color(0xFF1E1E1E),
-                            elevation: 8,
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-
-                child:Column(
-                children: [
-                  Text("Yield",
-                  style: TextStyle(color: Colors.white),),
-                  Container(
-                width: 380,
-                
-                    child: SfCartesianChart(
-                        primaryXAxis: CategoryAxis(
-                          
-                        ),
-                        series: <CartesianSeries>[
-                            ColumnSeries<ChartData, String>(
-                                dataSource: chartData4,
-                                xValueMapper: (ChartData data, _) => data.x,
-                                yValueMapper: (ChartData data, _) => data.y,
-                                // Map color for each data points from the data source
-                                pointColorMapper: (ChartData data, _) => data.color
-                            )
-                        ]
-                    )
-                ),
-                ],
-              ),
+              ) ,
               ),
                 // Container(
                 //   width: 380,
@@ -1335,14 +1322,17 @@ double ResRentpermonthyield=0;
 
         // ),
         SizedBox(height: 30,),
-        Text(
-                        'Performance',
+        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                        ("Performance"),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25,
+                          fontSize: 18,
                           color: Colors.white
                         ),
                       ),
+                        ),
                       SizedBox(height: 20,),
         Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1374,21 +1364,29 @@ double ResRentpermonthyield=0;
                             
                             
                       
-                         Text(
-                        Yields.last.toInt().toString(),
+                        FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        ( Yields.last.toInt().toStringAsFixed(2)),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25
+                          // fontSize: 18,
+                          // color: Colors.white
                         ),
                       ),
+                        ),
                       SizedBox(height: 10,),
-                        Text(
-                        'Yield',
+                        FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        ("Yield"),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18
+                          // fontSize: 18,
+                          // color: Colors.white
                         ),
                       ),
+                        ),
        
                   
                  
@@ -1431,23 +1429,29 @@ double ResRentpermonthyield=0;
                  
                             
                             
-                      
-                         Text(
-                        Yields.first.toInt().toString(),
+                      FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        ( Yields.first.toInt().toStringAsFixed(2)),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25
+                          // fontSize: 18,
+                          // color: Colors.white
                         ),
                       ),
+                        ),
                       SizedBox(height: 10,),
-                        Text(
-                        'Yield',
+                        FittedBox(
+                          fit: BoxFit.fill,
+                          child: Text(
+                        ("Yield"),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18
+                          // fontSize: 18,
+                          // color: Colors.white
                         ),
                       ),
-       
+                        ),
                   
                  
         
@@ -1491,7 +1495,7 @@ class PropertyTile {
     class ChartData {
         ChartData(this.x, this.y, this.color);
             final String x;
-            final double? y;
+            final double y;
             final Color? color;
     }
   class PieChartData {
@@ -1510,7 +1514,7 @@ class PieChart extends StatelessWidget {
     this.child,
     Key? key,
   })  : // make sure sum of data is never ovr 100 percent
-        assert(data.fold<double>(0, (sum, data) => sum + data.percent) <= 100),
+        assert(data.fold<double>(0, (sum, data) => sum + data.percent) <= 100 ),
         super(key: key);
 
   final List<PieChartData> data;

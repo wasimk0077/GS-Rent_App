@@ -83,6 +83,8 @@ ScrollController scrollController = ScrollController();
          if(i["Property_Details"]["Property_Types"]["Warehouse"]==true && i["Property_Details"]["Property_Status"]["Upcoming"] != true)
         {
             TotalWareProp=TotalWareProp+1;
+            print("totallll ware housee areee");
+            print(TotalWareProp);
               // TotalMNCRent=TotalMNCRent+double.parse(i["Rent_Details"][DateTime.now().year.toString()][DateTime.now().month.toString()]["Rent_Paid"]);
         }
        
@@ -170,9 +172,7 @@ ScrollController scrollController = ScrollController();
     }();
     () async {
       await get_No_of_PropertyTypes();
-      setState(() {
-        get_No_of_PropertyTypes();
-      });
+      
     }();
     
     // print(MediaQuery.of(context).size.width);
@@ -223,7 +223,8 @@ ScrollController scrollController = ScrollController();
             toolbarHeight: MediaQuery.of(context).size.height/1.5,
             actions: [
               Column(
-                children: [SizedBox(
+                children: [
+                  SizedBox(
             height: 30,
           ),
           Container(
@@ -274,13 +275,13 @@ ScrollController scrollController = ScrollController();
                 // ),
 
                 Container(
-                  height: 140,
+                  height: MediaQuery.of(context).size.height/5.7,
                   width: MediaQuery.of(context).size.width,
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           CategoriesRow(),
-                          PieChartView(TotalResProp.toString(),TotalMNCProp.toString(),TotalWareProp.toString(),TotalCommProp.toString(),TotalBankProp.toString()),
+                          PieChartView(TotalResProp.toString(),TotalMNCProp.toString(),TotalWareProp.toString(),TotalCommProp.toString(),TotalBankProp.toString(),TotalRent.toString()),
                         ],
                       ),
                     ),
@@ -427,7 +428,7 @@ ScrollController scrollController = ScrollController();
             width: MediaQuery.of(context).size.width,
             // height:MediaQuery.of(context).size.height/3.5
             // ,
-            height: 248,
+            height: MediaQuery.of(context).size.width/1.75,
             
             
             child: StreamBuilder<QuerySnapshot>(
@@ -482,6 +483,10 @@ ScrollController scrollController = ScrollController();
                                 );
                               },
                               child: Container(
+                                width:(MediaQuery.of(context).size.width/2),
+                                // height:(MediaQuery.of(context)/),
+
+                                // height: 10,
                                 decoration: BoxDecoration(
                                     color: Color(0xFF1E1E1E)),
                                 // padding: EdgeInsets.all(2),
@@ -493,8 +498,9 @@ ScrollController scrollController = ScrollController();
     SizedBox(width: 5,),         
      
                                     SizedBox(
-                                      width: 250,
-                                      
+                                      // width: 250, 
+                                      // height: 150
+                                                                          
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -502,8 +508,9 @@ ScrollController scrollController = ScrollController();
                                         children: [
                                           // SizedBox(width: 10,),
                                            Container(
-                                            width: 250,
-                                            height: 170,
+                                            width: MediaQuery.of(context).size.width/2,
+
+                                            height: (MediaQuery.of(context).size.height/1.7)*0.35,
                                             child: FittedBox(
                                             fit: BoxFit.fill,
                                             
@@ -556,88 +563,106 @@ ScrollController scrollController = ScrollController();
                             // SizedBox(width: 2,),
                             Column(
                               children: [
-                                SizedBox(height: 15,),
-                                Text(
+                                SizedBox(height: 5,),
+                                FittedBox(
+                                  fit:BoxFit.fitWidth,
+                                  child:
+                          Text(
                             ('Name'),
                             style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 18,
+                              // fontSize: 16,
                               color: Colors.white,
                               
                             ),
                             
-                          ),
+                          ),),
                           SizedBox(height: 5,),
                           
-                          Text(
+                          
+                          FittedBox(
+                            fit:BoxFit.fitWidth,
+                            child:Text(
                             ("${data.docs[index]['Property_Details']['Property_name']}"),
                             style: TextStyle(
                               // fontWeight:FontWeight.bold,
                               
-                              fontSize: 18,
+                              // fontSize: 16,
                               color: Colors.white,
                               
                             ),
                             
                           ),
+                          )
                               ],
                             ),
                             Column(
                               children: [
-                                SizedBox(height: 15,),
-                                Text(
+                                SizedBox(height: 5,),
+                               
+                          FittedBox(
+                            fit:BoxFit.fitWidth,
+                            child:
+                          Text(
                             ('Sale Price'),
                             style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 18,
+                              // fontSize: 16,
                               color: Colors.white,
                               
                             ),
                             
-                          ),
+                          ),),
                           SizedBox(height: 5,),
                           
-                          Text(
+                          
+                          FittedBox(
+                            fit:BoxFit.fitWidth,
+                            child:Text(
                             ("${data.docs[index]['Property_Details']['Asset']}"),
                             style: TextStyle(
                               // fontWeight:FontWeight.bold,
                               
-                              fontSize: 18,
+                              // fontSize: 16, 
                               color: Colors.white,
                               
                             ),
                             
                           ),
+                          )
                               ],
                             ),Column(
                               children: [
-                                SizedBox(height: 15,),
-                                Text(
+                                SizedBox(height: 5,),
+                               FittedBox(
+                                fit:BoxFit.fitWidth,
+                                child: Text(
                             ('Sq. Ft'),
                             style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 18,
+                              // fontSize: 16,
                               color: Colors.white,
                               
                             ),
                             
                           ),
+                               ),
                           SizedBox(height: 5,),
                           
-                          Text(
-                            ("${data.docs[index]['Property_Details']['Carpet_Area']}"),
-                            style: TextStyle(
-                              // fontWeight:FontWeight.bold,
-                              
-                              fontSize: 18,
-                              color: Colors.white,
-                              
-                            ),
-                            
-                          ),
+                          FittedBox(
+        fit: BoxFit.fitWidth, 
+        child:Text(
+                                            ('${data.docs[index]['Property_Details']['Carpet_Area']}'),
+                                            style: TextStyle(
+                                              // fontWeight:FontWeight.bold,
+                                              // fontSize: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+    ),
                               ],
                             ),
                             
@@ -674,9 +699,9 @@ ScrollController scrollController = ScrollController();
 
             // );
           ),
-           SizedBox(
-            height: 5,
-          ),
+          //  SizedBox(
+          //   height: 5,
+          // ),
           
           
           ],
@@ -699,7 +724,7 @@ ScrollController scrollController = ScrollController();
             primary: false,
              shrinkWrap: true,
           children:[ Column(
-            children: [SizedBox(height: 10,),
+            children: [
             Text(
                             (" \u{2193} \u{2193} Occupied Properties \u{2193} \u{2193}"),
                             style: TextStyle(
@@ -711,7 +736,9 @@ ScrollController scrollController = ScrollController();
                             ),
                             
                           ),
-          
+          //  SizedBox(
+          //   height: 5,
+          // ),
                Container(
             width: MediaQuery.of(context).size.width,
             // height: MediaQuery.of(context).size.height/3.5,
@@ -995,23 +1022,21 @@ ScrollController scrollController = ScrollController();
   }
 
   Widget _getFAB() {
-    if (n == 0) {return Container();
-    } else {
       return FloatingActionButton(
           backgroundColor: Colors.black,
           child: Icon(
             Icons.add,
             color: Colors.white,
           ),
-          onPressed: () {
+          onPressed: n!=0 ?() {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => PreAdd(),
               ),
             );
-          });
-    }
+          } : null);
+    
   }
 }
 

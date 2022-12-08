@@ -1,6 +1,8 @@
 
 
 
+import 'dart:math';
+
 import 'package:authh_app/ui/BottomNavbar.dart';
 import 'package:authh_app/ui/Views.dart';
 import 'package:authh_app/ui/chat_wrtFirm.dart';
@@ -129,10 +131,12 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         //   ),
                         // );
                       },
-                      child: Text(
+                      child:FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                child:  Text(
                         'Property Name',
-                        style: TextStyle(fontSize: 15),
-                      ),
+                        style: TextStyle(),
+                      ),),
                          style: ElevatedButton.styleFrom(
                           // primary: Color(0xFF221A2C), // background
                           // onPrimary: Colors.green, // foreground
@@ -161,10 +165,14 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         // );
                         Navigator.push(context, SlideleftRoute(page: ChatwrtFirmPage()));
                       },
-                      child: Text(
+                      child: 
+                          FittedBox(
+                            fit:BoxFit.fitWidth,
+                            child:Text(
                         'Firm  Name',
-                        style: TextStyle(fontSize: 15),
+                        
                       ),
+                          ),
                     ),
                   ),
                   SizedBox(width: 4),
@@ -185,32 +193,39 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                         // );
                         Navigator.push(context, SlideleftRoute(page: ChatwrtTenantPage()));
                       },
-                      child: Text(
+                      child:                           FittedBox(
+
+                              fit: BoxFit.fitWidth
+                              ,
+                              child: Text(
                         'Tenant Name',
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
                   ),
-                ],
+            )],
               ),
             Container(
               margin: const EdgeInsets.fromLTRB(16, 16,16, 16),
-              child: TextField(
-                style: TextStyle(
-                  color: Colors.white
-                ),
-                controller: _controller,
-                decoration: InputDecoration(
-                  labelText: "Search",
-                  
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: "Search for properties",
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(22),
-                  
-                  borderSide: const BorderSide(color: Colors.white)),
-                ),
-                onChanged: search,
-              ),
+              child: TextFormField(
+                                  style: TextStyle(color: Colors.white),
+                                  controller: _controller,
+                                  onChanged: search,
+                                  decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                      ),
+                                      // hintText: "in sq.ft",
+                                      // hintStyle: TextStyle(color: Colors.white),
+                                      labelText: "Search",
+                                      labelStyle:
+                                          TextStyle(color: Colors.white)),
+                                ),
             ),
             Expanded(child: ListView.builder(itemCount:suggestionslist.length,itemBuilder:(context, index){
               final sea=suggestionslist[index];
@@ -238,7 +253,7 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
             
                },
                child: Container(
-                
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                  color: Color.fromARGB(18, 113, 125, 137)
                 ),
@@ -247,47 +262,125 @@ List<PropertyTile> uniquelist = suggestions1.where((student) => seen.add(student
                   children: [
                     SizedBox(
 
-                      width: 200,
+                      width: MediaQuery.of(context).size.width/2.3,
                       child: Column(
-                        
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                         Text(sea.Propertyname,
+
+                         Row(
+                          children: [
+                            FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text("Property :",
                           style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              // fontSize: 20,
                               color: Colors.white,
                               
                             ),),
-                         Text(sea.Tenantname,
+                            ),
+                           FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text(sea.Propertyname,
+                          style: TextStyle(
+                              // fontWeight:FontWeight.bold,
+                              
+                              // fontSize: 20,
+                              color: Colors.white,
+                              
+                            ),),
+                            ),
+                          ],
+                         ),
+
+                        Row(
+                          children: [
+                            FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text("Tenant :",
                           style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              // fontSize: 20,
                               color: Colors.white,
                               
                             ),),
-                         Text(sea.Firmname,
+                            ),
+                          if(sea.Tenantname=="")...[
+                            Container()
+                          ]
+                          else
+                           FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text(sea.Tenantname,
+                          style: TextStyle(
+                              // fontWeight:FontWeight.bold,
+                              
+                              // fontSize: 20,
+                              color: Colors.white,
+                              
+                            ),),
+                            ),
+                          ],
+                         ),
+                        Row(
+                          children: [
+                            FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text("Firm :",
                           style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 20,
+                              // fontSize: 20,
                               color: Colors.white,
                               
                             ),),
-                             IconButton(
-              onPressed: () => launchWhatsApp(sea.Mobile),
-              icon: Icon(Icons.whatsapp),
-            ),
+                            ),
+                           if(sea.Firmname=="")...[
+                            Container()
+                          ]
+                          else
+                           FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text(sea.Tenantname,
+                          style: TextStyle(
+                              // fontWeight:FontWeight.bold,
+                              
+                              // fontSize: 20,
+                              color: Colors.white,
+                              
+                            ),),
+                            ),
+                          ],
+                         ),
+                            
                           
                           
                       
                             
                         ],
                       ),
+                      
                     ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/2.3,
+                      child: 
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                           IconButton(
+              onPressed: () => launchWhatsApp(sea.Mobile),
+              icon: Icon(Icons.whatsapp),
+              color: Colors.green,
+              iconSize:35,
+            ),
+                        
+                      ]),
+                    )
                   
                   ],
                 ),

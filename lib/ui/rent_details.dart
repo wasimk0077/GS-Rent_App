@@ -288,7 +288,7 @@ TextEditingController _year = TextEditingController();
               Container(
                 child: Card(
                   // shadowColor: Color.fromARGB(255, 180, 38, 236),
-                  color: Color(0xFF221A2C),
+                  color: Color(0xFF1E1E1E) ,
                   elevation: 8,
                   clipBehavior: Clip.antiAlias,
                   shape: RoundedRectangleBorder(
@@ -450,7 +450,7 @@ TextEditingController _year = TextEditingController();
                               onPressed: () => launchWhatsApp(),
                               icon: Icon(
                                 Icons.whatsapp,
-                                color: Colors.white,
+                                color: Colors.green,
                                 size: 25,
                               ),
                             ),
@@ -576,7 +576,9 @@ TextEditingController _year = TextEditingController();
                                 }
                               }
                             },
-                            child: Text("Update"),
+                            child: 
+                            FittedBox(fit: BoxFit.contain,
+                            child: Text("Update"),),
                             textColor: Colors.white,
                           ),
                         ),

@@ -116,6 +116,9 @@ class _GuestDiscoverVacantState extends State<GuestDiscoverVacant> {
                         ),
                       ],
                     ),
+                     SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.025,
+                ),
                     StreamBuilder<QuerySnapshot>(
                         stream: property_main,
                         builder: (BuildContext context,

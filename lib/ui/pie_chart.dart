@@ -61,18 +61,18 @@ class Category {
 
 final kCategories = [
   Category('Residential', amount: 500.00),
-  Category('Warehouse', amount: 150.00),
-  Category('MNC', amount: 90.00),
-  Category('Bank', amount: 90.00),
-  Category('Commercial', amount: 170.00),
-  // Category('fees', amount: 20.00),
+  Category('Warehouse', amount: 0.00),
+  Category('MNC', amount: 500.00),
+  Category('Bank', amount: 500.00),
+  Category('Commercial', amount: .00),
+  
 ];
 
 final kNeumorphicColors = [
-  Color.fromRGBO(82, 98, 255, 1), //  rgb(82, 98, 255)
-  Color.fromRGBO(46, 198, 255, 1), // rgb(46, 198, 255)
-  Color.fromRGBO(123, 201, 82, 1), // rgb(123, 201, 82)
-  Color.fromRGBO(255, 171, 67, 1), // rgb(255, 171, 67)
-  Color.fromRGBO(252, 91, 57, 1), //  rgb(252, 91, 57)
+ Color(0xff99DEBF), //  rgb(82, 98, 255)
+  Color(0xffF66D44), // rgb(46, 198, 255)
+  Color(0xffAADEA7), // rgb(123, 201, 82)
+  Color(0xffE6F69D), // rgb(255, 171, 67)
+  Color(0xffFEAE65), //  rgb(252, 91, 57)
   // Color.fromRGBO(139, 135, 130, 1), //rgb(139, 135, 130)
 ];

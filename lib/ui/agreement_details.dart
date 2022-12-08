@@ -51,7 +51,7 @@ class _AgreementDetailsState extends State<AgreementDetails> {
   var collection = FirebaseFirestore.instance.collection('property_main');
   final List<String> imageList = [
 ];
-final List<String> NoimageList=["https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"];
+final List<String> NoimageListt=["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAh8YVQhMCGhp1xDo9Pew7q0W4H1zLD-9wbA&usqp=CAU"];
 
    int _currentIndex = 0;
 
@@ -186,8 +186,11 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                Column(
        
         children: [
+            SizedBox
+            (height: MediaQuery.of(context).size.height/12),
           Container(
-            height: 170,
+          
+            height: MediaQuery.of(context).size.height/4,
             
             child: Card(
             
@@ -207,39 +210,27 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                
                 Container(
                   
-                
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                  color: Color.fromARGB(18, 113, 125, 137)
                 ),
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(top:6,bottom: 6,left: 15,right: 15),
                 child: Row(
 
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     
                     SizedBox(
-                      height: 500,
-                      width: 200,
+                      // height: 500,
+                      width: MediaQuery.of(context).size.width/2,
                       child: Column(
 
-                        
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                            
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text(('Agreement'),
                         
-                        textAlign:TextAlign.center,
-                         style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 23,
-                              color: Colors.white,
-                              
-                            ),),],
-                        ),
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
@@ -248,20 +239,24 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                 if (snapshot.hasData) {
                   var output = snapshot.data!.data();
                   var value = output!['Agreement_Details']['Start_Date'];
-                  return Text(('Start Date= $value'), style: TextStyle(
+                  return  FittedBox(
+
+                    fit: BoxFit.fill,
+                    child: Text(('Start Date= $value'), style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 17,
+                              // fontSize: 17,
                               color: Colors.white,
                               
-                            ),);
+                            ),),
+                  );
                 }
 
                 return Center(child: CircularProgressIndicator());
           },
 ),
                       
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
@@ -270,20 +265,24 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                 if (snapshot.hasData) {
                   var output = snapshot.data!.data();
                   var value = output!['Agreement_Details']['End_Date'];
-                  return Text(('End Date= $value'), style: TextStyle(
+                  return  FittedBox(
+
+                    fit: BoxFit.fill,
+                    child: Text(('End Date= $value'), style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 17,
+                              // fontSize: 17,
                               color: Colors.white,
                               
-                            ),);
+                            ),),
+                  );
                 }
 
                 return Center(child: CircularProgressIndicator());
           },
 ),
  
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
@@ -292,20 +291,24 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                 if (snapshot.hasData) {
                   var output = snapshot.data!.data();
                   var value = output!['Agreement_Details']['Security_Deposit'];
-                  return Text(('Security Deposit= $value'), style: TextStyle(
+                  return  FittedBox(
+
+                    fit: BoxFit.fill,
+                    child: Text(('Security Deposit= $value'), style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 17,
+                              // fontSize: 17,
                               color: Colors.white,
                               
-                            ),);
+                            ),),
+                  );
                 }
 
                 return Center(child: CircularProgressIndicator());
           },
 ),
 
-                          SizedBox(height: 8),
+                          // SizedBox(height: 8),
                             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: collection.doc(widget.docID).snapshots(),
           builder: (_, snapshot) {
@@ -314,426 +317,22 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                 if (snapshot.hasData) {
                   var output = snapshot.data!.data();
                   var value = output!['Agreement_Details']['Rent_Escalation'];
-                  return Text(('Rent Escalation = $value'), style: TextStyle(
+                  return FittedBox(
+
+                    fit: BoxFit.fill,
+                    child: Text(('Rent Escalation = $value'), style: TextStyle(
                               fontWeight:FontWeight.bold,
                               
-                              fontSize: 17,
+                              // fontSize: 17,
                               color: Colors.white,
                               
-                            ),);
+                            ),),
+                  );
                 }
 
                 return Center(child: CircularProgressIndicator());
           },
 ),
-
-                 
-                          
-                          
-                      
-                            
-                        ],
-                      ),
-                    ),
-                   
-//                   IconButton(onPressed: (() async {
-//    final pdfFile = await PdfInvoiceApi.generate();
-
-//                 // opening the pdf file
-//                 FileHandleApi.openFile(pdfFile);
-// }), icon: Icon(Icons.download_rounded)),
-                 Column(
-                  children: [
-                    if(n==1)FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UpdateAgreementViews(widget.docID),
-            ),
-          );
-        },
-        backgroundColor: Colors.black,
-        child: Icon(
-          Icons.keyboard_control_sharp,
-          color: Colors.white,
-        ),
-      )
-      else Container()
-      ,
-      ElevatedButton(onPressed: (){
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UpdatAgreementDoc(),
-            ),
-          );
-      }, child: Text("AGR"))
-                  ],
-                 ),
-
-],
-                ),
-            ),
-            
-            
-            
-            
-
-             
-             
-          ),
-          ),
-          Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(('Photos'),
-                    
-                    textAlign:TextAlign.center,
-                     style: TextStyle(
-                          fontWeight:FontWeight.bold,
-                          
-                          fontSize: 20,
-                          color: Colors.white,
-                          
-                        ),),
-          ],
-          ),
-           Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          
-          
-          children: [
-            Text(('Before'),
-                    
-                    textAlign:TextAlign.center,
-                     style: TextStyle(
-                          fontWeight:FontWeight.bold,
-                          
-                          fontSize: 20,
-                          color: Colors.white,
-                          
-                        ),),
-          ],
-          ),
-        Container(
-              // margin: EdgeInsets.all(0),
-              child: CarouselSlider.builder(
-                itemCount:imageList.length,
-                options: CarouselOptions(
-                  disableCenter: true,
-                  // enlargeCenterPage: true,
-                  height: 205,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  reverse: false,
-                  aspectRatio: 5.0,
-                ),
-                itemBuilder: (context, i, id) {
-                  //for onTap to redirect to another screen
-                  return GestureDetector(
-                    child:Column(
-                      children: [
-                        if(imageList.isEmpty)...[
-                         Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            // color: Colors.white,
-                          )),
-                      //ClipRRect for image border radius
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          NoimageList[i],
-                          width: 400,
-                          height: 220,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                        ]
-                        else
-                         Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            // color: Colors.white,
-                          )),
-                      //ClipRRect for image border radius
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          imageList[i],
-                          width: 400,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                      ],
-                    ),
-
-                    onTap: () {
-                      var url = imageList[i];
-                      print(url.toString());
-                    },
-                  );
-                },
-              ),
-            ),
-            Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          
-          
-          children: [
-            Text(('After'),
-                    
-                    textAlign:TextAlign.center,
-                     style: TextStyle(
-                          fontWeight:FontWeight.bold,
-                          
-                          fontSize: 20,
-                          color: Colors.white,
-                          
-                        ),),
-          ],
-          ),
-         Container(
-              margin: EdgeInsets.all(0),
-              child: CarouselSlider.builder(
-                itemCount:imageList.length,
-                options: CarouselOptions(
-                  disableCenter: true,
-                  // enlargeCenterPage: true,
-                  height: 240,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  reverse: false,
-                  aspectRatio: 5.0,
-                ),
-                itemBuilder: (context, i, id) {
-                  //for onTap to redirect to another screen
-                  return GestureDetector(
-                    child:Column(
-                      children: [
-                        
-                         Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: Colors.white,
-                          )),
-                      //ClipRRect for image border radius
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          NoimageList[0],
-                          width: 400,
-                          height: 230,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                        
-                        
-                       
-                      ],
-                    ),
-
-                    onTap: () {
-                      var url = imageList[i];
-                      print(url.toString());
-                    },
-                  );
-                },
-              ),
-            ),
-        
-             
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        ],
-        
-      )
-      ,
-            ]
-            else  Column(
-       
-        children: [
-          Container(
-            height: 400,
-            
-            child: Card(
-            
-                
-            
-              // shadowColor: Color.fromARGB(255, 180, 38, 236),
-            elevation: 8,
-            color:Color(0xFF1E1E1E) ,
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-              child:
-             
-             
-            
-               
-                Container(
-                  
-                
-                decoration: BoxDecoration(
-                 color: Color.fromARGB(18, 113, 125, 137)
-                ),
-                padding: EdgeInsets.all(10),
-                child: Row(
-
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    
-                    SizedBox(
-                      height: 500,
-                      width: 300,
-                      child: Column(
-
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                           
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text(('Agreement'),
-                        
-                        textAlign:TextAlign.center,
-                         style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize:40,
-                              color: Colors.white,
-                              
-                            ),),],
-                        ),
-                          SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc(widget.docID).snapshots(),
-          builder: (_, snapshot) {
-                if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
-                if (snapshot.hasData) {
-                  var output = snapshot.data!.data();
-                  var value = output!['Agreement_Details']['Start_Date'];
-                  return Text(('Start Date= $value'), style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 22,
-                              color: Colors.white,
-                              
-                            ),);
-                }
-
-                return Center(child: CircularProgressIndicator());
-          },
-),],
-                            ),
-                      
-                          SizedBox(height: 8),
-                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                  width: 20,
-                                ), StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc(widget.docID).snapshots(),
-          builder: (_, snapshot) {
-                if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
-                if (snapshot.hasData) {
-                  var output = snapshot.data!.data();
-                  var value = output!['Agreement_Details']['End_Date'];
-                  return Text(('End Date= $value'), style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 22,
-                              color: Colors.white,
-                              
-                            ),);
-                }
-
-                return Center(child: CircularProgressIndicator());
-          },
-),],
-                           ),
- 
-                          SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc(widget.docID).snapshots(),
-          builder: (_, snapshot) {
-                if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
-                if (snapshot.hasData) {
-                  var output = snapshot.data!.data();
-                  var value = output!['Agreement_Details']['Security_Deposit'];
-                  return Text(('Security Deposit= $value'), style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 22,
-                              color: Colors.white,
-                              
-                            ),);
-                }
-
-                return Center(child: CircularProgressIndicator());
-          },
-),],
-                            ),
-
-                          SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: collection.doc(widget.docID).snapshots(),
-          builder: (_, snapshot) {
-                if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
-                if (snapshot.hasData) {
-                  var output = snapshot.data!.data();
-                  var value = output!['Agreement_Details']['Rent_Escalation'];
-                  return Text(('Rent Escalation = $value'), style: TextStyle(
-                              fontWeight:FontWeight.bold,
-                              
-                              fontSize: 22,
-                              color: Colors.white,
-                              
-                            ),);
-                }
-
-                return Center(child: CircularProgressIndicator());
-          },
-),],
-                            ),
 
                  
                           
@@ -770,7 +369,14 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
       )
       else Container()
       ,
-      
+      // ElevatedButton(onPressed: (){
+      //   Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => UpdatAgreementDoc(),
+      //       ),
+      //     );
+      // }, child: Text("AGR"))
                   ],
                  ),
 
@@ -795,7 +401,7 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                      style: TextStyle(
                           fontWeight:FontWeight.bold,
                           
-                          fontSize: 35,
+                          fontSize: 18,
                           color: Colors.white,
                           
                         ),),
@@ -806,27 +412,31 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
           
           
           children: [
-            Text(('Before'),
+            SizedBox(width: MediaQuery.of(context).size.width/20,),
+          FittedBox(
+            fit: BoxFit.fill,
+            child:   Text(('Before'),
                     
                     textAlign:TextAlign.center,
                      style: TextStyle(
                           fontWeight:FontWeight.bold,
                           
-                          fontSize: 28,
+                          // fontSize: 18,
                           color: Colors.white,
                           
                         ),),
+          )
           ],
           ),
         Container(
-          height: 300,
               // margin: EdgeInsets.all(0),
+              margin: EdgeInsets.only(left: 5,right: 5),
               child: CarouselSlider.builder(
                 itemCount:imageList.length,
                 options: CarouselOptions(
                   disableCenter: true,
                   // enlargeCenterPage: true,
-                  height: 205,
+                  height: MediaQuery.of(context).size.height/4.02,
                   autoPlay: true,
                   autoPlayInterval: Duration(seconds: 3),
                   reverse: false,
@@ -843,14 +453,15 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
                             // color: Colors.white,
+                            width: 4,
                           )),
                       //ClipRRect for image border radius
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
-                          NoimageList[i],
+                          NoimageListt[i],
                           width: 400,
-                          height: 250,
+                          height: 220,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -862,14 +473,15 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
                             // color: Colors.white,
+                            width: 4,
                           )),
                       //ClipRRect for image border radius
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
                           imageList[i],
-                          width: 400,
-                          height: 250,
+                          width: MediaQuery.of(context).size.width,
+                          height:MediaQuery.of(context).size.height/4.2 ,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -890,27 +502,30 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
           
           
           children: [
-            Text(('After'),
+             SizedBox(width: MediaQuery.of(context).size.width/20,),
+           FittedBox(
+            fit: BoxFit.fill,
+            child:   Text(('After'),
                     
                     textAlign:TextAlign.center,
                      style: TextStyle(
                           fontWeight:FontWeight.bold,
                           
-                          fontSize: 28,
+                          // fontSize: 18,
                           color: Colors.white,
                           
                         ),),
+          )
           ],
           ),
          Container(
-          height: 300,
-              margin: EdgeInsets.all(0),
+              margin: EdgeInsets.only(left: 5,right: 5),
               child: CarouselSlider.builder(
                 itemCount:imageList.length,
                 options: CarouselOptions(
                   disableCenter: true,
                   // enlargeCenterPage: true,
-                  height: 260,
+                  height: MediaQuery.of(context).size.height/4.02,
                   autoPlay: true,
                   autoPlayInterval: Duration(seconds: 3),
                   reverse: false,
@@ -926,15 +541,16 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
-                            color: Colors.white,
+                            // color: Colors.white,
+                            width: 4,
                           )),
                       //ClipRRect for image border radius
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
-                          NoimageList[0],
-                          width: 400,
-                          height: 235,
+                          NoimageListt[0],
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height/4.2,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -968,6 +584,410 @@ imageList.add(data['Property_Details']["imageurl"]["image2"]);
         
       )
       ,
+            ]
+//             else  Column(
+       
+//         children: [
+//           Container(
+//             height: 400,
+            
+//             child: Card(
+            
+                
+            
+//               // shadowColor: Color.fromARGB(255, 180, 38, 236),
+//             elevation: 8,
+//             color:Color(0xFF1E1E1E) ,
+//             clipBehavior: Clip.antiAlias,
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(24),
+//             ),
+//               child:
+             
+             
+            
+               
+//                 Container(
+                  
+                
+//                 decoration: BoxDecoration(
+//                  color: Color.fromARGB(18, 113, 125, 137)
+//                 ),
+//                 padding: EdgeInsets.all(10),
+//                 child: Row(
+
+//                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                   children: [
+                    
+//                     SizedBox(
+//                       height: 500,
+//                       width: 300,
+//                       child: Column(
+
+//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+                           
+//                         Row(
+//                           mainAxisAlignment: MainAxisAlignment.center,
+//                           children: [Text(('Agreement'),
+                        
+//                         textAlign:TextAlign.center,
+//                          style: TextStyle(
+//                               fontWeight:FontWeight.bold,
+                              
+//                               fontSize:40,
+//                               color: Colors.white,
+                              
+//                             ),),],
+//                         ),
+//                           SizedBox(height: 8),
+//                             Row(
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               children: [
+//                                 SizedBox(
+//                                   width: 20,
+//                                 ),StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//           stream: collection.doc(widget.docID).snapshots(),
+//           builder: (_, snapshot) {
+//                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+//                 if (snapshot.hasData) {
+//                   var output = snapshot.data!.data();
+//                   var value = output!['Agreement_Details']['Start_Date'];
+//                   return Text(('Start Date= $value'), style: TextStyle(
+//                               fontWeight:FontWeight.bold,
+                              
+//                               fontSize: 22,
+//                               color: Colors.white,
+                              
+//                             ),);
+//                 }
+
+//                 return Center(child: CircularProgressIndicator());
+//           },
+// ),],
+//                             ),
+                      
+//                           SizedBox(height: 8),
+//                            Row(
+//                             mainAxisAlignment: MainAxisAlignment.start,
+//                             children: [
+//                               SizedBox(
+//                                   width: 20,
+//                                 ), StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//           stream: collection.doc(widget.docID).snapshots(),
+//           builder: (_, snapshot) {
+//                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+//                 if (snapshot.hasData) {
+//                   var output = snapshot.data!.data();
+//                   var value = output!['Agreement_Details']['End_Date'];
+//                   return Text(('End Date= $value'), style: TextStyle(
+//                               fontWeight:FontWeight.bold,
+                              
+//                               fontSize: 22,
+//                               color: Colors.white,
+                              
+//                             ),);
+//                 }
+
+//                 return Center(child: CircularProgressIndicator());
+//           },
+// ),],
+//                            ),
+ 
+//                           SizedBox(height: 8),
+//                             Row(
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               children: [
+//                                 SizedBox(
+//                                   width: 20,
+//                                 ),StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//           stream: collection.doc(widget.docID).snapshots(),
+//           builder: (_, snapshot) {
+//                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+//                 if (snapshot.hasData) {
+//                   var output = snapshot.data!.data();
+//                   var value = output!['Agreement_Details']['Security_Deposit'];
+//                   return Text(('Security Deposit= $value'), style: TextStyle(
+//                               fontWeight:FontWeight.bold,
+                              
+//                               fontSize: 22,
+//                               color: Colors.white,
+                              
+//                             ),);
+//                 }
+
+//                 return Center(child: CircularProgressIndicator());
+//           },
+// ),],
+//                             ),
+
+//                           SizedBox(height: 8),
+//                             Row(
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               children: [
+                                
+//                                 SizedBox(
+//                                   width: 20,
+//                                 ),
+//                                 StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+//           stream: collection.doc(widget.docID).snapshots(),
+//           builder: (_, snapshot) {
+//                 if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+//                 if (snapshot.hasData) {
+//                   var output = snapshot.data!.data();
+//                   var value = output!['Agreement_Details']['Rent_Escalation'];
+//                   return Text(('Rent Escalation = $value'), style: TextStyle(
+//                               fontWeight:FontWeight.bold,
+                              
+//                               fontSize: 22,
+//                               color: Colors.white,
+                              
+//                             ),);
+//                 }
+
+//                 return Center(child: CircularProgressIndicator());
+//           },
+// ),],
+//                             ),
+
+                 
+                          
+                          
+                      
+                            
+//                         ],
+//                       ),
+//                     ),
+                   
+// //                   IconButton(onPressed: (() async {
+// //    final pdfFile = await PdfInvoiceApi.generate();
+
+// //                 // opening the pdf file
+// //                 FileHandleApi.openFile(pdfFile);
+// // }), icon: Icon(Icons.download_rounded)),
+//                  Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     if(n==1)FloatingActionButton(
+//         onPressed: () {
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//               builder: (context) => UpdateAgreementViews(widget.docID),
+//             ),
+//           );
+//         },
+//         backgroundColor: Colors.black,
+//         child: Icon(
+//           Icons.keyboard_control_sharp,
+//           color: Colors.white,
+//         ),
+//       )
+//       else Container()
+//       ,
+      
+//                   ],
+//                  ),
+
+// ],
+//                 ),
+//             ),
+            
+            
+            
+            
+
+             
+             
+//           ),
+//           ),
+//           Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Text(('Photos'),
+                    
+//                     textAlign:TextAlign.center,
+//                      style: TextStyle(
+//                           fontWeight:FontWeight.bold,
+                          
+//                           fontSize: 35,
+//                           color: Colors.white,
+                          
+//                         ),),
+//           ],
+//           ),
+//            Row(
+//           mainAxisAlignment: MainAxisAlignment.start,
+          
+          
+//           children: [
+//             Text(('Before'),
+                    
+//                     textAlign:TextAlign.center,
+//                      style: TextStyle(
+//                           fontWeight:FontWeight.bold,
+                          
+//                           fontSize: 28,
+//                           color: Colors.white,
+                          
+//                         ),),
+//           ],
+//           ),
+//         Container(
+//           height: 300,
+//               // margin: EdgeInsets.all(0),
+//               child: CarouselSlider.builder(
+//                 itemCount:imageList.length,
+//                 options: CarouselOptions(
+//                   disableCenter: true,
+//                   // enlargeCenterPage: true,
+//                   height: 205,
+//                   autoPlay: true,
+//                   autoPlayInterval: Duration(seconds: 3),
+//                   reverse: false,
+//                   aspectRatio: 5.0,
+//                 ),
+//                 itemBuilder: (context, i, id) {
+//                   //for onTap to redirect to another screen
+//                   return GestureDetector(
+//                     child:Column(
+//                       children: [
+//                         if(imageList.isEmpty)...[
+//                          Container(
+//                       decoration: BoxDecoration(
+//                           borderRadius: BorderRadius.circular(15),
+//                           border: Border.all(
+//                             // color: Colors.white,
+//                           )),
+//                       //ClipRRect for image border radius
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(15),
+//                         child: Image.network(
+//                           NoimageList[i],
+//                           width: 400,
+//                           height: 250,
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+//                         ]
+//                         else
+//                          Container(
+//                       decoration: BoxDecoration(
+//                           borderRadius: BorderRadius.circular(15),
+//                           border: Border.all(
+//                             // color: Colors.white,
+//                           )),
+//                       //ClipRRect for image border radius
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(15),
+//                         child: Image.network(
+//                           imageList[i],
+//                           width: 400,
+//                           height: 250,
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+//                       ],
+//                     ),
+
+//                     onTap: () {
+//                       var url = imageList[i];
+//                       print(url.toString());
+//                     },
+//                   );
+//                 },
+//               ),
+//             ),
+//             Row(
+//           mainAxisAlignment: MainAxisAlignment.start,
+          
+          
+//           children: [
+//             Text(('After'),
+                    
+//                     textAlign:TextAlign.center,
+//                      style: TextStyle(
+//                           fontWeight:FontWeight.bold,
+                          
+//                           fontSize: 28,
+//                           color: Colors.white,
+                          
+//                         ),),
+//           ],
+//           ),
+//          Container(
+//           height: 300,
+//               margin: EdgeInsets.all(0),
+//               child: CarouselSlider.builder(
+//                 itemCount:imageList.length,
+//                 options: CarouselOptions(
+//                   disableCenter: true,
+//                   // enlargeCenterPage: true,
+//                   height: 260,
+//                   autoPlay: true,
+//                   autoPlayInterval: Duration(seconds: 3),
+//                   reverse: false,
+//                   aspectRatio: 5.0,
+//                 ),
+//                 itemBuilder: (context, i, id) {
+//                   //for onTap to redirect to another screen
+//                   return GestureDetector(
+//                     child:Column(
+//                       children: [
+                        
+//                          Container(
+//                       decoration: BoxDecoration(
+//                           borderRadius: BorderRadius.circular(15),
+//                           border: Border.all(
+//                             color: Colors.white,
+//                           )),
+//                       //ClipRRect for image border radius
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(15),
+//                         child: Image.network(
+//                           NoimageList[0],
+//                           width: 400,
+//                           height: 235,
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+                        
+                        
+                       
+//                       ],
+//                     ),
+
+//                     onTap: () {
+//                       var url = imageList[i];
+//                       print(url.toString());
+//                     },
+//                   );
+//                 },
+//               ),
+//             ),
+        
+             
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//         ],
+        
+//       )
+//       ,
           ],
         )
         

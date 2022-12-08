@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pie_chart.dart';
+import 'pie_chart_view.dart';
 
 class CategoriesRow extends StatelessWidget {
   const CategoriesRow({

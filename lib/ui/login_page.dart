@@ -21,6 +21,7 @@ import 'package:authh_app/net/flutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:local_auth/local_auth.dart';
 // import 'package:firebase_showcase/pages/home.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase/auth/getAuth';
@@ -33,9 +34,71 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+    final auth = LocalAuthentication();
+  String authorized = " not authorized";
+  bool _canCheckBiometric = false;
+  late List<BiometricType> _availableBiometric;
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+
+    try {
+      authenticated = await auth.authenticateWithBiometrics(
+          localizedReason: "Scan your finger to authenticate",
+          useErrorDialogs: true,
+          stickyAuth: true);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    setState(() {
+      authorized =
+          authenticated ? "Authorized success" : "Failed to authenticate";
+      print(authorized);
+    });
+  }
+
+  Future<void> _checkBiometric() async {
+    bool canCheckBiometric = false;
+
+    try {
+      canCheckBiometric = await auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _canCheckBiometric = canCheckBiometric;
+    });
+  }
+
+  Future _getAvailableBiometric() async {
+    List<BiometricType> availableBiometric = [];
+
+    try {
+      availableBiometric = await auth.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    setState(() {
+      _availableBiometric = availableBiometric;
+    });
+  }
+
   TextEditingController _emailField = TextEditingController();
   TextEditingController _passwordField = TextEditingController();
   CollectionReference users = FirebaseFirestore.instance.collection("users");
+  @override
+  void initState() {
+    _checkBiometric();
+    _getAvailableBiometric();
+
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +212,26 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                //  Container(
+                //     margin: const EdgeInsets.symmetric(vertical: 15.0),
+                //     width:  MediaQuery.of(context).size.width / 1.4,
+                //     child: FloatingActionButton(
+                //       onPressed: _authenticate,
+                //       elevation: 0.0,
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(30.0),
+                //       ),
+                //       child: const Padding(
+                //         padding: EdgeInsets.symmetric(
+                //             horizontal: 24.0, vertical: 14.0),
+                //         child: Text(
+                //           "Authenticate",
+                //           style: TextStyle(color: Colors.white),
+                //         ),
+                //       ),
+                //     ),
+                //   )
               ],
             ),
           ),
